@@ -61,8 +61,6 @@ class PaneView {
     switch(flag) {
       case 0 : //Camera is not connected
         fill(100);
-        rect(pane_x,pane_y,pane_W,pane_H);
-        
         break;
       case 1 : //Camera is connected
         if (fwdCam.isAvailable()) {
@@ -108,15 +106,25 @@ class PaneView {
     
 //----------
   void Compass(int Heading, int Heading_Target, int flag_compass) {
-    pane_x 
-    pane_y 
-    pane_W 
-    pane_H
+    int compass_center = pane_x+pane_W/2; 
+    
+   
     
     switch(flag_compass) {
       case 0://No Heading Target
-        fill(150,50);
-        arc(
+        
+        //Current heading text
+        rectMode(CENTER);
+        strokeWeight(2);
+        fill(150,0);
+        rect(compass_center,pane_y+100,50,25);
+        fill(#19E300);
+        textSize(18);
+        textAlign(CENTER,CENTER);
+        rectMode(CENTER);
+        text(str(Heading),compass_center,pane_y+100-2);
+        
+
         
       break;
       case 1:
