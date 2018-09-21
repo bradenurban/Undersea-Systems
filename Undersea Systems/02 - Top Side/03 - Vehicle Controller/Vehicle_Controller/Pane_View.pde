@@ -4,11 +4,15 @@ class PaneView {
   int pane_W;
   int pane_H;
   
+  //Camera variable 
+  int flag = 0;
+  boolean fwdCam_state = false;
+  PImage frame;
+  
   PaneView(){
-   cp5.addButton("CameraConnection")
-     .setPosition(175,275)
-     .setImages(loadImage("Arrow-Left.png"), loadImage("Arrow-Right.png"), loadImage("Refresh.png"))
-     .updateSize();
+    
+
+
   
   
   }
@@ -16,7 +20,7 @@ class PaneView {
   
   
  //Class Functions--------------------------------------- 
-  void initialUpdate(int temp_pane_x,int temp_pane_y, int temp_pane_W,int temp_pane_H){
+  void initialSetup(int temp_pane_x,int temp_pane_y, int temp_pane_W,int temp_pane_H){
     pane_x = temp_pane_x;
     pane_y = temp_pane_y;
     pane_W = temp_pane_W;
@@ -27,33 +31,100 @@ class PaneView {
     rect(pane_x,pane_y,pane_W,pane_H);
     print("initial update");
     
-   public void controlEvent(ControlEvent theEvent) {
-      println(theEvent.getController().getName());
-    }//end control event  
+    frame = createImage(pane_W,pane_H,RGB);
     
-  public void buttonA(int theValue) {
-    println("a button event from buttonA: "+theValue);
-  }//end buttona
-    
-    
-    
-    
+    //Connection Button
+    PaneView_GUI.addButton("CameraConnection")
+     .setValue(0)
+     .setPosition(pane_x+temp_pane_W,pane_y)
+     .setSize(50,50)
+     .setImages(loadImage("Disconnected_Base.png"),loadImage("Disconnected_RollOver.png"),loadImage("Disconnected_Base.png"))
+     .plugTo( this, "CameraConnection")
+     .updateSize();
+     
+     //Settings Button
+    PaneView_GUI.addButton("CameraSetting")
+     .setValue(0)
+     .setPosition(pane_x+temp_pane_W,pane_y+50)
+     .setSize(50,50)
+     .setImages(loadImage("Settings_Base.png"),loadImage("Settings_RollOver.png"),loadImage("Settings_Base.png"))
+     .plugTo( this, "CameraConnection")
+     .updateSize();
+     
     } // end initialUpdate
   
-  void update(int temp_roll, 
-              int temp_pitch, 
-              int temp_heading, 
-              int temp_depth,
-              int temp_headingTarget){
+  
+  //----------
+  void update(){  
+   
+    //Display background
+    switch(flag) {
+      case 0 : //Camera is not connected
+        fill(100);
+        rect(pane_x,pane_y,pane_W,pane_H);
+        
+        break;
+      case 1 : //Camera is connected
+        if (fwdCam.isAvailable()) {
+          fwdCam.read(); 
+          image(fwdCam,pane_x+1,pane_y+1,pane_W-2,pane_H-2);}
+        else
+          image(fwdCam,pane_x+1,pane_y+1,pane_W-2,pane_H-2);
+        break;}  
+        
+    //Display framerate
+    fill(200); text("FPS: "+round(frameRate),pane_x+pane_W-50,pane_y+pane_H-5);
+  
+  //Display Compass
+    Compass(27,30,0);
 
+
+
+
+} //end update
   
-              
-              
-              } //end update
   
   
+//----------
+  void CameraConnection() {
+  if (flag == 0){fwdCam.start();println("started camera");flag = 1;}
+    else{fwdCam.stop();println("started stopped");flag = 0;}
+  }//end CameraConnection
   
-  void
+//----------
+  void CameraSetting() {
+  if (flag == 0){fwdCam.start();println("started camera");flag = 1;}
+    else{fwdCam.stop();println("started stopped");flag = 0;}
+  }//end CameraSetting
   
+//----------
+  void ArtificalHorrizon(int Pitch, int Roll) {
+    int viewDistance = 80; //ft
+    
+    
+    
+    
+    }//end ArtificalHorrizon
+    
+//----------
+  void Compass(int Heading, int Heading_Target, int flag_compass) {
+    pane_x 
+    pane_y 
+    pane_W 
+    pane_H
+    
+    switch(flag_compass) {
+      case 0://No Heading Target
+        fill(150,50);
+        arc(
+        
+      break;
+      case 1:
+      
+      break;}
+  
+  }//end ArtificalHorrizon
+  
+//----------  
   
 }//end class
