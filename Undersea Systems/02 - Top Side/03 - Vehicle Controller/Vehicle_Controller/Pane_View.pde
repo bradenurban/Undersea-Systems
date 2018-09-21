@@ -3,17 +3,13 @@ class PaneView {
   int pane_y;
   int pane_W;
   int pane_H;
-  
+  int temp_heading;
   //Camera variable 
   int flag = 0;
   boolean fwdCam_state = false;
-  PImage frame;
   
   PaneView(){
-    
 
-
-  
   
   }
   
@@ -31,7 +27,6 @@ class PaneView {
     rect(pane_x,pane_y,pane_W,pane_H);
     print("initial update");
     
-    frame = createImage(pane_W,pane_H,RGB);
     
     //Connection Button
     PaneView_GUI.addButton("CameraConnection")
@@ -56,11 +51,18 @@ class PaneView {
   
   //----------
   void update(){  
-   
+    strokeWeight(1);
+    rectMode(CORNER); 
+    textAlign(CENTER, CENTER);
+    textSize(14);
     //Display background
     switch(flag) {
       case 0 : //Camera is not connected
         fill(100);
+        stroke(0);
+        strokeWeight(1);
+        rectMode(CORNER); 
+        rect(pane_x,pane_y,pane_W,pane_H);
         break;
       case 1 : //Camera is connected
         if (fwdCam.isAvailable()) {
@@ -71,11 +73,12 @@ class PaneView {
         break;}  
         
     //Display framerate
-    fill(200); text("FPS: "+round(frameRate),pane_x+pane_W-50,pane_y+pane_H-5);
+    fill(200); text("FPS: "+round(frameRate),pane_x+pane_W-25,pane_y+pane_H-10);
   
   //Display Compass
-    Compass(27,30,0);
-
+  temp_heading = int(random(0,45));
+ Compass1.headingdisplay(temp_heading);
+   //line(center_x-5,zero_y,center_x-5,zero_y+25);
 
 
 
@@ -105,33 +108,7 @@ class PaneView {
     }//end ArtificalHorrizon
     
 //----------
-  void Compass(int Heading, int Heading_Target, int flag_compass) {
-    int compass_center = pane_x+pane_W/2; 
-    
-   
-    
-    switch(flag_compass) {
-      case 0://No Heading Target
-        
-        //Current heading text
-        rectMode(CENTER);
-        strokeWeight(2);
-        fill(150,0);
-        rect(compass_center,pane_y+100,50,25);
-        fill(#19E300);
-        textSize(18);
-        textAlign(CENTER,CENTER);
-        rectMode(CENTER);
-        text(str(Heading),compass_center,pane_y+100-2);
-        
-
-        
-      break;
-      case 1:
-      
-      break;}
   
-  }//end ArtificalHorrizon
   
 //----------  
   
