@@ -21,11 +21,9 @@ MQTTClient subseaClient;
 
 //declare classes
 PaneView PaneView1 = new PaneView();
-Compass Compass1 = new Compass(
-      (guiWidth-1082-50),
-      (guiHeight-722-200),
-      1082,722);
-
+Compass Compass1 =   new Compass((guiWidth-1082-50),(guiHeight-722-200),1082,722);
+ArtificalHorrizon ArtificalHorrizon1 = new ArtificalHorrizon((guiWidth-1082-50),(guiHeight-722-200),1082,722);
+Depth Depth1 =       new Depth((guiWidth-1082-50),(guiHeight-722-200),1082,722);
 
 void setup() {
   //Setup Canvas
@@ -37,10 +35,7 @@ void setup() {
   fwdCam = new IPCapture(this, "http://169.254.51.218:9090/stream/video.mjpeg", "", "");
   
   //Setup camera pane
-  PaneView1.initialSetup(
-      (guiWidth-1082-50),
-      (guiHeight-722-200),
-      1082,722);
+  PaneView1.initialSetup((guiWidth-1082-50),(guiHeight-722-200),1082,722);
   //Pane View
    
   //subseaClient = new MQTTClient(this);
@@ -51,7 +46,7 @@ void setup() {
 void draw() {
   PaneView1.update();
   
-  
+
 }
   
   
