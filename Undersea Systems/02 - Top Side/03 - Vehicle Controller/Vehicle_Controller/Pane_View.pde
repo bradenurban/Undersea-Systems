@@ -7,6 +7,8 @@ class PaneView {
   //Camera variable 
   int flag = 0;
   boolean fwdCam_state = true;
+  float temp_pitch;
+  float temp_roll;
   
   PaneView(){
 
@@ -77,10 +79,12 @@ class PaneView {
   
 
   
-  
- ArtificalHorrizon1.AHdisplay(-10,5,0,0,0);
- temp_heading = temp_heading+1;
- Compass1.headingdisplay(45,1,0);
+   temp_heading = int(temp_heading+1*random(-1.5,1.5));
+   temp_pitch = temp_pitch+1*random(-0.5,0.5);
+   temp_roll = temp_roll+1*random(-0.5,0.5);
+   ArtificalHorrizon1.AHdisplay(temp_pitch,temp_roll,0,0,0);
+
+ Compass1.headingdisplay(temp_heading,1,0);
  Depth1.DepthDisplay(25,50,27);
 
    
