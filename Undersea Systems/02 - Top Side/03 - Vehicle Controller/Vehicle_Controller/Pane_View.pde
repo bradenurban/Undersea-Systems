@@ -75,11 +75,14 @@ class PaneView {
     //Display framerate
     fill(200); text("FPS: "+round(frameRate),pane_x+pane_W-25,pane_y+pane_H-10);
   
-  //HUD Elements
+
+  
+  
+ ArtificalHorrizon1.AHdisplay(-10,5,0,0,0);
  temp_heading = temp_heading+1;
  Compass1.headingdisplay(45,1,0);
  Depth1.DepthDisplay(25,50,27);
- ArtificalHorrizon1.AHdisplay(3,2,0,0,1);
+
    
 
 
