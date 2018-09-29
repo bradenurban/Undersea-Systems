@@ -8,6 +8,7 @@ int guiHeight = 1050;
 //GUI classes
 import controlP5.*;
 ControlP5 PaneView_GUI;
+//ControlP5 PaneMission_GUI;
 
 //Fwd Camera
 import ipcapture.*;
@@ -24,6 +25,7 @@ PaneView PaneView1 = new PaneView();
 Compass Compass1 =   new Compass((guiWidth-1082-50),(guiHeight-722-200),1082,722);
 ArtificalHorrizon ArtificalHorrizon1 = new ArtificalHorrizon((guiWidth-1082-50),(guiHeight-722-200),1082,722);
 Depth Depth1 =       new Depth((guiWidth-1082-50),(guiHeight-722-200),1082,722);
+PaneMission PaneMission1 = new PaneMission(0,0,547,128);
 
 void setup() {
   //Setup Canvas
@@ -37,6 +39,9 @@ void setup() {
   //Setup camera pane
   PaneView1.initialSetup((guiWidth-1082-50),(guiHeight-722-200),1082,722);
   //Pane View
+  
+  //Setup Mission Pane
+  PaneMission1.initialSetup();
    
   //subseaClient = new MQTTClient(this);
   //subseaClient.connect("mqtt://try:try@broker.shiftr.io", "processing");
