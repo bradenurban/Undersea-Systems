@@ -37,10 +37,65 @@ class PaneStatus {
   }
 
   void initialSetup() {
-    fill(100);
+    fill(50);
     rect(pane_x, pane_y, pane_x+pane_W, pane_y+pane_H);
     
+    //Label
+    textFont(createFont("Yu Gothic UI Bold", 12));
+    fill(textColor);
+    textSize(24);
+    textAlign(LEFT, CENTER);
+    text("FWD CAM", pane_x+5, pane_y+6);
+    
+    doughnut_gauge(pane_x+55, 85, 5, 25, 0, 20, "V", "VOLTS");
     
     
   }//end initial setup
+
+
+
+  //-----------------------
+  void doughnut_gauge(int x_loc, int y_loc, float value, float value_max, float value_min, float value_red, String Units, String Label) {
+
+    float temp_arc_degrees = map(value_red, value_min, value_max, 135, 315);
+    int r = 37;
+    float theta = map(value, value_min, value_max, 135, 315);
+
+    fill(0, 255, 0);
+    arc(x_loc, y_loc, 75, 75, radians(135), radians(315), CENTER);
+    fill(255, 0, 0);
+    arc(x_loc, y_loc, 75, 75, radians(temp_arc_degrees), radians(315), CENTER);
+    fill(50);
+    arc(x_loc, y_loc, 50, 50, radians(135), radians(315), CENTER);
+    stroke(50);
+    strokeWeight(1.5);
+    ellipse(x_loc, y_loc, 48, 48);
+
+    stroke(255);
+    strokeWeight(2.5);
+    line(x_loc, y_loc, x_loc+(r*cos(radians(theta))), y_loc+ (r * sin(radians(theta))));
+
+    textFont(createFont("Yu Gothic UI Bold", 12));
+    fill(textColor);
+
+    //Units text
+    textSize(14);
+    textAlign(LEFT, CENTER);
+    text(Units, x_loc-15, y_loc+25);
+
+    //Label
+    textSize(12);
+    textAlign(CENTER, CENTER);
+    text(Label, x_loc, y_loc-50);
+
+    //Value
+    textSize(36);
+    textAlign(LEFT, CENTER);
+    text(round(value), x_loc+10, y_loc-5);
+  }//end gauge
+  
+  
+ void doughnut_gauge(int x_loc, int y_loc, float value, float value_max, float value_min, float value_red, String Units, String Label) {
+  
+  
 }//end class

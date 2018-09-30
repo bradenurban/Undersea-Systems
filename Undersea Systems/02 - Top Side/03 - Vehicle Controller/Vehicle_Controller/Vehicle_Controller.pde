@@ -69,6 +69,7 @@ void setup() {
 void draw() {
   PaneView1.update();
   PaneMission1.update();
+
  
 }
 
