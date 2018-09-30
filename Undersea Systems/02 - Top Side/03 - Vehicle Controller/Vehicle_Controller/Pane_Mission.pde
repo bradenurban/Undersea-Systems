@@ -24,7 +24,7 @@ class PaneMission {
   String time;
   int elapsedTime = 0;
   int missionStart = 0;
-  
+
   String missionEnd;
   String elapsedTime_Formatted;
   String missionStarted_Formatted;
@@ -43,9 +43,9 @@ class PaneMission {
     textColor = #0AE300;
 
     elapsedTime = 0;
-   missionEnd= nf(0, 2)+":"+nf(0, 2)+":"+nf(0, 2);
-   elapsedTime_Formatted = nf(0, 2)+":"+nf(0, 2)+":"+nf(0, 2);
-   missionStarted_Formatted = nf(0, 2)+":"+nf(0, 2)+":"+nf(0, 2);
+    missionEnd= nf(0, 2)+":"+nf(0, 2)+":"+nf(0, 2);
+    elapsedTime_Formatted = nf(0, 2)+":"+nf(0, 2)+":"+nf(0, 2);
+    missionStarted_Formatted = nf(0, 2)+":"+nf(0, 2)+":"+nf(0, 2);
   }
 
   void initialSetup() {
@@ -84,14 +84,14 @@ class PaneMission {
       .setPosition(116, 49)
       .setSize(200, 24)
       .plugTo( this, "LogLocation");
-      
-     PaneView_GUI.addButton("Targets")
+
+    PaneView_GUI.addButton("Targets")
       .setValue(0)
       .setPosition(116, 76)
       .setSize(200, 24)
       .plugTo( this, "TargetsLocation");
-      
-     PaneView_GUI.addButton("Waypoints")
+
+    PaneView_GUI.addButton("Waypoints")
       .setValue(0)
       .setPosition(116, 102)
       .setSize(200, 24)
@@ -148,19 +148,19 @@ class PaneMission {
     }
   }//end start mission
 
- //-------------------
+  //-------------------
   void LogLocation() {
     println("Set Log Location");
     selectFolder("Select a folder to process:", "log_folderSelected");
   }//endLog Location
 
- //-------------------
+  //-------------------
   void TargetsLocation() {
     println("Set Log Location");
     selectFolder("Select a folder to process:", "targets_folderSelected");
   }//endLog Location
 
- //-------------------
+  //-------------------
   void WaypointsLocation() {
     println("Set Log Location");
     selectFolder("Select a folder to process:", "waypoints_folderSelected");
@@ -177,9 +177,9 @@ class PaneMission {
     // automatically receives results from controller input
     println("bar clicked, item-value:", n);
   }//end bar
-  
-  
-  
+
+
+
   //---------------------
   void clock() {
     //create clock
@@ -198,27 +198,28 @@ class PaneMission {
       elapsedTime = millis()-missionStart;
       int total_seconds = elapsedTime/1000;
       int seconds = total_seconds;
-      println("total Seconds: " +total_seconds);
-      
+
       int hours = round(total_seconds/3600);
       int temp_hours = total_seconds%3600;
 
-      
+
       int minutes = round(temp_hours/60);
       int temp_min = temp_hours%60;
-      println("Mission Min: " +temp_min);
-      
-      if(total_seconds>=60){seconds = total_seconds-(minutes*60);}
-      else{seconds = total_seconds;}
 
-       elapsedTime_Formatted = nf(hours, 2)+":"+nf(minutes, 2)+":"+nf(seconds, 2);}
+      if (total_seconds>=60) {
+        seconds = total_seconds-(minutes*60);
+      } else {
+        seconds = total_seconds;
+      }
+
+      elapsedTime_Formatted = nf(hours, 2)+":"+nf(minutes, 2)+":"+nf(seconds, 2);
+    }
 
 
     text("DATE: "+date, 525+5, 25);
     text("CURRENT TIME: "+time, 530+5, 45);
-    text("MISSION START: " + missionStarted_Formatted,530+5, 65);
+    text("MISSION START: " + missionStarted_Formatted, 530+5, 65);
     text("ELAPSED TIME: "+elapsedTime_Formatted, 530+5, 85);
     text("MISSION END:  "+missionEnd, 530+5, 105);
-
   }//end clock
 }//End class
