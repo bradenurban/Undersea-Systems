@@ -126,7 +126,6 @@ class PaneView {
     text("FPS: "+round(frameRate), pane_x+pane_W-25, pane_y+pane_H-10);
 
 
-
     temp_heading = int(temp_heading+1*random(-1.5, 1.5));
     temp_pitch = temp_pitch+1*random(-0.5, 0.5);
     temp_roll = temp_roll+1*random(-0.5, 0.5);
