@@ -41,12 +41,18 @@ class PaneStatus {
     rect(pane_x, pane_y, pane_x+pane_W, pane_y+pane_H);
     
     //Label
+    fill(0, 45, 90);
+    stroke(0);
+    strokeWeight(0.5);
+    rect(pane_x,pane_y,200,20);
     textFont(createFont("Yu Gothic UI Bold", 12));
-    fill(textColor);
-    textSize(24);
-    textAlign(LEFT, CENTER);
-    text("FWD CAM", pane_x+5, pane_y+6);
+    fill(255);
+    textSize(18);
+    textAlign(CENTER, CENTER);
+    text("FWD CAM", pane_x+100, pane_y+6);
     
+    fill(50);
+    rect(pane_x,pane_y+20,200,pane_H-20);
     doughnut_gauge(pane_x+55, 85, 5, 25, 0, 20, "V", "VOLTS");
     
     
@@ -95,7 +101,8 @@ class PaneStatus {
   }//end gauge
   
   
- void doughnut_gauge(int x_loc, int y_loc, float value, float value_max, float value_min, float value_red, String Units, String Label) {
-  
+ void Linear_gauge(int x_loc, int y_loc, float value, float value_max, float value_min, float value_red, String Units, String Label) {
+   
+ }
   
 }//end class
