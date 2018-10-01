@@ -47,7 +47,6 @@ class ArtificalHorrizon {
 
     switch(mode) {
     case 0: // artificial horrizon
-      println("AH on");
       //stroke(#000000);
       //strokeWeight(1);
       //strokeJoin(MITER);
