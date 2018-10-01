@@ -39,23 +39,22 @@ class PaneStatus {
   void initialSetup() {
     fill(50);
     rect(pane_x, pane_y, pane_x+pane_W, pane_y+pane_H);
-    
+
     //Label
     fill(0, 45, 90);
     stroke(0);
     strokeWeight(0.5);
-    rect(pane_x,pane_y,200,20);
+    rect(pane_x, pane_y, 200, 20);
     textFont(createFont("Yu Gothic UI Bold", 12));
     fill(255);
     textSize(18);
     textAlign(CENTER, CENTER);
     text("FWD CAM", pane_x+100, pane_y+6);
-    
+
     fill(50);
-    rect(pane_x,pane_y+20,200,pane_H-20);
+    rect(pane_x, pane_y+20, 200, pane_H-20);
     doughnut_gauge(pane_x+55, 85, 5, 25, 0, 20, "V", "VOLTS");
-    
-    
+    linear_gauge(pane_x+115, 85, 2, 25, 0, 20, "DOP", "SERIAL");
   }//end initial setup
 
 
@@ -99,10 +98,37 @@ class PaneStatus {
     textAlign(LEFT, CENTER);
     text(round(value), x_loc+10, y_loc-5);
   }//end gauge
-  
-  
- void Linear_gauge(int x_loc, int y_loc, float value, float value_max, float value_min, float value_red, String Units, String Label) {
-   
- }
-  
+
+
+  void linear_gauge(int x_loc, int y_loc, float value, float value_max, float value_min, float value_red, String Units, String Label) {
+
+    int w = 15;
+    int h = 50;
+    float h_red = map(value_max-value_red, value_min, value_max, 0, h);
+    float y_value = map(value_max-value, value_min, value_max, 0, h);
+
+    stroke(0);
+    strokeWeight(1);
+    fill(0, 255, 0);
+    rect(x_loc-(w/2), y_loc-(h/2), w, h);
+    fill(255, 0, 0);
+    rect(x_loc-(w/2), y_loc-(h/2), w, h_red);
+
+    stroke(255);
+    strokeWeight(3);
+    line(x_loc-(w/2)-2, y_value+y_loc-(h/2), x_loc+(w/2)+2, y_value+y_loc-(h/2));
+    
+    textFont(createFont("Yu Gothic UI Bold", 12));
+    fill(textColor);
+
+    //Units text
+    textSize(14);
+    textAlign(LEFT, CENTER);
+    text(Units, x_loc, y_loc+h+5);
+    
+    
+    
+    
+    
+  }//end linear guage
 }//end class
