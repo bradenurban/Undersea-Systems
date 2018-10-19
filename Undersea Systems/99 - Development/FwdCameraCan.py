@@ -105,37 +105,22 @@ while error == 0:
 
         
     elif mode == "CamStart": #Start the Camera Service
-        #---------------------
         print("Starting Camera")
         FC_log.record("Camera","State","Starting")
-        #--------------------
-        
-
-        
-        #---------------------------
+        FC_camera.camStart(W, H, FrameRate, Port)
+        FC_log.record("Camera","State","Started")
         print("Camera Started")
 
         #---------------------------
     elif mode == "camEnd":
-        #---------------------
-        log = open(title,"a")
-        print("Ending Camera Service")
-        log.write(str(datetime.datetime.now().time()),";Camera;State;Ending Service")
-        #---------------------
-        try:
-            subprocess.call("sudo pkill uv4l", shell=True)
+        print("Starting Camera")
+        FC_log.record("Camera","State","Ending")
+        FC_camera.camEnd()
+        FC_log.record("Camera","State","Ended")
+        print("Camera Started")
 
-        except:
-            print("Ending Camera Service Failed")
-            log.write(str(datetime.datetime.now().time()),";Camera;State;Ending Service Failed")
-        #-------------------
-        print("Ending Camera")
-        log.write(str(datetime.datetime.now().time()),";Camera;State;Service Ended")
-        state["Cam"] = "NotStarted"
-        log.close()
-        #-------------------
+        
     elif mode == "Heartbeat":  
-        #---------------------
         if  time.time()-prev_heartbeat >= 3:
             log = open(title,"a")
             print("Heartbeat")
@@ -148,23 +133,25 @@ while error == 0:
     
     #Mode Changes----------------------------
     if state["config"] == "NotLoaded":
-        log = open(title,"a")   
         prev_mode = str(mode);
         mode = "LoadConfig"
         log.write(str(datetime.datetime.now().time())+";Mode;Update;From "+ prev_mode+";To "+mode+"\n")
-        log.close
+   
+   
     elif state["log"] == "NotStarted":
         log = open(title,"a")   
         prev_mode = str(mode);
         mode = "CreateLog" 
         log.write(str(datetime.datetime.now().time())+";Mode;Update;From "+ prev_mode+";To "+mode+"\n")
         log.close
+    
     elif state["mqtt"] == "NotStarted":
         log = open(title,"a")   
         prev_mode = str(mode);
         mode = "StartMQTT"
         log.write(str(datetime.datetime.now().time())+";Mode;Update;From "+ prev_mode+";To "+mode+"\n")
         log.close
+    
     elif mode != "Heartbeat":
         log = open(title,"a")   
         prev_mode = str(mode);
