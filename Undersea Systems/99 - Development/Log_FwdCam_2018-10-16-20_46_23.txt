@@ -1,0 +1,12 @@
+20:46:23.548523;Log;Started
+20:46:23.548523;State;Update;From NotStarted;To Started
+20:46:23.548523;Mode;Update;From CreateLog;To LoadConfig
+20:46:23.564128;Mode;Update;From LoadConfig;To StartMQTT
+20:46:23.564128;MQTT;State;Connecting to broker
+20:46:23.564128;MQTT;State;Broker Connected
+20:46:23.564128;MQTT;Publish;Publishing Topics
+20:46:23.564128;MQTT;Publish;Topics Published
+20:46:23.564128;MQTT;Subscribe;Subscribing To Topics
+20:46:23.564128;MQTT;Subscribe;Subscribed to: USS/TS/#
+20:46:23.564128;MQTT;Subscribe;Topics subscribed
+20:46:26.467184;MQTT;Publish;USS/SS/FwdCam/HeartBeat,HeartBeat

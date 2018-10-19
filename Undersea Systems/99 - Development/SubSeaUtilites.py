@@ -7,6 +7,8 @@ import subprocess
 import paho.mqtt.client as mqtt #import the client1
 import time
 
+global mode
+
 def test():
     print("helloworld")    
        
@@ -15,6 +17,12 @@ def test():
 def loadConfig(temp_filepath):
     with open(temp_filepath, 'r') as file:
         parameters = file.read().splitlines()
+        
+        
+        
+        
+        
+        
         return parameters
 
 
@@ -34,45 +42,45 @@ def camStart(W,H,FrameRate,Port):
 def camEnd():
     subprocess.call("sudo pkill uv4l", shell=True)
     
-    
-    
-def mosquittoStart(brokerAddress):
-    broker_address="test.mosquitto.org/"
-    print("creating new instance")
-    client = mqtt.Client("P1") #create new instance
-    client.on_message=mosquittoMessage #attach function to callback
-    print("connecting to broker")
-    client.connect("broker.hivemq.com", 1883, 60) #connect to broker
-    print("broker connected")
-    time.sleep(5)
-    client.loop_start() #start the loop
-    print("Subscribing to topic","GPS_Status")
-    print("Publishing message to topic","GPS_Status")
-    
-    client.publish("GPS/GPS_Status","MQTT Start")
-    
-def mosquittoConnect(client, userdata, flags, rc):   
-    print("Connected with result code "+str(rc))
 
-    # Subscribing in on_connect() means that if we lose the connection and
-    # reconnect then subscriptions will be renewed.
-    client.subscribe("GPS/#")
-    
-def mosquittoPublish(topic,msg):
-    client.publish("GPS/GPS_Status","MQTT Start")
-    
-def mosquittoMessage(client, userdata, msg):
-    print(msg.topic+" "+str(msg.payload))
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+class SSMQTTClass:
+    def __init__(self, clientid=None):
+        self.mqttc = mqtt.Client(clientid)
+        self.mqttc.on_message = self.mqtt_on_message
+        self.mqttc.on_connect = self.mqtt_on_connect
+        self.mqttc.on_publish = self.mqtt_on_publish
+        self.mqttc.on_subscribe = self.mqtt_on_subscribe
+        
+    def mqtt_on_connect(self, mqttc, obj, flags, rc):
+        print("rc: "+str(rc))
+
+
+    def mqtt_on_message(self, mqttc, obj, msg):
+        global mode
+        mode = "test"
+        print(msg.topic+" "+str(msg.qos)+" "+str(msg.payload.decode("utf-8")))
+        print("mode: " + mode)
+        
+        
+    def mqtt_on_publish(self, mqttc, obj, mid):
+        print("mid: "+str(mid))
+        
+    def mqtt_on_subscribe(self, mqttc, obj, mid, granted_qos):
+        print("Subscribed: "+str(mid)+" "+str(granted_qos))
+        
+    def mqtt_on_log(self, mqttc, obj, level, string):
+        print(string)
+
+    def run(self):
+        self.mqttc.connect("192.168.1.82", 1883, 60)
+        
+        self.mqttc.publish("USS/SS/FwdCam/Command","Start Command Thread")
+        self.mqttc.publish("USS/SS/FwdCam/HeartBeat","Start HeartBeat Thread")
+        
+        self.mqttc.subscribe("USS/TS/#",1)
+        self.mqttc.subscribe("USS/SS/CtrlCan/#",1)
+        self.mqttc.loop_start()
+        
     
     
     

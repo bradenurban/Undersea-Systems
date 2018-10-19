@@ -1,0 +1,64 @@
+20:59:01.925873;Log;Started
+20:59:01.925873;State;Update;From NotStarted;To Started
+20:59:01.925873;Mode;Update;From CreateLog;To LoadConfig
+20:59:01.925873;Mode;Update;From LoadConfig;To StartMQTT
+20:59:01.941498;MQTT;State;Connecting to broker
+20:59:01.941498;MQTT;State;Broker Connected
+20:59:01.941498;MQTT;Publish;Publishing Topics
+20:59:01.941498;MQTT;Publish;Topics Published
+20:59:01.941498;MQTT;Subscribe;Subscribing To Topics
+20:59:01.941498;MQTT;Subscribe;Subscribed to: USS/TS/#
+20:59:01.941498;MQTT;Subscribe;Topics subscribed
+20:59:01.941498;MQTT;Publish;USS/SS/FwdCam/HeartBeat,HeartBeat
+20:59:04.949375;MQTT;Publish;USS/SS/FwdCam/HeartBeat,HeartBeat
+20:59:07.965627;MQTT;Publish;USS/SS/FwdCam/HeartBeat,HeartBeat
+20:59:10.984595;MQTT;Publish;USS/SS/FwdCam/HeartBeat,HeartBeat
+20:59:13.997336;MQTT;Publish;USS/SS/FwdCam/HeartBeat,HeartBeat
+20:59:17.003200;MQTT;Publish;USS/SS/FwdCam/HeartBeat,HeartBeat
+20:59:20.012611;MQTT;Publish;USS/SS/FwdCam/HeartBeat,HeartBeat
+20:59:23.030727;MQTT;Publish;USS/SS/FwdCam/HeartBeat,HeartBeat
+20:59:26.031545;MQTT;Publish;USS/SS/FwdCam/HeartBeat,HeartBeat
+20:59:29.050602;MQTT;Publish;USS/SS/FwdCam/HeartBeat,HeartBeat
+20:59:32.052429;MQTT;Publish;USS/SS/FwdCam/HeartBeat,HeartBeat
+20:59:35.071000;MQTT;Publish;USS/SS/FwdCam/HeartBeat,HeartBeat
+20:59:38.085327;MQTT;Publish;USS/SS/FwdCam/HeartBeat,HeartBeat
+20:59:41.091764;MQTT;Publish;USS/SS/FwdCam/HeartBeat,HeartBeat
+20:59:44.117730;MQTT;Publish;USS/SS/FwdCam/HeartBeat,HeartBeat
+20:59:47.124393;MQTT;Publish;USS/SS/FwdCam/HeartBeat,HeartBeat
+20:59:50.142444;MQTT;Publish;USS/SS/FwdCam/HeartBeat,HeartBeat
+20:59:53.156406;MQTT;Publish;USS/SS/FwdCam/HeartBeat,HeartBeat
+20:59:56.162928;MQTT;Publish;USS/SS/FwdCam/HeartBeat,HeartBeat
+20:59:59.177423;MQTT;Publish;USS/SS/FwdCam/HeartBeat,HeartBeat
+21:00:02.185256;MQTT;Publish;USS/SS/FwdCam/HeartBeat,HeartBeat
+21:00:05.198812;MQTT;Publish;USS/SS/FwdCam/HeartBeat,HeartBeat
+21:00:08.212958;MQTT;Publish;USS/SS/FwdCam/HeartBeat,HeartBeat
+21:00:11.219314;MQTT;Publish;USS/SS/FwdCam/HeartBeat,HeartBeat
+21:00:14.233382;MQTT;Publish;USS/SS/FwdCam/HeartBeat,HeartBeat
+21:00:17.234209;MQTT;Publish;USS/SS/FwdCam/HeartBeat,HeartBeat
+21:00:20.253283;MQTT;Publish;USS/SS/FwdCam/HeartBeat,HeartBeat
+21:00:23.262666;MQTT;Publish;USS/SS/FwdCam/HeartBeat,HeartBeat
+21:00:26.273817;MQTT;Publish;USS/SS/FwdCam/HeartBeat,HeartBeat
+21:00:29.287862;MQTT;Publish;USS/SS/FwdCam/HeartBeat,HeartBeat
+21:00:33.115097;MQTT;Recieve;USS/TS/VC/FwdCamControl;b'LoadConfig'
+21:00:33.115097;Mode;Update;From Heartbeat;To LoadConfig
+21:00:32.288692;MQTT;Publish;USS/SS/FwdCam/HeartBeat,HeartBeat
+21:00:37.673260;MQTT;Recieve;USS/TS/VC/FwdCamControl;b'LoadConfig'
+21:00:37.673260;Mode;Update;From Heartbeat;To LoadConfig
+21:00:35.310686;MQTT;Publish;USS/SS/FwdCam/HeartBeat,HeartBeat
+21:00:37.673260;Mode;Update;From LoadConfig;To LoadConfig
+21:00:38.712452;MQTT;Recieve;USS/TS/VC/FwdCamControl;b'LoadConfig'
+21:00:38.712452;Mode;Update;From Heartbeat;To LoadConfig
+21:00:38.321872;MQTT;Publish;USS/SS/FwdCam/HeartBeat,HeartBeat
+21:00:39.778434;MQTT;Recieve;USS/TS/VC/FwdCamControl;b'LoadConfig'
+21:00:39.778434;Mode;Update;From Heartbeat;To LoadConfig
+21:00:38.713774;Mode;Update;From LoadConfig;To LoadConfig
+21:00:39.778434;Mode;Update;From LoadConfig;To LoadConfig
+21:00:42.253676;MQTT;Recieve;USS/TS/VC/FwdCamControl;b'LoadConfig'
+21:00:42.253676;Mode;Update;From Heartbeat;To LoadConfig
+21:00:41.329820;MQTT;Publish;USS/SS/FwdCam/HeartBeat,HeartBeat
+21:00:42.253676;Mode;Update;From LoadConfig;To LoadConfig
+21:00:45.893265;MQTT;Recieve;USS/TS/VC/FwdCamControl;b'LoadConfig'
+21:00:45.893265;Mode;Update;From Heartbeat;To LoadConfig
+21:00:44.344162;MQTT;Publish;USS/SS/FwdCam/HeartBeat,HeartBeat
+21:00:45.893265;Mode;Update;From LoadConfig;To LoadConfig
+21:00:47.351676;MQTT;Publish;USS/SS/FwdCam/HeartBeat,HeartBeat
