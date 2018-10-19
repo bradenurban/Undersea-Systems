@@ -1,13 +1,13 @@
 
 
 import SubSeaUtilites
-import paho.mqtt.client as mqtt #import the client1
 import time
 import datetime
 import subprocess
 
 #Declare Variables
-global mode
+global newMode
+newMode = "hello"
 mode = "CreateLog"
 
 state = {"config":  "NotLoaded",
@@ -26,10 +26,6 @@ Port = 9000
 prev_heartbeat = 0
 pulse = 3
 #--------------------------------------------------------
-
-
-def mosquittoConnect(client, userdata, flags, rc):   
-    print("Connected with result code "+str(rc))
 
     
 def mosquittoMessage(client, userdata, msg):
@@ -57,18 +53,19 @@ def mosquittoMessage(client, userdata, msg):
     log.close
     #------------------------
 
-
+print(state)
 FC_mqttc = SubSeaUtilites.SSMQTTClass()
-FC_mqttc.run()
+FC_camera = SubSeaUtilites.SSCamera()
+FC_log = SubSeaUtilites.SSLog("TestLog")
 
+state["log"] = FC_log.State
+print(state)
+time.sleep(10)
 
 while error == 0:
+    print("Mode outside class: " + FC_mqttc.newMode)
     time.sleep(3)
-    print("Mode outside class: " + mode)
- 
-    
-    
-    
+   
 #--------------------------------------------------------
 
 while error == 0:
@@ -84,89 +81,40 @@ while error == 0:
         
         
     elif mode == "CreateLog":
-        #-----------------------
-        print("starting log")
-        #----------------------
-        title = ("Log_FwdCam_" + str(datetime.datetime.now().date()) + "-" +    \
-                 str(datetime.datetime.now().hour)+"_"+                         \
-                 str(datetime.datetime.now().minute)+"_"+                       \
-                 str(datetime.datetime.now().second)+".txt")
-        logStartTime = datetime.datetime.now()
-        log = open(title,"w+")
-        log.write(str(datetime.datetime.now().time())+";Log;Started\n")
+
+        print("Starting Log...")
+        FC_log = SubSeaUtilites.SSLog("TestLog")
+        state["log"] = FC_log.State
         print("Log Started")
         
-        #-----------------------------
-        prev_state = str(state["log"])
-        state["log"] = "Started"
-        log.write(str(datetime.datetime.now().time())+";State;Update;From "+ prev_state+";To "+state["log"]+"\n")
-        log.close()
-        #----------------------------
-   
-    
     elif mode =="StartMQTT" :
+        
         #connect to mosquitto client-----------------------------
         print("Starting MQTT...")
-        log = open(title,"a")
-        log.write(str(datetime.datetime.now().time())+";MQTT;State;Connecting to broker\n")
+        FC_log.record("MQTT","State","Starting...")
         #---------------------
-        try:
-            broker_address="192.168.1.82" #will need to replace this with variable from command file
-            client = mqtt.Client("P1") #create new instance
-            client.on_message = mosquittoMessage #attach function to callback
-            client.connect("192.168.1.82", 1883, 60) #connect to broker
-            client.loop_start() #start the loop
-            #Log Entry
-            print("MQTT Started...")
-            log.write(str(datetime.datetime.now().time())+";MQTT;State;Broker Connected\n")
-            #Start the Topics
-            print("Publishing to Topics...")
-            log.write(str(datetime.datetime.now().time())+";MQTT;Publish;Publishing Topics\n")
-            client.publish("USS/SS/FwdCam/Command","Start Command Thread")
-            client.publish("USS/SS/FwdCam/HeartBeat","Start HeartBeat Thread")
-            log.write(str(datetime.datetime.now().time())+";MQTT;Publish;Topics Published\n")
-            print("Published.")
-            #Subscribe to Topics
-            print("Suscribing to Topics...")
-            log.write(str(datetime.datetime.now().time())+";MQTT;Subscribe;Subscribing To Topics\n")
-            client.subscribe("USS/TS/#",1)
-            client.subscribe("USS/SS/CtrlCan/#",1)
-            log.write(str(datetime.datetime.now().time())+";MQTT;Subscribe;Subscribed to: USS/TS/#\n")
-            print("Suscribed...")
-            state["mqtt"] = "Started"
-        except:
-            print("Could not connect MQTT")
-            log.write(str(datetime.datetime.now().time())+";MQTT;State;Broker Connection Failed\n")
+       
+        FC_mqttc = SubSeaUtilites.SSMQTTClass()
+        FC_mqttc.run()
+        state["mqtt"] = FC_mqttc.state
+        
         #-----------------------      
-        log.write(str(datetime.datetime.now().time())+";MQTT;Subscribe;Topics subscribed\n")
-        log.close()
+        FC_log.record("MQTT","State","Started")
+        print("MQTT Started")
         #-----------------------
-    
+
+        
     elif mode == "CamStart": #Start the Camera Service
         #---------------------
-        log = open(title,"a")
         print("Starting Camera")
-        log.write(str(datetime.datetime.now().time()),";Camera;State;Starting Service")
+        FC_log.record("Camera","State","Starting")
         #--------------------
-        try:
-            str_Front = "sudo uv4l -nopreview --auto-video_nr --driver raspicam --encoding mjpeg"
-            str_W = "--width " + str(W)
-            str_H = "--height " + str(H)
-            str_FrameRate = "--framerate " + str(FrameRate)
-            str_Middle1 = "--server-option '"
-            str_Port = "--port=9090'" + str(Port)
-            str_End = "--server-option '--max-queued-connections=30' --server-option '--max-streams=25' --server-option '--max-threads=29'"
-            #
-            shell_command = str_Front + str_W + str_H + str_FrameRate + str_Middle1 + str_Port + str_End
-            subprocess.call(shell_command, shell=True)
-        except:#Exception if service fails
-            print("Camera Start Failed")
-            log.write(str(datetime.datetime.now().time()),";Camera;State;Service Failed")
+        
+
+        
         #---------------------------
         print("Camera Started")
-        log.write(str(datetime.datetime.now().time()),";Camera;State;Service Started")
-        state["Cam"] = "Started"
-        log.close()
+
         #---------------------------
     elif mode == "camEnd":
         #---------------------
