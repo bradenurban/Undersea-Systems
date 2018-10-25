@@ -2,11 +2,9 @@
 
 import SubSeaUtilites
 import time
-import datetime
-import subprocess
 
 #Declare Variables
-global newMode
+
 newMode = "hello"
 mode = "CreateLog"
 
@@ -27,49 +25,14 @@ prev_heartbeat = 0
 pulse = 3
 #--------------------------------------------------------
 
-    
-def mosquittoMessage(client, userdata, msg):
-    global mode
-    global title
-    global state
-    topic = str(msg.topic)
-    message = str(msg.payload)
-    prev_mode = str(mode)
-    #------------------------
-    log = open(title,"a")
-    print("MQTT Message From: " + topic + ": " + message)
-    log.write(str(datetime.datetime.now().time())+";MQTT;Recieve;"+topic+";"+message+"\n")
-    #-----------------------
-    if topic == "USS/TS/VC/FwdCamControl":
-        if message == "b'StartCam'":
-            mode = "CamStart"
-        elif message == "b'EndCam'":
-            mode = "CamEnd"
-        elif message == "b'LoadConfig'":
-            mode = "LoadConfig"   
-            state["config"] = "NotLoaded"    
-    #------------------------
-    log.write(str(datetime.datetime.now().time())+";Mode;Update;From "+ prev_mode+";To "+mode+"\n")
-    log.close
-    #------------------------
 
 print(state)
-FC_mqttc = SubSeaUtilites.SSMQTTClass()
-FC_camera = SubSeaUtilites.SSCamera()
-FC_log = SubSeaUtilites.SSLog("TestLog")
 
-state["log"] = FC_log.State
-print(state)
-time.sleep(10)
 
-while error == 0:
-    print("Mode outside class: " + FC_mqttc.newMode)
-    time.sleep(3)
    
 #--------------------------------------------------------
 
 while error == 0:
-  
     #Setup and load on the config files---------------------
     if mode == "LoadConfig" : 
         
@@ -82,82 +45,94 @@ while error == 0:
         
     elif mode == "CreateLog":
 
+        #--------------------------------------
         print("Starting Log...")
-        FC_log = SubSeaUtilites.SSLog("TestLog")
+        #--------------------------------------
+        
+        FC_log = SubSeaUtilites.SSLog()
+        logTitle = FC_log.creatLog("TestLog")
         state["log"] = FC_log.State
+        
+        #--------------------------------------
         print("Log Started")
+        #--------------------------------------
         
     elif mode =="StartMQTT" :
         
-        #connect to mosquitto client-----------------------------
+        #-----------------------------
         print("Starting MQTT...")
-        FC_log.record("MQTT","State","Starting...")
         #---------------------
        
-        FC_mqttc = SubSeaUtilites.SSMQTTClass()
+        FC_mqttc = SubSeaUtilites.SSMQTTClass(logTitle)
         FC_mqttc.run()
         state["mqtt"] = FC_mqttc.state
         
         #-----------------------      
-        FC_log.record("MQTT","State","Started")
         print("MQTT Started")
         #-----------------------
 
         
     elif mode == "CamStart": #Start the Camera Service
+        
+        #-----------------------
         print("Starting Camera")
-        FC_log.record("Camera","State","Starting")
+        #-----------------------
+        
+        FC_camera = SubSeaUtilites.SSCamera(logTitle)
         FC_camera.camStart(W, H, FrameRate, Port)
-        FC_log.record("Camera","State","Started")
+ 
+        #-----------------------
         print("Camera Started")
+        #-----------------------
+        
 
-        #---------------------------
     elif mode == "camEnd":
+        
+        #-----------------------
         print("Starting Camera")
-        FC_log.record("Camera","State","Ending")
+        #-----------------------
+        
         FC_camera.camEnd()
-        FC_log.record("Camera","State","Ended")
+        
+        #-----------------------
         print("Camera Started")
-
+        #-----------------------
         
     elif mode == "Heartbeat":  
+        
         if  time.time()-prev_heartbeat >= 3:
-            log = open(title,"a")
+            
+            #-----------------------
             print("Heartbeat")
             #---------------------
-            client.publish("USS/SS/FwdCam/HeartBeat","HeartBeat")
-            log.write(str(datetime.datetime.now().time())+";MQTT;Publish;USS/SS/FwdCam/HeartBeat,HeartBeat\n")
-            log.close
+           
+            FC_mqttc.sendMessage("USS/SS/FwdCam/HeartBeat","HeartBeat")
             prev_heartbeat = time.time()
    
     
     #Mode Changes----------------------------
+    
     if state["config"] == "NotLoaded":
         prev_mode = str(mode);
         mode = "LoadConfig"
-        log.write(str(datetime.datetime.now().time())+";Mode;Update;From "+ prev_mode+";To "+mode+"\n")
+           
    
-   
-    elif state["log"] == "NotStarted":
-        log = open(title,"a")   
-        prev_mode = str(mode);
+    elif state["log"] == "NotStarted": 
         mode = "CreateLog" 
-        log.write(str(datetime.datetime.now().time())+";Mode;Update;From "+ prev_mode+";To "+mode+"\n")
-        log.close
-    
+
     elif state["mqtt"] == "NotStarted":
-        log = open(title,"a")   
-        prev_mode = str(mode);
         mode = "StartMQTT"
-        log.write(str(datetime.datetime.now().time())+";Mode;Update;From "+ prev_mode+";To "+mode+"\n")
-        log.close
     
     elif mode != "Heartbeat":
-        log = open(title,"a")   
-        prev_mode = str(mode);
         mode = "Heartbeat" 
-        log.write(str(datetime.datetime.now().time())+";Mode;Update;From "+ prev_mode+";To "+mode+"\n")
-        log.close
+        
+    
+    try:   
+        if  FC_mqttc.newModeFlag == 1:
+            mode =  FC_mqttc.newMode
+            FC_mqttc.newModeFlag = 0
+    except:
+        pass   
     #-----------------------------------
 
       
