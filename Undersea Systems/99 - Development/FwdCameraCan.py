@@ -6,7 +6,7 @@ import time
 #Declare Variables
 
 newMode = "hello"
-mode = "CreateLog"
+mode = "StartUp"
 
 state = {"config":  "NotLoaded",
          "mqtt":    "NotStarted",
@@ -34,7 +34,28 @@ print(state)
 
 while error == 0:
     #Setup and load on the config files---------------------
-    if mode == "LoadConfig" : 
+    if mode == "StartUp" :
+        #--------------------------------------       
+        print("Loading Config..")
+        fwdCam = SubSeaUtilites.loadConfig(r"C:\Users\Braden\Documents\GitHub\Undersea-Systems\Undersea Systems\99 - Development\Config Files\Config_FwdCamera.txt")
+        state["config"] = "Loaded"
+        print("Config Loaded")
+        #--------------------------------------
+        print("Starting Log...")
+        FC_log = SubSeaUtilites.SSLog()
+        logTitle = FC_log.creatLog("TestLog")
+        state["log"] = FC_log.State
+        print("Log Started")
+        #--------------------------------------
+        print("Starting MQTT...")
+        FC_mqttc = SubSeaUtilites.SSMQTTClass(logTitle)
+        FC_mqttc.run()
+        state["mqtt"] = FC_mqttc.state     
+        print("MQTT Started")
+        #-----------------------
+    
+    
+    elif mode == "LoadConfig" : 
         
         print("Loading Config..")
         fwdCam = SubSeaUtilites.loadConfig(r"C:\Users\Braden\Documents\GitHub\Undersea-Systems\Undersea Systems\99 - Development\Config Files\Config_FwdCamera.txt")

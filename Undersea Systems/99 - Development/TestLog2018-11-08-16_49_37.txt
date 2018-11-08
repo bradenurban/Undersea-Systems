@@ -1,0 +1,9 @@
+16:49:37.520038;Log;Started
+16:49:37.538358;MQTT;State;Starting...
+16:49:38.759480;MQTT;State;Error, failed to start
+16:49:38.765209;MQTT;Send;USS/SS/FwdCam/HeartBeat;HeartBeat
+16:49:41.791673;MQTT;Send;USS/SS/FwdCam/HeartBeat;HeartBeat
+16:49:44.798947;MQTT;Send;USS/SS/FwdCam/HeartBeat;HeartBeat
+16:49:47.803220;MQTT;Send;USS/SS/FwdCam/HeartBeat;HeartBeat
+16:49:50.808495;MQTT;Send;USS/SS/FwdCam/HeartBeat;HeartBeat
+16:49:53.813769;MQTT;Send;USS/SS/FwdCam/HeartBeat;HeartBeat
