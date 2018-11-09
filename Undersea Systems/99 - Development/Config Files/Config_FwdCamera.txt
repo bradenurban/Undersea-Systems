@@ -1,4 +1,0 @@
-Name: Fwd Camera Can
-IP: XX.XX.XX.XXXX
-Functions: Camera,5000 : Pan,5001 : Serial,5002
-

@@ -15,10 +15,22 @@ def test():
 
         
 def loadConfig(temp_filepath):
-    with open(temp_filepath, 'r') as file:
-        parameters = file.read().splitlines()
+    parameters = {}
+    try:
+        with open(temp_filepath, 'r') as file:
+            temp_parameters = file.read().splitlines()
+            print(temp_parameters)
+            for i in temp_parameters:
+                if i.find("#")==-1:
+                    keyTemp = i.split("=")[0]
+                    valueTemp = i.split("=")[1]
+                    parameters[keyTemp] = valueTemp
+
+    except:
+        print("Failed to load Config")
         
-        return parameters
+    print(parameters)  
+    return parameters
 
 
 class SSCamera:  
@@ -79,18 +91,23 @@ class SSLog:
         log.write(str(datetime.datetime.now().time()) + ";" + Topic + ";" + SubTopic + ";" + Message + "\n")
         log.close()
         
+    def clearLog(self, exceptName, title):
+        #TO DO, create a function to clear all but the current log
+        pass
+        
 class SSMQTTClass:    
-    def __init__(self, logTitle):
-        self.mqttc = mqtt.Client(None)
+    def __init__(self, logTitle, IPaddress, Name):
+        self.mqttc = mqtt.Client(client_id=Name)
         self.mqttc.on_message = self.mqtt_on_message
         self.mqttc.on_connect = self.mqtt_on_connect
         self.mqttc.on_publish = self.mqtt_on_publish
         self.mqttc.on_subscribe = self.mqtt_on_subscribe
         self.newMode = ""
         self.newModeFlag = 0
-        self.state = "notStarted"
+        self.state = "NotStarted"
         self.ss_Log = SSLog()
         self.logTitle = logTitle
+        self.IPaddress = IPaddress
         
     def mqtt_on_connect(self, mqttc, obj, flags, rc):
         pass
@@ -131,20 +148,19 @@ class SSMQTTClass:
     def run(self):
         self.ss_Log.record(self.logTitle, "MQTT","State","Starting...")
         try:
-            self.mqttc.connect("192.168.1.82", 1883, 60)
+            self.mqttc.connect(self.IPaddress, 1883, 60)
             self.state="Started"
             self.ss_Log.record(self.logTitle, "MQTT","State","Started")
+            self.mqttc.subscribe("USS/TS/#",1)
+            self.mqttc.subscribe("USS/SS/CtrlCan/#",1)
+            self.mqttc.loop_start()
  
         except:
-            self.state="notStarted"
+            self.state="NotStarted"
             self.ss_Log.record(self.logTitle, "MQTT","State","Error, failed to start")
+            print("MQTT Failed")
         
-        
-        self.mqttc.subscribe("USS/TS/#",1)
-        self.mqttc.subscribe("USS/SS/CtrlCan/#",1)
-        
-        self.mqttc.loop_start()
-        self.state = "Started"
+
     
     
     
