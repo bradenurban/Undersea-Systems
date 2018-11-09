@@ -18,6 +18,7 @@ Camera_Functions=CamStart, CamEnd
 Camera_W=640
 Camera_H=480
 Camera_FrameRate=40
+Camera_Port=9000
 #---------------------------------
 #Serial
 Serial_baud=9600

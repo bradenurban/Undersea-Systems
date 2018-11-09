@@ -17,7 +17,7 @@ IPCapture fwdCam;
 
 //MQTT
 import mqtt.*;
-MQTTClient subseaClient;
+MQTTClient VC_Client;
 
 
 //For popup windows
@@ -62,8 +62,10 @@ void setup() {
   //Setup Console Pane();
   PaneConsole1.initialSetup();
 
-  //subseaClient = new MQTTClient(this);
-  //subseaClient.connect("mqtt://try:try@broker.shiftr.io", "processing");
+  VC_Client = new MQTTClient(this);
+  VC_Client.connect("mqtt://192.168.1.82:1883", "VC");
+  VC_Client.subscribe("USS/SS/#");
+  VC_Client.publish("USS/TS/VC/","Started");
 }
 
 void draw() {
@@ -74,7 +76,9 @@ void draw() {
 }
 
 
-
+void messageReceived(String topic, byte[] payload) {
+  println("new message: " + topic + " - " + new String(payload));
+}
 
 
 void log_folderSelected(File selection) {

@@ -142,13 +142,17 @@ class PaneView {
   //----------
   void CameraConnection() {
     if (flag == 0) {
+      VC_Client.publish("USS/TS/VC/FwdCamControl","CamStart");
+      delay(2);
       fwdCam.start(); 
       println("started camera");
       flag = 1;
       AH_Mode =1;
     } else {
+      VC_Client.publish("USS/TS/VC/FwdCamControl","CamEnd");
+      delay(2);
       fwdCam.stop(); 
-      println("started stopped"); 
+      println("Stopped Camera"); 
       flag = 0;
       AH_Mode = 0;
     }

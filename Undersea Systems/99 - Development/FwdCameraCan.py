@@ -84,7 +84,7 @@ while error == 0:
         #-----------------------
         print("Starting Camera")
         FC_camera = SubSeaUtilites.SSCamera(logTitle)
-        FC_camera.camStart(W, H, FrameRate, Port)
+        FC_camera.camStart(config["Camera_W"], config["Camera_H"], config["Camera_H"], config["Camera_Port"])
         print("Camera Started")
         #-----------------------
         
@@ -101,18 +101,18 @@ while error == 0:
         
         if  time.time()-prev_heartbeat >= int(config["Heartbeat_pulse"]):
         #---------------------
-            if state["mqtt"]=="Started":
+            if state["mqtt"]!="NotStarted":
+                print("Heatrbeat - MQTT")
                 FC_mqttc.sendMessage("USS/SS/FwdCam/HeartBeat","Pulse")
                 prev_heartbeat = time.time()
             else: 
                 print("Pulse")
                 FC_log.record(logTitle, "Heartbeat", "Heartbeat", "Pulse")
    
-        prev_heartbeat = time.time()
         
+        #print(prev_heartbeat)
     #Mode Changes----------------------------
     
-    print(state)
     
     if state["config"] == "NotLoaded":
         prev_mode = str(mode);

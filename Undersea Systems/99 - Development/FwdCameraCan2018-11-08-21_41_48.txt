@@ -1,4 +1,0 @@
-21:41:48.277429;Log;Started
-21:41:48.283425;MQTT;State;Starting...
-21:41:49.294210;MQTT;State;Error, failed to start
-21:41:49.299229;Heartbeat;Heartbeat;Pulse
