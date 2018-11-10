@@ -100,7 +100,7 @@ class PaneStatus {
   }//end gauge
 
 
-  void linear_gauge(int x_loc, int y_loc, float value, float value_max, float value_min, float value_red, String Units, String Label) {
+  void linear_gauge(int x_loc, int y_loc, String state ,float value, float value_max, float value_min, float value_red, String Units, String Label) {
 
     int w = 15;
     int h = 50;
@@ -113,10 +113,12 @@ class PaneStatus {
     rect(x_loc-(w/2), y_loc-(h/2), w, h);
     fill(255, 0, 0);
     rect(x_loc-(w/2), y_loc-(h/2), w, h_red);
-
-    stroke(255);
-    strokeWeight(3);
-    line(x_loc-(w/2)-2, y_value+y_loc-(h/2), x_loc+(w/2)+2, y_value+y_loc-(h/2));
+  
+    if(state == "Valid"){
+      stroke(255);
+      strokeWeight(3);
+      line(x_loc-(w/2)-2, y_value+y_loc-(h/2), x_loc+(w/2)+2, y_value+y_loc-(h/2));
+    }
     
     textFont(createFont("Yu Gothic UI Bold", 12));
     fill(textColor);
