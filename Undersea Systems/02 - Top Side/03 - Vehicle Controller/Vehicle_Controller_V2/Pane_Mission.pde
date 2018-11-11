@@ -42,9 +42,9 @@ class Pane_Mission {
     } // end initialUpdate
     
 
-  void update(){
+  StringDict update(StringDict Status){
     rect(pane_x, pane_y, pane_W, pane_H);
-    
+    return Status;
     
     
     

@@ -42,9 +42,9 @@ class Pane_Console {
     } // end initialUpdate
     
 
-  void update(){
-    rect(pane_x, pane_y, pane_W, pane_H);
-    
+  StringDict update(StringDict Status){
+    //rect(pane_x, pane_y, pane_W, pane_H);
+    return Status;
     
     
     

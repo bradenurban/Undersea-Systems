@@ -42,21 +42,23 @@ class Pane_View {
 
 
     //----------
-    void update() {  
+    StringDict update(StringDict Status) {  
+      
+      
       strokeWeight(1);
       rectMode(CORNER); 
       textAlign(CENTER, CENTER);
       textSize(14);
       //Display background
-      switch(flag) {
-      case 0 : //Camera is not connected
+      switch(Status.get("FwdCamState")) {
+      case "Off" : //Camera is not connected
         fill(100);
         stroke(0);
         strokeWeight(1);
         rectMode(CORNER); 
         rect(pane_x, pane_y, pane_W, pane_H);
         break;
-      case 1 : //Camera is connected
+      case "On" : //Camera is connected
         if (fwdCam.isAvailable()) {
           fwdCam.read(); 
           image(fwdCam, pane_x+1, pane_y+1, pane_W-2, pane_H-2);
@@ -70,7 +72,7 @@ class Pane_View {
       text("FPS: "+round(frameRate), pane_x+pane_W-25, pane_y+pane_H-10);
 
 
-
+    return Status;
     } //end update
 
 

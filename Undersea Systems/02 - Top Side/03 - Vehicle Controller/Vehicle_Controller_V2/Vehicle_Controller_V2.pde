@@ -6,6 +6,8 @@ int[] Pane_Mission_Size = {Pane_Waypoint_Size[0], (GUI_Size[1]-Pane_View_Size[1]
 int[] Pane_Statusbar_Size = {Pane_View_Size[0], (GUI_Size[1]-Pane_View_Size[1])/2 };
 int[] Pane_Console_Size = {Pane_View_Size[0], (GUI_Size[1]-Pane_View_Size[1])/2 };
 
+StringDict Status;
+
 //contributed Libraries
 
 //GUI classes
@@ -16,7 +18,6 @@ ControlP5 Pane_GUI;
 import ipcapture.*;
 IPCapture fwdCam;
 
-
 //MQTT
 import mqtt.*;
 MQTTClient VC_Client;
@@ -26,6 +27,8 @@ MQTTClient VC_Client;
 import static javax.swing.JOptionPane.*;
 // Docs for input dialog: https://docs.oracle.com/javase/8/docs/api/javax/swing/JOptionPane.html
 // https://docs.oracle.com/javase/tutorial/uiswing/components/dialog.html
+
+
 
 
 //declare classes
@@ -42,6 +45,13 @@ void setup() {
   surface.setResizable(true);
   background(50);
   smooth();
+
+
+  Pane_GUI = new ControlP5(this);
+
+  Status = new StringDict();
+  Status.set("FwdCamState","Off");
+
 
   //Setup Panse
   Pane_Console1.initialSetup((GUI_Size[0]-Pane_Console_Size[0]), 
@@ -61,16 +71,10 @@ void setup() {
     ((GUI_Size[1]-Pane_View_Size[1])/2), 
     Pane_View_Size[0], 
     Pane_View_Size[1]);
-  Pane_GUI = new ControlP5(this);
 
   Pane_Waypoint1.initialSetup(0, ((GUI_Size[1]-Pane_View_Size[1])/2), 
     Pane_Waypoint_Size[0], 
     Pane_Waypoint_Size[1]);
-
-
-
-
-
 
   //MQTT
   VC_Client = new MQTTClient(this);
@@ -83,11 +87,12 @@ void setup() {
 }
 
 void draw() {
-  Pane_Console1.update();
-  Pane_Mission1.update();
-  Pane_Statusbar1.update();
-  Pane_View1.update();
-  Pane_Waypoint1.update();
+  Status = Pane_Console1.update(Status);
+  Status = Pane_Mission1.update(Status);
+  Status = Pane_Statusbar1.update(Status);
+  Status = Pane_View1.update(Status);
+  Status = Pane_Waypoint1.update(Status);
+  println(Status);
 }
 
 
