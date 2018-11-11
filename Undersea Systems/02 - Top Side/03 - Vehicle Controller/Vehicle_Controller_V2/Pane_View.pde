@@ -59,11 +59,14 @@ class Pane_View {
         rect(pane_x, pane_y, pane_W, pane_H);
         break;
       case "On" : //Camera is connected
+          PImage test = fwdCam;
         if (fwdCam.isAvailable()) {
           fwdCam.read(); 
-          image(fwdCam, pane_x+1, pane_y+1, pane_W-2, pane_H-2);
-        } else
-          image(fwdCam, pane_x+1, pane_y+1, pane_W-2, pane_H-2);
+          test.resize(pane_W-1, pane_H-1);
+          image(test, pane_x+1, pane_y+1, pane_W-1, pane_H-1);
+        }else{
+          image(test, pane_x+1, pane_y+1, pane_W-1, pane_H-1);
+        }
         break;
       }  
 

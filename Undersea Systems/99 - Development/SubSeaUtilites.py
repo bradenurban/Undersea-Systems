@@ -4,7 +4,7 @@ Created on Oct 10, 2018
 @author: Braden
 '''
 import subprocess
-import paho.mqtt.client as mqtt #import the client1
+import paho.mqtt.client as mqtt
 import time
 import datetime
 
@@ -39,18 +39,19 @@ class SSCamera:
         self.ss_Log = SSLog()
         self.logTitle = logTitle
     
-    def camStart(self,W,H,FrameRate,Port):
+    def camStart(self,W,H,FrameRate,Port,Rotation):
         self.ss_Log.record(self.logTitle, "Camera","State","Starting...")
         
-        str_Front = "sudo uv4l -nopreview --auto-video_nr --driver raspicam --encoding mjpeg"
-        str_W = "--width " + str(W)
-        str_H = "--height " + str(H)
-        str_FrameRate = "--framerate " + str(FrameRate)
-        str_Middle1 = "--server-option '"
-        str_Port = "--port=9090'" + str(Port)
+        str_Front = "sudo uv4l -nopreview --auto-video_nr --driver raspicam --encoding mjpeg --quality 15"
+        str_W = " --width " + str(W)
+        str_H = " --height " + str(H)
+        str_FrameRate = " --framerate " + str(FrameRate)
+        str_Rotation = " --rotation " + str(Rotation)
+        str_Middle1 = " --server-option '"
+        str_Port = "--port=9090' "
         str_End = "--server-option '--max-queued-connections=30' --server-option '--max-streams=25' --server-option '--max-threads=29'"
         
-        shell_command = str_Front + str_W + str_H + str_FrameRate + str_Middle1 + str_Port + str_End
+        shell_command = str_Front + str_W + str_H + str_FrameRate + str_Rotation + str_Middle1 + str_Port + str_End
         
         try:
             subprocess.call(shell_command, shell=True)

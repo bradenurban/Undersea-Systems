@@ -1,5 +1,4 @@
-
-
+#! /usr/bin/python3
 import SubSeaUtilites
 import time
 import os
@@ -84,7 +83,7 @@ while error == 0:
         #-----------------------
         print("Starting Camera")
         FC_camera = SubSeaUtilites.SSCamera(logTitle)
-        FC_camera.camStart(config["Camera_W"], config["Camera_H"], config["Camera_H"], config["Camera_Port"])
+        FC_camera.camStart(config["Camera_W"], config["Camera_H"], config["Camera_FrameRate"], config["Camera_Port"], config["Camera_Rotation"])
         print("Camera Started")
         #-----------------------
         

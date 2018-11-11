@@ -139,7 +139,7 @@ class Pane_Statusbar {
       println("started camera"); 
       VC_Client.publish("USS/TS/VC/FwdCamControl", "CamStart");
       fwdCam.start(); 
-      Status.set("FwdCameraState", "On");
+      Status.set("FwdCamState", "On");
       println("started camera");
     }//end cameraConnection
 
@@ -147,7 +147,7 @@ class Pane_Statusbar {
       VC_Client.publish("USS/TS/VC/FwdCamControl", "CamEnd");
       delay(2);
       fwdCam.stop();
-      Status.set("FwdCameraState", "Off");
+      Status.set("FwdCamState", "Off");
       println("Ended camera");
     }//end cameraConnection
   }
