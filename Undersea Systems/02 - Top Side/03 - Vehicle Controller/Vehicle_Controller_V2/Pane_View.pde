@@ -10,14 +10,15 @@ class Pane_View {
   int end_y;
   int end_x;
 
-  int flag;
+  int Heading;
 
   color textColor = #0AE300;
+  color graphicColor = #E200E3;
+  color graphicColor2 = color(0, 255, 00, 75);
 
   Compass Compass1 = new Compass();
 
   Pane_View() {
-    flag = 0;
   }
   //Class Functions--------------------------------------- 
   void initialSetup(int temp_pane_x, int temp_pane_y, int temp_pane_W, int temp_pane_H) {
@@ -77,8 +78,8 @@ class Pane_View {
     fill(200); 
     text("FPS: "+round(frameRate), pane_x+pane_W-25, pane_y+pane_H-10);
 
-
-    Compass1.update(Status, 15);
+    Heading = int(Status.get("CurrentHeading"));
+    Compass1.update(Status, Heading);
 
     return Status;
   } //end update
@@ -127,22 +128,69 @@ class Pane_View {
       ellipseMode(CENTER);
       compBackground(Heading);
       Ticks(45, 15, Heading, CM_D);
-      
-      
-      
     }// end update
 
     void compBackground(float Heading) {
-      fill(200);
+
+      //Draw Background
       stroke(0);
       strokeWeight(1);
       ellipseMode(CENTER);
-      ellipse(CM_center_x, CM_center_y, CM_D+25, CM_D+25); 
-      fill(10);
+      rectMode(CORNER);
+      fill(50);
+
+      pushMatrix();
+      translate(CM_center_x, CM_center_y);
+      rotate(PI);
+      arc(0, 0, CM_D+25, CM_D+25, 0, PI, OPEN);
+      noStroke();
+      rect(-(CM_D+25)/2, 0, CM_D+25, -100);
+      pushMatrix();
+      rotate(PI);
+      stroke(0);
+      arc(0, 100, CM_D+25, CM_D+25, 0, PI, OPEN);
+      popMatrix();
+      line(-(CM_D+25)/2, 0, -(CM_D+25)/2, -100);
+      line(1+(CM_D+25)/2, 0, 1+(CM_D+25)/2, -100);
+      popMatrix();
+
+      fill(#252C4D);
       ellipse(CM_center_x, CM_center_y, CM_D, CM_D); 
 
+      //Current Heading
+      noFill();
+      rectMode(CENTER);
+      stroke(#00FF00);
+      rect(CM_center_x, CM_center_y+100, 60, 25);
+      textFont(createFont("Yu Gothic UI Bold", 12));
+      textSize(16);
+      textAlign(CENTER, CENTER);
+      fill(#00FF00);
+      text(str(Heading), CM_center_x, CM_center_y+95);
+      textSize(12);
+      text("MODE: "+Status.get("HeadingMode"), CM_center_x, CM_center_y+125);
+      text("TARGET: "+Status.get("Target"), CM_center_x, CM_center_y+140);
+
+      //Target
+      noFill();
+      rectMode(CENTER);
+      stroke(#FF0000);
+      rect(CM_center_x, CM_center_y+165, 40, 20);
+      textFont(createFont("Yu Gothic UI Bold", 12));
+      textSize(14);
+      textAlign(CENTER, CENTER);
+      fill(#FF0000);
+      if(Status.get("Target")=="NONE"){
+        text("000", CM_center_x, CM_center_y+160);}
+        else{text(Status.get("TargetHeading"), CM_center_x, CM_center_y+160);}
+
+
+
+      rectMode(CORNER);
+
       //North marker
-      fill(#FF0000); //red fill
+      fill(#00FF00); //red fill
+      stroke(0);
       int triSize = 7;
       triangle(CM_center_x, CM_center_y-CM_r+5, 
         CM_center_x+triSize, CM_center_y-CM_r-triSize-2, 
@@ -156,19 +204,19 @@ class Pane_View {
       int inner_MinorTick = (CM_D - 5)/2;
       int outer_MinorTick = (CM_D)/2; 
 
-      stroke(200);
-      strokeWeight(2);
       textFont(createFont("Yu Gothic UI Bold", 12));
       textSize(10);
       textAlign(CENTER, CENTER);
-      fill(200);
 
       pushMatrix();
       translate(CM_center_x, CM_center_y);
       rotate(-HALF_PI-radians(Heading));
+
       for (int i =0; i<360; i = i+1) {
         if (i % Majorspacing ==0) {
-          fill(200);
+          fill(graphicColor);
+          stroke(graphicColor);
+          strokeWeight(2);
           int x1 = int(inner_MajorTick *  cos(radians(i)));
           int y1 = int(inner_MajorTick *  sin(radians(i)));
           int x2 = int(outer_MajorTIck *  cos(radians(i)));
@@ -188,7 +236,7 @@ class Pane_View {
             int((inner_MajorTick-35)*sin(radians(i))));
           rotate(-PI/2);
           textSize(16);
-          fill(#FF0000);
+          fill(#00FF00);
           text("N", 0, 0);
           textSize(10);
           popMatrix();
@@ -199,7 +247,7 @@ class Pane_View {
             int((inner_MajorTick-35)*sin(radians(i))));
           rotate(3*-PI/2);
           textSize(12);
-          fill(200);
+          fill(graphicColor);
           text("S", 0, 0);
           textSize(10);
           popMatrix();
@@ -210,7 +258,7 @@ class Pane_View {
             int((inner_MajorTick-35)*sin(radians(i))));
           rotate(2*-PI/2);
           textSize(12);
-          fill(200);
+          fill(graphicColor);
           text("E", 0, 0);
           textSize(10);
           popMatrix();
@@ -221,30 +269,38 @@ class Pane_View {
             int((inner_MajorTick-35)*sin(radians(i))));
           rotate(4*-PI/2);
           textSize(12);
-          fill(200);
+          fill(graphicColor);
           text("W", 0, 0);
           textSize(10);
           popMatrix();
         }
-      
-      if (i % Minorspacing ==0) {
-        stroke(150);
-        strokeWeight(1);
-        int x1 = int(inner_MinorTick *  cos(radians(i)));
-        int y1 = int(inner_MinorTick *  sin(radians(i)));
-        int x2 = int(outer_MinorTick *  cos(radians(i)));
-        int y2 = int(outer_MinorTick *  sin(radians(i)));
-        line(x1, y1, x2, y2);
-      }//end if
-    }//end for
+
+        if (i % Minorspacing ==0) {
+          stroke(graphicColor);
+          strokeWeight(1);
+          int x1 = int(inner_MinorTick *  cos(radians(i)));
+          int y1 = int(inner_MinorTick *  sin(radians(i)));
+          int x2 = int(outer_MinorTick *  cos(radians(i)));
+          int y2 = int(outer_MinorTick *  sin(radians(i)));
+          line(x1, y1, x2, y2);
+        }//end if
+      }//end for
+
+      stroke(#00FF00);
+      strokeWeight(1.5);
+      line(-20, 0, 20, 0);
+
+      stroke(graphicColor);
+      strokeWeight(1);
+      line(0, -20, 0, 20);
+
+      popMatrix();
+      fill(100);
+      stroke(0);
+    }//end major ticks
+  }
 
 
-    popMatrix();
-    fill(100);
-  }//end major ticks
-}
 
-
-
-//----------
+  //----------
 }//end class

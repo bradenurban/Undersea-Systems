@@ -6,6 +6,8 @@ int[] Pane_Mission_Size = {Pane_Waypoint_Size[0], (GUI_Size[1]-Pane_View_Size[1]
 int[] Pane_Statusbar_Size = {Pane_View_Size[0], (GUI_Size[1]-Pane_View_Size[1])/2 };
 int[] Pane_Console_Size = {Pane_View_Size[0], (GUI_Size[1]-Pane_View_Size[1])/2 };
 
+int temp;
+
 StringDict Status;
 
 //contributed Libraries
@@ -51,6 +53,10 @@ void setup() {
 
   Status = new StringDict();
   Status.set("FwdCamState","Off");
+  Status.set("Target","TEST1");
+  Status.set("TargetHeading","150");  
+  Status.set("CurrentHeading","235");
+  Status.set("HeadingMode","MANUAL");
 
 
   //Setup Panse
@@ -87,6 +93,10 @@ void setup() {
 }
 
 void draw() {
+  println(Status.get("CurrentHeading"));
+  temp = CompassSim(int(Status.get("CurrentHeading")));
+  println(temp);
+  Status.set("CurrentHeading",str(temp));
   Status = Pane_Console1.update(Status);
   Status = Pane_Mission1.update(Status);
   Status = Pane_Statusbar1.update(Status);
@@ -123,3 +133,9 @@ void waypoints_folderSelected(File selection) {
     println("User selected " + selection.getAbsolutePath());
   }
 }// End Folder Selected
+
+
+int CompassSim(int adj){
+  adj = int(adj * random(.9999,1.001));
+  return adj;
+}
