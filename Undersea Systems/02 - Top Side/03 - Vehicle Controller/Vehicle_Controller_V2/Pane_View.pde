@@ -30,14 +30,13 @@ class Pane_View {
     center_y = pane_y+(pane_H/2);
     zero_y = pane_y+1;
     zero_x = pane_x+1;
-    end_y = temp_pane_y - 1;
-    end_x = temp_pane_x - 1;
+    end_y = temp_pane_y ;
+    end_x = temp_pane_x ;
 
 
     //Inital Fill
     fill(100);
     rect(pane_x, pane_y, pane_W, pane_H);
-    print("initial update");
 
     //widigt setup
     Compass1.initialSetup(pane_x+pane_W - 175, center_y - 100, 150, 150);
@@ -58,16 +57,16 @@ class Pane_View {
       stroke(0);
       strokeWeight(1);
       rectMode(CORNER); 
-      rect(pane_x, pane_y, pane_W, pane_H);
+      rect(pane_x+1, pane_y+1, pane_W, pane_H);
       break;
     case "On" : //Camera is connected
       PImage test = fwdCam;
       if (fwdCam.isAvailable()) {
         fwdCam.read(); 
-        test.resize(pane_W-1, pane_H-1);
-        image(test, pane_x+1, pane_y+1, pane_W-1, pane_H-1);
+        test.resize(pane_W, pane_H);
+        image(test, pane_x+1, pane_y+1, pane_W, pane_H);
       } else {
-        image(test, pane_x+1, pane_y+1, pane_W-1, pane_H-1);
+        image(test, pane_x+1, pane_y+1, pane_W, pane_H);
       }
       break;
     }  

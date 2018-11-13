@@ -1,4 +1,5 @@
 class Pane_Statusbar {
+  
   int pane_x;
   int pane_y;
   int pane_W;
@@ -9,7 +10,7 @@ class Pane_Statusbar {
   int zero_x;
   int end_y;
   int end_x;
-  int flag;
+
   color textColor = #0AE300;
   color background = #323232;
   color accent = #002D5A;
@@ -19,9 +20,8 @@ class Pane_Statusbar {
   ControlCan CtrlCan = new ControlCan();
   BatteryCan BatCan = new BatteryCan();
 
-
   Pane_Statusbar() {
-    flag = 0;
+
   }
   //Class Functions--------------------------------------- 
   void initialSetup(int temp_pane_x, int temp_pane_y, int temp_pane_W, int temp_pane_H) {
@@ -36,13 +36,12 @@ class Pane_Statusbar {
     end_y = temp_pane_y;
     end_x = temp_pane_x;
 
-
     //Camera Can Setup
     FwdCamera.initialSetup(zero_x, zero_y, pane_W/4, pane_H);
     CtrlCan.initialSetup(zero_x+pane_W/4, zero_y, pane_W/2, pane_H);
     BatCan.initialSetup(zero_x+pane_W/4+pane_W/2, zero_y, pane_W/4, pane_H);
+    
   } // end initialUpdate
-
 
   StringDict update(StringDict Status) {
     Status = FwdCamera.update(Status);
@@ -50,7 +49,6 @@ class Pane_Statusbar {
     BatCan.update();
     return Status;
   }
-
 
   class CameraCan {
     int CC_pane_x;
@@ -136,7 +134,6 @@ class Pane_Statusbar {
     }
 
     void CameraConnection() {
-      println("started camera"); 
       VC_Client.publish("USS/TS/VC/FwdCamControl", "CamStart");
       fwdCam.start(); 
       Status.set("FwdCamState", "On");

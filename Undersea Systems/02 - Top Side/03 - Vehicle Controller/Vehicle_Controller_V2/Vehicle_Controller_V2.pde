@@ -93,9 +93,9 @@ void setup() {
 }
 
 void draw() {
-  println(Status.get("CurrentHeading"));
+  
   temp = CompassSim(int(Status.get("CurrentHeading")));
-  println(temp);
+  
   Status.set("CurrentHeading",str(temp));
   Status = Pane_Console1.update(Status);
   Status = Pane_Mission1.update(Status);
