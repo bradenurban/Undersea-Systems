@@ -88,12 +88,12 @@ while error == 0:
         #-----------------------
         
 
-    elif mode == "camEnd":
+    elif mode == "CamEnd":
         
         #-----------------------
-        print("Starting Camera")
+        print("Ending Camera")
         FC_camera.camEnd()
-        print("Camera Started")
+        print("Camera Ended")
         #-----------------------
         
     elif mode == "Heartbeat":  

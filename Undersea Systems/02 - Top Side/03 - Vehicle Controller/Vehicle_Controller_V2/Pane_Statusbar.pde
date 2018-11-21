@@ -95,7 +95,7 @@ class Pane_Statusbar {
 
       Pane_GUI.addButton("Power")
         .setValue(0)
-        .setPosition(CC_zero_x+60, CC_center_y-40)
+        .setPosition(CC_zero_x+57, CC_center_y-40)
         .setSize(80, 80)
         .setImages(loadImage("Power_White.png"), loadImage("Power_Blue.png"), loadImage("Power_Green.png"))
         .plugTo( this, "CameraPower")
@@ -103,13 +103,30 @@ class Pane_Statusbar {
 
       Pane_GUI.addButton("ScreenShot")
         .setValue(0)
-        .setPosition(CC_zero_x+60, CC_center_y+12)
+        .setPosition(CC_zero_x+57, CC_center_y+12)
         .setSize(80, 80)
         .setImages(loadImage("Power_White.png"), loadImage("Power_Blue.png"), loadImage("Power_Green.png"))
         .plugTo( this, "Screenshot")
         .updateSize();
-    } // end initialUpdate
-
+        
+      Pane_GUI.addButton("Query")
+        .setValue(0)
+        .setPosition(CC_zero_x+109, CC_center_y-40)
+        .setSize(80, 80)
+        .setImages(loadImage("Power_White.png"), loadImage("Power_Blue.png"), loadImage("Power_Green.png"))
+        .plugTo( this, "Screenshot")
+        .updateSize();
+        
+      Pane_GUI.addButton("Record")
+        .setValue(0)
+        .setPosition(CC_zero_x+109, CC_center_y+12)
+        .setSize(80, 80)
+        .setImages(loadImage("Power_White.png"), loadImage("Power_Blue.png"), loadImage("Power_Green.png"))
+        .plugTo( this, "Screenshot")
+        .updateSize();
+    
+  
+} // end initialUpdate
 
     StringDict update(StringDict Status) {
       fill(background);

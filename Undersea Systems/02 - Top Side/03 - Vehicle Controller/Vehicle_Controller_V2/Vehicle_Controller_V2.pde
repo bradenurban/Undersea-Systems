@@ -86,7 +86,7 @@ void setup() {
   VC_Client = new MQTTClient(this);
   VC_Client.connect("mqtt://192.168.1.74:1883", "VC");
   VC_Client.subscribe("USS/SS/#");
-  VC_Client.publish("USS/TS/VC/", "Started");
+  VC_Client.publish("USS/TS/VC", "Started");
   
   //Camera
   fwdCam = new IPCapture(this, "http://169.254.51.218:9090/stream/video.mjpeg", "", "");
