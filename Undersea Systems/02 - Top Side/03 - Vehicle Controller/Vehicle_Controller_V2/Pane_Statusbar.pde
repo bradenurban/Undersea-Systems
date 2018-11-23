@@ -20,9 +20,8 @@ class Pane_Statusbar {
   ControlCan CtrlCan = new ControlCan();
   BatteryCan BatCan = new BatteryCan();
 
-  Pane_Statusbar() {
-
-  }
+  Pane_Statusbar() {}
+  
   //Class Functions--------------------------------------- 
   void initialSetup(int temp_pane_x, int temp_pane_y, int temp_pane_W, int temp_pane_H) {
     pane_x= temp_pane_x;
@@ -48,7 +47,7 @@ class Pane_Statusbar {
     CtrlCan.update();  
     BatCan.update();
     return Status;
-  }
+  }//end string dist
 
   class CameraCan {
     int CC_pane_x;
@@ -63,7 +62,7 @@ class Pane_Statusbar {
     int CC_end_x;
 
     CameraCan() {
-      ;
+      
     }
     void initialSetup(int temp_pane_x, int temp_pane_y, int temp_pane_W, int temp_pane_H) {
       CC_pane_x= temp_pane_x;
@@ -77,7 +76,6 @@ class Pane_Statusbar {
       CC_end_y = temp_pane_y;
       CC_end_x = temp_pane_x;
 
-<<<<<<< HEAD
       //Pane_GUI.addButton("CameraConnection")
       //  .setValue(0)
       //  .setPosition(CC_zero_x+110, CC_zero_y+75)
@@ -109,65 +107,21 @@ class Pane_Statusbar {
       //  .setImages(loadImage("Power_White.png"), loadImage("Power_Blue.png"), loadImage("Power_Green.png"))
       //  .plugTo( this, "Screenshot")
       //  .updateSize();
-    } // end initialUpdate
+     // end initialUpdate
 
-=======
-      Pane_GUI.addButton("CameraConnection")
-        .setValue(0)
-        .setPosition(CC_zero_x+5, CC_center_y-40)
-        .setSize(80, 80)
-        .setImages(loadImage("Camera_white.png"), loadImage("Camera_Blue.png"), loadImage("Camera_Green.png"))
-        .plugTo( this, "CameraConnection")
-        .updateSize();
-
-      Pane_GUI.addButton("CameraExit")
-        .setValue(0)
-        .setPosition(CC_zero_x+5, CC_center_y+12)
-        .setSize(80, 80)
-        .setImages(loadImage("Camera_exit_white.png"), loadImage("Camera_exit_blue.png"), loadImage("Camera_exit_Green.png"))
-        .plugTo( this, "CameraExit")
-        .updateSize();       
-
-      Pane_GUI.addButton("Power")
-        .setValue(0)
-        .setPosition(CC_zero_x+57, CC_center_y-40)
-        .setSize(80, 80)
-        .setImages(loadImage("Power_White.png"), loadImage("Power_Blue.png"), loadImage("Power_Green.png"))
-        .plugTo( this, "CameraPower")
-        .updateSize();
-
-      Pane_GUI.addButton("ScreenShot")
-        .setValue(0)
-        .setPosition(CC_zero_x+57, CC_center_y+12)
-        .setSize(80, 80)
-        .setImages(loadImage("Power_White.png"), loadImage("Power_Blue.png"), loadImage("Power_Green.png"))
-        .plugTo( this, "Screenshot")
-        .updateSize();
-        
-      Pane_GUI.addButton("Query")
-        .setValue(0)
-        .setPosition(CC_zero_x+109, CC_center_y-40)
-        .setSize(80, 80)
-        .setImages(loadImage("Power_White.png"), loadImage("Power_Blue.png"), loadImage("Power_Green.png"))
-        .plugTo( this, "Screenshot")
-        .updateSize();
-        
-      Pane_GUI.addButton("Record")
-        .setValue(0)
-        .setPosition(CC_zero_x+109, CC_center_y+12)
-        .setSize(80, 80)
-        .setImages(loadImage("Power_White.png"), loadImage("Power_Blue.png"), loadImage("Power_Green.png"))
-        .plugTo( this, "Screenshot")
-        .updateSize();
-    
   
 } // end initialUpdate
->>>>>>> 1b82527130828d8b98c3a95364030eaa524d92ed
 
     StringDict update(StringDict Status) {
-      fill(background);
+      fill(0);
       rect(CC_zero_x, CC_zero_y+20, CC_pane_W, CC_pane_H-20);
-
+      
+      pushStyle();
+      noFill();
+      stroke(255);
+      rect(CC_zero_x, CC_zero_y+20, CC_pane_W, CC_pane_H-20);
+      popStyle();
+      
       fill(accent);
       rect(CC_zero_x, CC_zero_y, CC_pane_W, 20);
 
@@ -191,14 +145,25 @@ class Pane_Statusbar {
       textSize(12);
       textAlign(CORNER, CENTER);
       fill(#00FF00);
+      noFill();
       
-      text("MQTT STATE: " + Status.get("FC_State_MQTT"), CC_zero_x+1, CC_zero_y+27);
       
-      text("LOG STATE: " + Status.get("FC_State_LOG"), CC_zero_x+1, CC_zero_y+45);
       
-      text("CAMERA: " + Status.get("FC_State_CAMERA"), CC_zero_x+1, CC_zero_y+63);
+      text("MQTT STATE:", CC_zero_x+1, CC_zero_y+27);
+      text(""+Status.get("FC_State_MQTT"), CC_zero_x+83,CC_zero_y+27);
+      rect(CC_zero_x+80,CC_zero_y+23,65,15);
       
-      text("MODE: " + Status.get("FC_Mode"), CC_zero_x+1, CC_zero_y+81);
+      text("LOG STATE:" , CC_zero_x+1, CC_zero_y+45);
+      text(""+Status.get("FC_State_LOG"), CC_zero_x+83,CC_zero_y+45);
+      rect(CC_zero_x+80,CC_zero_y+41,65,15);
+      
+      text("CAMERA:", CC_zero_x+1, CC_zero_y+63);
+      text(""+Status.get("FC_State_CAMERA"), CC_zero_x+83,CC_zero_y+63);
+      rect(CC_zero_x+80,CC_zero_y+59,65,15);
+      
+      text("MODE: ", CC_zero_x+1, CC_zero_y+81);
+      text(""+Status.get("FC_Mode"), CC_zero_x+83,CC_zero_y+81);
+      rect(CC_zero_x+80,CC_zero_y+77,65,15);
       
       popStyle();
       return Status;
@@ -233,7 +198,6 @@ class Pane_Statusbar {
     int CT_end_x;  
 
     ControlCan() {
-      ;
     }
     void initialSetup(int temp_pane_x, int temp_pane_y, int temp_pane_W, int temp_pane_H) {
       CT_pane_x= temp_pane_x;
@@ -277,9 +241,8 @@ class Pane_Statusbar {
     int CB_end_y;
     int CB_end_x;
 
-    BatteryCan() {
-      ;
-    }
+    BatteryCan() {}
+    
     void initialSetup(int temp_pane_x, int temp_pane_y, int temp_pane_W, int temp_pane_H) {
       CB_pane_x= temp_pane_x;
       CB_pane_y= temp_pane_y;
@@ -361,19 +324,16 @@ class Pane_Statusbar {
       strokeWeight(0);
       if (value == "Good") {
         fill(0, 255, 0);
-        ellipse(x_loc, y_loc, D-1, D-1);
-      } else if (value == "Caution") {
+        ellipse(x_loc, y_loc, D-1, D-1);}
+       else if (value == "Caution") {
         fill(255, 255, 0);
-        ellipse(x_loc, y_loc, D-1, D-1);
-      } else {
+        ellipse(x_loc, y_loc, D-1, D-1);}
+       else {
         fill(255, 0, 0);
-        ellipse(x_loc, y_loc, D-1, D-1);
-      }
-    } else {
-      fill(100, 100, 100);
-      ellipse(x_loc, y_loc, D-1, D-1);
-    }
+        ellipse(x_loc, y_loc, D-1, D-1);} 
 
+    }
+    
     //Units text
     fill(textColor);
     textSize(12);
@@ -384,4 +344,5 @@ class Pane_Statusbar {
     stroke(0);
     strokeWeight(1);
   }//end dot gauge
-}
+
+}//end class
