@@ -64,9 +64,8 @@ class SSCamera:
             
     def camEnd(self):
         self.ss_Log.record(self.logTitle,"Camera","State","Ending...")
-        
         try:
-            subprocess.call("pkill uv4l", shell=True)
+            subprocess.call("sudo pkill uv4l", shell=True)
             self.ss_Log.record(self.logTitle,"Camera","State","Ended")
         except:
             self.ss_Log.record(self.logTitle,"Camera","State","Error, failed to start")

@@ -137,7 +137,8 @@ class Pane_Console {
 
     StringDict update(StringDict Status) {
       fill(accent);
-      noStroke();
+      stroke(0);
+      strokeWeight(1);
       rect(VC_zero_x, VC_zero_y, VC_pane_W, 14);
 
       fill(button_text);
@@ -146,7 +147,10 @@ class Pane_Console {
       textAlign(CENTER, CENTER);
       text("VC CONSOLE", VC_center_x, VC_zero_y+5);
 
+      noFill();      
+      stroke(0);
       strokeWeight(1);
+      rect(VC_zero_x,VC_zero_y,VC_pane_W,VC_pane_H);
       return Status;
     }//end update
   }//END VC CLASS
@@ -194,7 +198,7 @@ class Pane_Console {
       textAlign(LEFT, CENTER);
 
       mqtt_history = Pane_GUI.addTextarea("mqtt_history")
-        .setPosition(MP_zero_x+1, MP_zero_y+82)
+        .setPosition(MP_zero_x, MP_zero_y+82)
         .setSize(MP_pane_W, MP_pane_H-82-1)
         .setFont(createFont("arial", 12))
         .setLineHeight(10)
@@ -202,15 +206,15 @@ class Pane_Console {
         .setColorBackground(color(0));
 
       mqtt_input = Pane_GUI.addTextfield("MQTT_TOPIC")
-        .setPosition(MP_zero_x+55, MP_zero_y+15)
-        .setSize(MP_pane_W-55-1, 15)
+        .setPosition(MP_zero_x+55, MP_zero_y+16)
+        .setSize(MP_pane_W-55-2, 15)
         .setFont(ConsoleFont)
         .setLabel("")
         ;
 
       mqtt_input = Pane_GUI.addTextfield("MQTT_MSG")
-        .setPosition(MP_zero_x+55, MP_zero_y+31)
-        .setSize(MP_pane_W-55-1, 15)
+        .setPosition(MP_zero_x+55, MP_zero_y+32)
+        .setSize(MP_pane_W-55-2, 15)
         .setFont(ConsoleFont)
         .setLabel("")
         ;
@@ -218,7 +222,7 @@ class Pane_Console {
       Pane_GUI.addButton("SEND")
         .setValue(0)
         .setPosition(MP_zero_x+1, MP_zero_y+50)
-        .setSize(MP_pane_W, 25)
+        .setSize(MP_pane_W-1, 25)
         .plugTo( this, "MQTT_Send");
         
     }//end INITIAL SETUP
@@ -233,9 +237,10 @@ class Pane_Console {
 
     StringDict update(StringDict Status) {
       fill(accent);
-      noStroke();
+      stroke(0);
+      strokeWeight(1);
       rectMode(CORNER);
-      rect(MP_zero_x, MP_zero_y, MP_pane_W, 14);
+      rect(MP_zero_x, MP_zero_y, MP_pane_W, 15);
 
       fill(button_text);
       textFont(createFont("Yu Gothic UI Bold", 12));
@@ -245,7 +250,7 @@ class Pane_Console {
 
       fill(accent);
       rectMode(CORNER);
-      rect(MP_zero_x+1, MP_zero_y+15, 50, 15);
+      rect(MP_zero_x, MP_zero_y+15, 50, 15);
       textSize(10);
       fill(button_text);
       textAlign(CORNER, CENTER);
@@ -253,12 +258,18 @@ class Pane_Console {
 
       fill(accent);
       rectMode(CORNER);
-      rect(MP_zero_x+1, MP_zero_y+31, 50, 15);
+      rect(MP_zero_x, MP_zero_y+30, 50, 15);
       textSize(10);
       fill(button_text);
       textAlign(CORNER, CENTER);
       text("MESSAGE:", MP_zero_x+3, MP_zero_y+36);
-
+      
+      noFill();      
+      stroke(0);
+      strokeWeight(1);
+      rect(MP_zero_x,MP_zero_y,MP_pane_W,MP_pane_H);
+      
+      
       stroke(0);
       strokeWeight(1);
       return Status;

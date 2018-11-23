@@ -9,14 +9,15 @@ class Pane_View {
   int zero_x;
   int end_y;
   int end_x;
-
   int Heading;
+  int Attitude;
 
   color textColor = #0AE300;
   color graphicColor = #E200E3;
   color graphicColor2 = color(0, 255, 00, 75);
 
   Compass Compass1 = new Compass();
+  ArtificalHorrizon ArtificalHorrizon1 = new ArtificalHorrizon();
 
   Pane_View() {
   }
@@ -40,6 +41,8 @@ class Pane_View {
 
     //widigt setup
     Compass1.initialSetup(pane_x+pane_W - 175, center_y - 100, 150, 150);
+    ArtificalHorrizon1.initialSetup(zero_x,zero_y,pane_W,pane_H);
+    
   } // end initialUpdate
 
 
@@ -72,17 +75,20 @@ class Pane_View {
     }  
 
 
-    //widigits----------------------------------------------------------
+//widigits----------------------------------------------------------
     //Display framerate
     fill(200); 
     text("FPS: "+round(frameRate), pane_x+pane_W-25, pane_y+pane_H-10);
 
     Heading = int(Status.get("CurrentHeading"));
     Compass1.update(Status, Heading);
-
+    ArtificalHorrizon1.update(Status, Attitude);
+    
+    
     return Status;
   } //end update
 
+//---------------------------------------------------------
   class Compass {
     int CM_pane_x;
     int CM_pane_y;
@@ -168,6 +174,7 @@ class Pane_View {
       text(str(Heading), CM_center_x, CM_center_y+95);
       textSize(12);
       text("MODE: "+Status.get("HeadingMode"), CM_center_x, CM_center_y+125);
+      fill(#FF0000);
       text("TARGET: "+Status.get("Target"), CM_center_x, CM_center_y+140);
 
       //Target
@@ -298,6 +305,71 @@ class Pane_View {
       stroke(0);
     }//end major ticks
   }
+//---------------------------------------------------------
+//---------------------------------------------------------
+  class ArtificalHorrizon {
+    int AH_pane_x;
+    int AH_pane_y;
+    int AH_pane_W;
+    int AH_pane_H;
+    int AH_center_x;
+    int AH_center_y;
+    int AH_zero_y;
+    int AH_zero_x;
+    int AH_end_y;
+    int AH_end_x;
+    int AH_D;
+    float AH_r;
+    float AH_theta;
+
+    color textColor = #0AE300;
+
+    ArtificalHorrizon() {
+    }
+
+
+    void initialSetup(int temp_pane_x, int temp_pane_y, int temp_pane_W, int temp_pane_H) {
+      AH_pane_x = temp_pane_x;
+      AH_pane_y = temp_pane_y;
+      AH_pane_W = temp_pane_W;
+      AH_pane_H = temp_pane_H;
+      AH_center_x = AH_pane_x+(AH_pane_W/2);
+      AH_center_y = AH_pane_y+(AH_pane_H/2);
+      AH_zero_y = AH_pane_y+1;
+      AH_zero_x = AH_pane_x+1;
+      AH_end_y = temp_pane_y - 1;
+      AH_end_x = temp_pane_x - 1;
+      AH_D = AH_pane_W;
+      AH_r = AH_D/2;
+      AH_theta = 0;
+    }// end initial setup
+
+    void update(StringDict Status, float Heading) {
+      noFill();
+      stroke(graphicColor,75);
+      strokeWeight(1);
+      ellipseMode(CENTER);
+      ellipse(AH_center_x,AH_center_y,10,10);
+      ellipse(AH_center_x,AH_center_y,75,75);
+      line(AH_center_x+55, AH_center_y, AH_center_x+300,AH_center_y);
+      line(AH_center_x-55, AH_center_y, AH_center_x-300,AH_center_y);
+ 
+ 
+      stroke(0);
+      strokeWeight(1);
+    }// end update
+
+
+  }//END ARTIFICAL HORRIZON CLASS
+
+
+
+
+
+
+
+
+
 
 
 

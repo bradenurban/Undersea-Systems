@@ -77,6 +77,7 @@ class Pane_Statusbar {
       CC_end_y = temp_pane_y;
       CC_end_x = temp_pane_x;
 
+<<<<<<< HEAD
       //Pane_GUI.addButton("CameraConnection")
       //  .setValue(0)
       //  .setPosition(CC_zero_x+110, CC_zero_y+75)
@@ -110,6 +111,58 @@ class Pane_Statusbar {
       //  .updateSize();
     } // end initialUpdate
 
+=======
+      Pane_GUI.addButton("CameraConnection")
+        .setValue(0)
+        .setPosition(CC_zero_x+5, CC_center_y-40)
+        .setSize(80, 80)
+        .setImages(loadImage("Camera_white.png"), loadImage("Camera_Blue.png"), loadImage("Camera_Green.png"))
+        .plugTo( this, "CameraConnection")
+        .updateSize();
+
+      Pane_GUI.addButton("CameraExit")
+        .setValue(0)
+        .setPosition(CC_zero_x+5, CC_center_y+12)
+        .setSize(80, 80)
+        .setImages(loadImage("Camera_exit_white.png"), loadImage("Camera_exit_blue.png"), loadImage("Camera_exit_Green.png"))
+        .plugTo( this, "CameraExit")
+        .updateSize();       
+
+      Pane_GUI.addButton("Power")
+        .setValue(0)
+        .setPosition(CC_zero_x+57, CC_center_y-40)
+        .setSize(80, 80)
+        .setImages(loadImage("Power_White.png"), loadImage("Power_Blue.png"), loadImage("Power_Green.png"))
+        .plugTo( this, "CameraPower")
+        .updateSize();
+
+      Pane_GUI.addButton("ScreenShot")
+        .setValue(0)
+        .setPosition(CC_zero_x+57, CC_center_y+12)
+        .setSize(80, 80)
+        .setImages(loadImage("Power_White.png"), loadImage("Power_Blue.png"), loadImage("Power_Green.png"))
+        .plugTo( this, "Screenshot")
+        .updateSize();
+        
+      Pane_GUI.addButton("Query")
+        .setValue(0)
+        .setPosition(CC_zero_x+109, CC_center_y-40)
+        .setSize(80, 80)
+        .setImages(loadImage("Power_White.png"), loadImage("Power_Blue.png"), loadImage("Power_Green.png"))
+        .plugTo( this, "Screenshot")
+        .updateSize();
+        
+      Pane_GUI.addButton("Record")
+        .setValue(0)
+        .setPosition(CC_zero_x+109, CC_center_y+12)
+        .setSize(80, 80)
+        .setImages(loadImage("Power_White.png"), loadImage("Power_Blue.png"), loadImage("Power_Green.png"))
+        .plugTo( this, "Screenshot")
+        .updateSize();
+    
+  
+} // end initialUpdate
+>>>>>>> 1b82527130828d8b98c3a95364030eaa524d92ed
 
     StringDict update(StringDict Status) {
       fill(background);
