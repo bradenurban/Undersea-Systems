@@ -30,9 +30,6 @@ import static javax.swing.JOptionPane.*;
 // Docs for input dialog: https://docs.oracle.com/javase/8/docs/api/javax/swing/JOptionPane.html
 // https://docs.oracle.com/javase/tutorial/uiswing/components/dialog.html
 
-
-
-
 //declare classes
 Pane_Console Pane_Console1 = new Pane_Console();
 Pane_Mission Pane_Mission1 = new Pane_Mission();
@@ -43,9 +40,10 @@ Pane_Waypoint Pane_Waypoint1 = new Pane_Waypoint();
 
 void setup() {
   //Setup Canvas
-  size(displayWidth, displayWidth);
+  size(displayWidth, displayHeight);
+  println(displayWidth+":"+displayHeight);
   surface.setResizable(true);
-  background(50);
+  background(0);
   smooth();
 
 
@@ -53,10 +51,12 @@ void setup() {
 
   Status = new StringDict();
   Status.set("FwdCamState","Off");
+  Status.set("FwdCam_Health_TempCPU", "67");
   Status.set("Target","TEST1");
   Status.set("TargetHeading","150");  
   Status.set("CurrentHeading","235");
   Status.set("HeadingMode","MANUAL");
+  Status.set("FC_Usage_CPU","0");
 
 
   //Setup Panse
@@ -84,7 +84,7 @@ void setup() {
 
   //MQTT
   VC_Client = new MQTTClient(this);
-  VC_Client.connect("mqtt://192.168.1.74:1883", "VC");
+  VC_Client.connect("mqtt://192.168.0.10:1883", "VC");
   VC_Client.subscribe("USS/SS/#");
   VC_Client.publish("USS/TS/VC/", "Started");
   
@@ -106,7 +106,12 @@ void draw() {
 
 
 void messageReceived(String topic, byte[] payload) {
-  println("new message: " + topic + " - " + new String(payload));
+  println("Message: " + topic + " - " + new String(payload));
+  String message = new String(payload);
+  if (topic.equals("USS/SS/FwdCam/Health")){
+    Status = parseFC_Health(message,Status);
+  }
+
 }
 
 
@@ -133,6 +138,27 @@ void waypoints_folderSelected(File selection) {
     println("User selected " + selection.getAbsolutePath());
   }
 }// End Folder Selected
+
+
+
+//Parse Health messages to Status dictionary
+StringDict parseFC_Health(String message, StringDict Status){
+  String[] temp = split(message,',');
+   Status.set("FC_Temp_CPU",temp[0]);
+   Status.set("FC_Temp_Amb",temp[1]);
+   Status.set("FC_Usage_CPU",temp[2]);
+   Status.set("FC_State_MQTT",temp[3]);
+   Status.set("FC_State_LOG",temp[4]);
+   Status.set("FC_State_CAMERA",temp[5]);
+   Status.set("FC_Mode",temp[6]);
+   Status.set("FC_Leak",temp[7]);
+  return Status;
+  
+}//end parse function
+
+
+
+
 
 
 int CompassSim(int adj){

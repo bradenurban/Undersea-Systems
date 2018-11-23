@@ -7,6 +7,8 @@ import subprocess
 import paho.mqtt.client as mqtt
 import time
 import datetime
+import os
+import psutil
 
 
 def test():
@@ -68,6 +70,21 @@ class SSCamera:
             self.ss_Log.record(self.logTitle,"Camera","State","Ended")
         except:
             self.ss_Log.record(self.logTitle,"Camera","State","Error, failed to start")
+
+class health:
+    def __init__(self, logTitle):
+        self.ss_Log = SSLog()
+        self.logTitle = logTitle
+        
+    def cputTemp(self):   
+        res = os.popen('vcgencmd measure_temp').readline()
+        CPU_temp = res.replace("temp=","").replace("'C\n","")
+        self.ss_Log.record(self.logTitle,"Heartbeat","Health",CPU_temp)
+        return(CPU_temp)
+    
+    def cpuPercent(self):
+        percent = psutil.cpu_percent(interval=None)
+        return(percent)
 
 class SSLog:
     def __init__(self):

@@ -116,7 +116,7 @@ class Pane_Console {
       console_VC = Pane_GUI.addTextarea("txt")
         .setPosition(VC_zero_x, VC_zero_y+30)
         .setSize(VC_pane_W, VC_pane_H-30)
-        .setFont(createFont("arial", 10))
+        .setFont(createFont("arial", 12))
         .setLineHeight(10)
         .setColor(color(150))
         .setColorBackground(color(0));
@@ -196,7 +196,7 @@ class Pane_Console {
       mqtt_history = Pane_GUI.addTextarea("mqtt_history")
         .setPosition(MP_zero_x+1, MP_zero_y+82)
         .setSize(MP_pane_W, MP_pane_H-82-1)
-        .setFont(createFont("arial", 10))
+        .setFont(createFont("arial", 12))
         .setLineHeight(10)
         .setColor(color(150))
         .setColorBackground(color(0));

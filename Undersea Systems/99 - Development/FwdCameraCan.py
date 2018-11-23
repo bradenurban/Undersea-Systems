@@ -16,24 +16,19 @@ state = {"config":  "NotLoaded",
 
 error = 0
 
-#-------------------------------------------------------
 #----------Temp Variables-------------------------------
 prev_heartbeat = 0
 #--------------------------------------------------------
 
-   
-#--------------------------------------------------------
 
 while error == 0:
     #Setup and load on the config files---------------------
     if mode == "StartUp" :
         #--------------------------------------       
         print("Loading Config..")
-        
         config = SubSeaUtilites.loadConfig(configFilename)
         state["config"] = "Loaded"
         print("Config Loaded")
-    
         #--------------------------------------
         print("Starting Log...")
         FC_log = SubSeaUtilites.SSLog()
@@ -47,7 +42,9 @@ while error == 0:
         state["mqtt"] = FC_mqttc.state     
         print(state["mqtt"])
         #-----------------------
-    
+        print("Starting health functions...")
+        FC_health = SubSeaUtilites.health(logTitle)
+        #-----------------------
     
     elif mode == "LoadConfig" : 
         
@@ -102,8 +99,42 @@ while error == 0:
         #---------------------
             if state["mqtt"]!="NotStarted":
                 print("Heatrbeat - MQTT")
-                FC_mqttc.sendMessage("USS/SS/FwdCam/HeartBeat","Pulse")
+                #find cpu temp-------------------------
+                #health_cpuTemp = FC_health.cpuTemp()
+                health_cpuTemp = "65"
+                
+                #find ambient temp-------------------------
+                health_ambTemp = "27"
+                
+                #find cpu usage-------------------------
+                health_cpuUsuage = str(FC_health.cpuPercent())
+                
+                #Find MQTT STate-------------------------
+                health_MQTTState = state["mqtt"]
+                
+                #Find Log State--------------------------
+                health_LogState = state["log"]
+                
+                #Find Camera State--------------------------
+                health_CamState = state["Cam"]
+                
+                #Find Mode--------------------------
+                health_Mode = mode
+                
+                #find leak--------------------------
+                health_Leak = "no"
+                
+                #combine everything-------------------
+                health_message = health_cpuTemp + "," + health_ambTemp +","+ health_cpuUsuage + "," + health_MQTTState + "," +  health_LogState + "," + health_CamState  + "," + health_Mode  + "," + health_Leak
+                
+                #send MQTT-------------------------
+                FC_mqttc.sendMessage("USS/SS/FwdCam/Health",health_message)
                 prev_heartbeat = time.time()
+                
+                
+            
+            
+            
             else: 
                 print("Pulse")
                 FC_log.record(logTitle, "Heartbeat", "Heartbeat", "Pulse")

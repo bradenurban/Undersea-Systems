@@ -8,7 +8,7 @@ LogTitel=FwdCameraLog
 FunctionsList=Camera, MQTT, Serial, Heartbeat
 #---------------------------------
 #MQTT
-MQTT_IP=192.168.1.74
+MQTT_IP=192.168.0.10
 MQTT_Port=1883
 MQTT_ControllerPath1="USS/TS/#"
 MQTT_ControllerPath2="USS/SS/CtrlCan/#"

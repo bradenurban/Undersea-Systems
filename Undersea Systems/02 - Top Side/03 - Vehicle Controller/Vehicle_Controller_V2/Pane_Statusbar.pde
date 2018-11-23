@@ -77,37 +77,37 @@ class Pane_Statusbar {
       CC_end_y = temp_pane_y;
       CC_end_x = temp_pane_x;
 
-      Pane_GUI.addButton("CameraConnection")
-        .setValue(0)
-        .setPosition(CC_zero_x+5, CC_center_y-40)
-        .setSize(80, 80)
-        .setImages(loadImage("Camera_white.png"), loadImage("Camera_Blue.png"), loadImage("Camera_Green.png"))
-        .plugTo( this, "CameraConnection")
-        .updateSize();
+      //Pane_GUI.addButton("CameraConnection")
+      //  .setValue(0)
+      //  .setPosition(CC_zero_x+110, CC_zero_y+75)
+      //  .setSize(50,50)
+      //  .setImages(loadImage("Camera_white.png"), loadImage("Camera_Blue.png"), loadImage("Camera_Green.png"))
+      //  .plugTo( this, "CameraConnection")
+      //  .updateSize();
 
-      Pane_GUI.addButton("CameraExit")
-        .setValue(0)
-        .setPosition(CC_zero_x+5, CC_center_y+12)
-        .setSize(80, 80)
-        .setImages(loadImage("Camera_exit_white.png"), loadImage("Camera_exit_blue.png"), loadImage("Camera_exit_Green.png"))
-        .plugTo( this, "CameraExit")
-        .updateSize();       
+      //Pane_GUI.addButton("CameraExit")
+      //  .setValue(0)
+      //  .setPosition(CC_zero_x+60, CC_zero_y+75)
+      //  .setSize(50, 50)
+      //  .setImages(loadImage("Camera_exit_white.png"), loadImage("Camera_exit_blue.png"), loadImage("Camera_exit_Green.png"))
+      //  .plugTo( this, "CameraExit")
+      //  .updateSize();       
 
-      Pane_GUI.addButton("Power")
-        .setValue(0)
-        .setPosition(CC_zero_x+60, CC_center_y-40)
-        .setSize(80, 80)
-        .setImages(loadImage("Power_White.png"), loadImage("Power_Blue.png"), loadImage("Power_Green.png"))
-        .plugTo( this, "CameraPower")
-        .updateSize();
+      //Pane_GUI.addButton("Power")
+      //  .setValue(0)
+      //  .setPosition(CC_zero_x+5, CC_zero_y+75)
+      //  .setSize(50, 50)
+      //  .setImages(loadImage("Power_White.png"), loadImage("Power_Blue.png"), loadImage("Power_Green.png"))
+      //  .plugTo( this, "CameraPower")
+      //  .updateSize();
 
-      Pane_GUI.addButton("ScreenShot")
-        .setValue(0)
-        .setPosition(CC_zero_x+60, CC_center_y+12)
-        .setSize(80, 80)
-        .setImages(loadImage("Power_White.png"), loadImage("Power_Blue.png"), loadImage("Power_Green.png"))
-        .plugTo( this, "Screenshot")
-        .updateSize();
+      //Pane_GUI.addButton("ScreenShot")
+      //  .setValue(0)
+      //  .setPosition(CC_zero_x+60, CC_center_y+12)
+      //  .setSize(80, 80)
+      //  .setImages(loadImage("Power_White.png"), loadImage("Power_Blue.png"), loadImage("Power_Green.png"))
+      //  .plugTo( this, "Screenshot")
+      //  .updateSize();
     } // end initialUpdate
 
 
@@ -125,11 +125,29 @@ class Pane_Statusbar {
       text("FORWARD CAMERA CAN", CC_center_x, CC_zero_y+6);
 
       //Temperature Gauges
-      linear_gauge(CC_zero_x+250, CC_zero_y+75, "Valid", 100, 150, 0, 120, "Deg F", "CPU");
-      linear_gauge(CC_zero_x+210, CC_zero_y+75, "Invalid", 80, 150, 0, 120, "Deg F", "Amb");
+      linear_gauge(CC_zero_x+250, CC_zero_y+75, "Valid", 100, 150, 0, 120, "Deg F", "CPU T");
+      linear_gauge(CC_zero_x+210, CC_zero_y+75, "Invalid", 80, 150, 0, 120, "Deg F", "Amb T");
+      linear_gauge(CC_zero_x+170, CC_zero_y+75, "Valid", int(Status.get("FC_Usage_CPU")), 100, 0, 80, "%", "CPU %");
       dot_gauge(CC_zero_x+290, CC_center_y-10, "Valid", "Good", "Leak");
       dot_gauge(CC_zero_x+290, CC_center_y+40, "Valid", "Caution", "Comm's");
-
+      
+      pushStyle();
+      rectMode(CORNER);
+      stroke(#00FF00);
+      textFont(createFont("Yu Gothic UI Bold", 12));
+      textSize(12);
+      textAlign(CORNER, CENTER);
+      fill(#00FF00);
+      
+      text("MQTT STATE: " + Status.get("FC_State_MQTT"), CC_zero_x+1, CC_zero_y+27);
+      
+      text("LOG STATE: " + Status.get("FC_State_LOG"), CC_zero_x+1, CC_zero_y+45);
+      
+      text("CAMERA: " + Status.get("FC_State_CAMERA"), CC_zero_x+1, CC_zero_y+63);
+      
+      text("MODE: " + Status.get("FC_Mode"), CC_zero_x+1, CC_zero_y+81);
+      
+      popStyle();
       return Status;
     }
 
