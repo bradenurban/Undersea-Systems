@@ -21,7 +21,7 @@ class Pane_View {
 
   Pane_View() {
   }
-  //Class Functions--------------------------------------- 
+
   void initialSetup(int temp_pane_x, int temp_pane_y, int temp_pane_W, int temp_pane_H) {
     pane_x= temp_pane_x;
     pane_y= temp_pane_y;
@@ -47,7 +47,7 @@ class Pane_View {
 
 
   //----------
-  StringDict update(StringDict Status) {  
+  StringDict update(StringDict Status, IntDict Attitude) {  
 
     strokeWeight(1);
     rectMode(CORNER); 
@@ -80,7 +80,7 @@ class Pane_View {
     fill(200); 
     text("FPS: "+round(frameRate), pane_x+pane_W-25, pane_y+pane_H-10);
 
-    Heading = int(Status.get("CurrentHeading"));
+    Heading = int(Attitude.get("Heading"));
     Compass1.update(Status, Heading);
     ArtificalHorrizon1.update(Status, Attitude);
     
@@ -191,11 +191,9 @@ class Pane_View {
         else{text(Status.get("TargetHeading"), CM_center_x, CM_center_y+160);}
 
 
-
-      rectMode(CORNER);
-
       //North marker
       fill(#00FF00); //red fill
+      rectMode(CORNER);
       stroke(0);
       int triSize = 7;
       triangle(CM_center_x, CM_center_y-CM_r+5, 
@@ -344,7 +342,7 @@ class Pane_View {
       AH_theta = 0;
     }// end initial setup
 
-    void update(StringDict Status, float Heading) {
+    void update(StringDict Status, IntDict Attitude) {
       noFill();
       stroke(graphicColor,75);
       strokeWeight(1);

@@ -42,7 +42,7 @@ class Pane_Waypoint{
     } // end initialUpdate
     
 
-  StringDict update(StringDict Status){
+  StringDict update(StringDict Status, IntDict Attitude){
     rect(pane_x, pane_y, pane_W, pane_H);
     return Status;
     

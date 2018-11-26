@@ -10,28 +10,23 @@ int temp;
 
 StringDict Status;
 StringDict MQTT;
+IntDict Attitude;
 
 //contributed Libraries
-
-//GUI classes
-import controlP5.*;
+import controlP5.*;//GUI classes
 ControlP5 Pane_GUI;
 
-//Fwd Camera
-import ipcapture.*;
+import ipcapture.*;//Fwd Camera
 IPCapture fwdCam;
 
-//MQTT
-import mqtt.*;
+import mqtt.*;//MQTT
 MQTTClient VC_Client;
 
-
-//For popup windows
-import static javax.swing.JOptionPane.*;
+import static javax.swing.JOptionPane.*;//For popup windows
 // Docs for input dialog: https://docs.oracle.com/javase/8/docs/api/javax/swing/JOptionPane.html
 // https://docs.oracle.com/javase/tutorial/uiswing/components/dialog.html
 
-//declare classes
+//declare custom classes
 Pane_Console Pane_Console1 = new Pane_Console();
 Pane_Mission Pane_Mission1 = new Pane_Mission();
 Pane_Statusbar Pane_Statusbar1 = new Pane_Statusbar();
@@ -42,27 +37,39 @@ Pane_Waypoint Pane_Waypoint1 = new Pane_Waypoint();
 void setup() {
   //Setup Canvas
   size(displayWidth, displayHeight);
-  //println(displayWidth+":"+displayHeight);
   surface.setResizable(true);
   background(0);
   smooth();
-
-
+  
+  //create instance of gui items
   Pane_GUI = new ControlP5(this);
 
+  //initial population of Status Dictionary
   Status = new StringDict();
   Status.set("FwdCamState","Off");
   Status.set("FwdCam_Health_TempCPU", "67");
   Status.set("Target","TEST1");
   Status.set("TargetHeading","150");  
-  Status.set("CurrentHeading","235");
   Status.set("HeadingMode","MANUAL");
   Status.set("FC_Usage_CPU","0");
 
+  //initial population of MQTT string dictionary
   MQTT = new StringDict();
   MQTT.set("USS/SS/#","Initial");
 
-  //Setup Panse
+  //initial population of MQTT string dictionary
+  Attitude = new IntDict();
+  Attitude.set("Heading",10);
+  Attitude.set("Pitch",3);
+  Attitude.set("Roll",5);
+  Attitude.set("Heave",0);
+  Attitude.set("Sway",0);
+  Attitude.set("Surge",0);
+  Attitude.set("Depth",10);
+  
+
+
+  //Setup Panes
   Pane_Console1.initialSetup((GUI_Size[0]-Pane_Console_Size[0]), 
     ((GUI_Size[1]-Pane_View_Size[1])/2 + (Pane_View_Size[1])+1), 
     Pane_Console_Size[0], 
@@ -85,29 +92,35 @@ void setup() {
     Pane_Waypoint_Size[0], 
     Pane_Waypoint_Size[1]);
 
-  //MQTT
+  //MQTT parameters
   VC_Client = new MQTTClient(this);
   VC_Client.connect("mqtt://192.168.1.74:1883", "VC");
   VC_Client.subscribe("USS/SS/#");
   VC_Client.publish("USS/TS/VC", "Started");
   
-  //Camera
+  //Camera parameters, Forward Camera
   fwdCam = new IPCapture(this, "http://169.254.51.218:9090/stream/video.mjpeg", "", "");
 }
 
 void draw() {
   
-  temp = CompassSim(int(Status.get("CurrentHeading")));
+  //temp sims for development--------------------------
+  temp = CompassSim(int(Attitude.get("Heading")));
   
-  Status.set("CurrentHeading",str(temp));
-  Status = Pane_Console1.update(Status);
+  //string dictionaries for all classes--------------------------
+  Attitude.set("Heading",temp);
+  
+  //update panes--------------------------
+  Status = Pane_Console1.update(Status, MQTT, Attitude);
   Status = Pane_Mission1.update(Status);
-  Status = Pane_Statusbar1.update(Status);
-  Status = Pane_View1.update(Status);
-  Status = Pane_Waypoint1.update(Status);
+  Status = Pane_Statusbar1.update(Status, Attitude);
+  Status = Pane_View1.update(Status, Attitude);
+  Status = Pane_Waypoint1.update(Status, Attitude);
   
 }
 
+
+//begin functions---------------------------------------------------------------
 
 void messageReceived(String topic, byte[] payload) {
   println("Message: " + topic + " - " + new String(payload));
@@ -167,9 +180,18 @@ StringDict addMessage(String topic, String message, StringDict MQTT){
   return MQTT;
 }//end add message
 
+int PitchSim(int adj){
+  adj = int(0+sin(frameCount*0.002)*10);
+  return adj;}
 
+int RollSim(int adj){
+  adj = int(0+sin(frameCount*0.003)*5);
+  return adj;}
+  
+int DepthSim(int adj){
+  adj = int(60+sin(frameCount*0.0005)*55);
+  return adj;}
 
 int CompassSim(int adj){
-  adj = int(adj * random(.9999,1.001));
-  return adj;
-}
+  adj = int(180+sin(frameCount*0.002)*120);
+  return adj;}

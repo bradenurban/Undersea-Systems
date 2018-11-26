@@ -44,10 +44,10 @@ class Pane_Console {
   } // end initialUpdate
 
 
-  StringDict update(StringDict Status) {
+  StringDict update(StringDict Status, StringDict MQTT, IntDict Attitude) {
     Status = VC_Console1.update(Status);
     Status = MQTT_Pub1.update(Status);
-    Status = MQTT_Sub1.update(Status);
+             MQTT_Sub1.update(Status, MQTT);
 
     return Status;
   }//end update
@@ -346,7 +346,7 @@ class Pane_Console {
         
     }//end initial setup
 
-    StringDict update(StringDict MQTT) {
+    void update(StringDict Status, StringDict MQTT) {
       fill(0);
       rect(MS_zero_x, MS_zero_y, MS_pane_W, MS_pane_H);
 
@@ -363,7 +363,7 @@ class Pane_Console {
       text("MQTT SUBSCRIBE", MS_center_x, MS_zero_y+5);
 
 
-      return(MQTT);
+    
     }//end update
   }//end Subscribe class
 }//end class

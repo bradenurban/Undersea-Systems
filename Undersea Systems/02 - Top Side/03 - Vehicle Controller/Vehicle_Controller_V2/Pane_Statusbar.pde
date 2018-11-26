@@ -21,10 +21,8 @@ class Pane_Statusbar {
   BatteryCan BatCan = new BatteryCan();
   Accordion FC_accordion;
 
-  Pane_Statusbar() {
-  }
+  Pane_Statusbar() {}
 
-  //Class Functions--------------------------------------- 
   void initialSetup(int temp_pane_x, int temp_pane_y, int temp_pane_W, int temp_pane_H) {
     pane_x= temp_pane_x;
     pane_y= temp_pane_y;
@@ -43,10 +41,11 @@ class Pane_Statusbar {
     BatCan.initialSetup(zero_x+pane_W/4+pane_W/2, zero_y, pane_W/4, pane_H);
   } // end initialUpdate
 
-  StringDict update(StringDict Status) {
+  StringDict update(StringDict Status, IntDict Attitude) {
     Status = FwdCamera.update(Status);
-    CtrlCan.update();  
-    BatCan.update();
+             CtrlCan.update();  
+              BatCan.update();
+              
     return Status;
   }//end string dist
 
@@ -116,41 +115,16 @@ class Pane_Statusbar {
      FC_accordion.close(0,1,2);
      FC_accordion.setCollapseMode(Accordion.MULTI);
      
-     
-      //Pane_GUI.addButton("CameraExit")
-      //  .setValue(0)
-      //  .setPosition(CC_zero_x+60, CC_zero_y+75)
-      //  .setSize(50, 50)
-      //  .setImages(loadImage("Camera_exit_white.png"), loadImage("Camera_exit_blue.png"), loadImage("Camera_exit_Green.png"))
-      //  .plugTo( this, "CameraExit")
-      //  .updateSize();       
-
-      //Pane_GUI.addButton("Power")
-      //  .setValue(0)
-      //  .setPosition(CC_zero_x+5, CC_zero_y+75)
-      //  .setSize(50, 50)
-      //  .setImages(loadImage("Power_White.png"), loadImage("Power_Blue.png"), loadImage("Power_Green.png"))
-      //  .plugTo( this, "CameraPower")
-      //  .updateSize();
-
-      //Pane_GUI.addButton("ScreenShot")
-      //  .setValue(0)
-      //  .setPosition(CC_zero_x+60, CC_center_y+12)
-      //  .setSize(80, 80)
-      //  .setImages(loadImage("Power_White.png"), loadImage("Power_Blue.png"), loadImage("Power_Green.png"))
-      //  .plugTo( this, "Screenshot")
-      //  .updateSize();
-      // end initialUpdate
-    } // end initialUpdate
+    } 
 
     StringDict update(StringDict Status) {
       fill(0);
-      stroke(255);
+      stroke(0);
       rect(CC_zero_x, CC_zero_y+20, CC_pane_W, CC_pane_H-20);
 
       pushStyle();
       noFill();
-      stroke(255);
+      stroke(0);
       rect(CC_zero_x, CC_zero_y+20, CC_pane_W, CC_pane_H-20);
       popStyle();
 
@@ -178,8 +152,6 @@ class Pane_Statusbar {
       textAlign(CORNER, CENTER);
       fill(#00FF00);
       noFill();
-
-
 
       text("MQTT STATE:", CC_zero_x+1, CC_zero_y+27);
       text(""+Status.get("FC_State_MQTT"), CC_zero_x+83, CC_zero_y+27);
@@ -247,7 +219,7 @@ class Pane_Statusbar {
 
     void update() {
       fill(0);
-      stroke(255);
+      stroke(0);
       rect(CT_zero_x, CT_zero_y, CT_pane_W, CT_pane_H);
 
       fill(accent);
