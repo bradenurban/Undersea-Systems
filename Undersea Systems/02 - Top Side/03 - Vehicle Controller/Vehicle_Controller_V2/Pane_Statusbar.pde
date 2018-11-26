@@ -1,5 +1,5 @@
 class Pane_Statusbar {
-  
+
   int pane_x;
   int pane_y;
   int pane_W;
@@ -19,9 +19,11 @@ class Pane_Statusbar {
   CameraCan FwdCamera = new CameraCan();
   ControlCan CtrlCan = new ControlCan();
   BatteryCan BatCan = new BatteryCan();
+  Accordion FC_accordion;
 
-  Pane_Statusbar() {}
-  
+  Pane_Statusbar() {
+  }
+
   //Class Functions--------------------------------------- 
   void initialSetup(int temp_pane_x, int temp_pane_y, int temp_pane_W, int temp_pane_H) {
     pane_x= temp_pane_x;
@@ -39,7 +41,6 @@ class Pane_Statusbar {
     FwdCamera.initialSetup(zero_x, zero_y, pane_W/4, pane_H);
     CtrlCan.initialSetup(zero_x+pane_W/4, zero_y, pane_W/2, pane_H);
     BatCan.initialSetup(zero_x+pane_W/4+pane_W/2, zero_y, pane_W/4, pane_H);
-    
   } // end initialUpdate
 
   StringDict update(StringDict Status) {
@@ -62,7 +63,6 @@ class Pane_Statusbar {
     int CC_end_x;
 
     CameraCan() {
-      
     }
     void initialSetup(int temp_pane_x, int temp_pane_y, int temp_pane_W, int temp_pane_H) {
       CC_pane_x= temp_pane_x;
@@ -73,17 +73,50 @@ class Pane_Statusbar {
       CC_center_y = CC_pane_y+(CC_pane_H/2);
       CC_zero_y = CC_pane_y;
       CC_zero_x = CC_pane_x;
-      CC_end_y = temp_pane_y;
-      CC_end_x = temp_pane_x;
+      CC_end_y = temp_pane_y+temp_pane_H;
+      CC_end_x = temp_pane_x+temp_pane_W;
 
-      //Pane_GUI.addButton("CameraConnection")
-      //  .setValue(0)
-      //  .setPosition(CC_zero_x+110, CC_zero_y+75)
-      //  .setSize(50,50)
-      //  .setImages(loadImage("Camera_white.png"), loadImage("Camera_Blue.png"), loadImage("Camera_Green.png"))
-      //  .plugTo( this, "CameraConnection")
-      //  .updateSize();
+      Group FC_ControlGroup = Pane_GUI.addGroup("Controller")
+        .setBackgroundColor(color(0, 64))
+        .setBackgroundHeight(150);
 
+      Pane_GUI.addButton("Power")
+        .setValue(0)
+        .setPosition(10,10)
+        .setSize(50, 20)
+        .moveTo(FC_ControlGroup)
+        .plugTo( this, "CameraPower")
+        .updateSize();
+
+
+      Pane_GUI.addButton("Connect")
+        .setValue(0)
+        .setPosition(10, 50)
+        .setSize(50, 20)
+        .moveTo(FC_ControlGroup)
+        .plugTo( this, "CameraConnection")
+        .updateSize();
+        
+      Pane_GUI.addButton("Disconnect")
+        .setValue(0)
+        .setPosition(70, 50)
+        .setSize(50, 20)
+        .moveTo(FC_ControlGroup)
+        .plugTo( this, "CameraExit")
+        .updateSize();  
+
+
+      FC_accordion = Pane_GUI.addAccordion("acc")
+                 .setPosition(CC_zero_x+1,CC_end_y-10)
+                 .setWidth(CC_pane_W-2)
+                 .addItem(FC_ControlGroup)
+                 //.addItem(g2)
+                 //.addItem(g3)
+                 ;
+     FC_accordion.close(0,1,2);
+     FC_accordion.setCollapseMode(Accordion.MULTI);
+     
+     
       //Pane_GUI.addButton("CameraExit")
       //  .setValue(0)
       //  .setPosition(CC_zero_x+60, CC_zero_y+75)
@@ -107,21 +140,20 @@ class Pane_Statusbar {
       //  .setImages(loadImage("Power_White.png"), loadImage("Power_Blue.png"), loadImage("Power_Green.png"))
       //  .plugTo( this, "Screenshot")
       //  .updateSize();
-     // end initialUpdate
-
-  
-} // end initialUpdate
+      // end initialUpdate
+    } // end initialUpdate
 
     StringDict update(StringDict Status) {
       fill(0);
+      stroke(255);
       rect(CC_zero_x, CC_zero_y+20, CC_pane_W, CC_pane_H-20);
-      
+
       pushStyle();
       noFill();
       stroke(255);
       rect(CC_zero_x, CC_zero_y+20, CC_pane_W, CC_pane_H-20);
       popStyle();
-      
+
       fill(accent);
       rect(CC_zero_x, CC_zero_y, CC_pane_W, 20);
 
@@ -132,12 +164,12 @@ class Pane_Statusbar {
       text("FORWARD CAMERA CAN", CC_center_x, CC_zero_y+6);
 
       //Temperature Gauges
-      linear_gauge(CC_zero_x+250, CC_zero_y+75, "Valid", 100, 150, 0, 120, "Deg F", "CPU T");
-      linear_gauge(CC_zero_x+210, CC_zero_y+75, "Invalid", 80, 150, 0, 120, "Deg F", "Amb T");
-      linear_gauge(CC_zero_x+170, CC_zero_y+75, "Valid", int(Status.get("FC_Usage_CPU")), 100, 0, 80, "%", "CPU %");
+      linear_gauge(CC_zero_x+250, CC_zero_y+70, "Valid", 100, 150, 0, 120, "Deg F", "CPU T");
+      linear_gauge(CC_zero_x+210, CC_zero_y+70, "Invalid", 80, 150, 0, 120, "Deg F", "Amb T");
+      linear_gauge(CC_zero_x+170, CC_zero_y+70, "Valid", int(Status.get("FC_Usage_CPU")), 100, 0, 80, "%", "CPU %");
       dot_gauge(CC_zero_x+290, CC_center_y-10, "Valid", "Good", "Leak");
-      dot_gauge(CC_zero_x+290, CC_center_y+40, "Valid", "Caution", "Comm's");
-      
+      dot_gauge(CC_zero_x+290, CC_center_y+37, "Valid", "Caution", "Comm's");
+
       pushStyle();
       rectMode(CORNER);
       stroke(#00FF00);
@@ -146,25 +178,25 @@ class Pane_Statusbar {
       textAlign(CORNER, CENTER);
       fill(#00FF00);
       noFill();
-      
-      
-      
+
+
+
       text("MQTT STATE:", CC_zero_x+1, CC_zero_y+27);
-      text(""+Status.get("FC_State_MQTT"), CC_zero_x+83,CC_zero_y+27);
-      rect(CC_zero_x+80,CC_zero_y+23,65,15);
-      
-      text("LOG STATE:" , CC_zero_x+1, CC_zero_y+45);
-      text(""+Status.get("FC_State_LOG"), CC_zero_x+83,CC_zero_y+45);
-      rect(CC_zero_x+80,CC_zero_y+41,65,15);
-      
+      text(""+Status.get("FC_State_MQTT"), CC_zero_x+83, CC_zero_y+27);
+      rect(CC_zero_x+80, CC_zero_y+23, 65, 15);
+
+      text("LOG STATE:", CC_zero_x+1, CC_zero_y+45);
+      text(""+Status.get("FC_State_LOG"), CC_zero_x+83, CC_zero_y+45);
+      rect(CC_zero_x+80, CC_zero_y+41, 65, 15);
+
       text("CAMERA:", CC_zero_x+1, CC_zero_y+63);
-      text(""+Status.get("FC_State_CAMERA"), CC_zero_x+83,CC_zero_y+63);
-      rect(CC_zero_x+80,CC_zero_y+59,65,15);
-      
+      text(""+Status.get("FC_State_CAMERA"), CC_zero_x+83, CC_zero_y+63);
+      rect(CC_zero_x+80, CC_zero_y+59, 65, 15);
+
       text("MODE: ", CC_zero_x+1, CC_zero_y+81);
-      text(""+Status.get("FC_Mode"), CC_zero_x+83,CC_zero_y+81);
-      rect(CC_zero_x+80,CC_zero_y+77,65,15);
-      
+      text(""+Status.get("FC_Mode"), CC_zero_x+83, CC_zero_y+81);
+      rect(CC_zero_x+80, CC_zero_y+77, 65, 15);
+
       popStyle();
       return Status;
     }
@@ -214,7 +246,8 @@ class Pane_Statusbar {
 
 
     void update() {
-      fill(background);
+      fill(0);
+      stroke(255);
       rect(CT_zero_x, CT_zero_y, CT_pane_W, CT_pane_H);
 
       fill(accent);
@@ -241,8 +274,9 @@ class Pane_Statusbar {
     int CB_end_y;
     int CB_end_x;
 
-    BatteryCan() {}
-    
+    BatteryCan() {
+    }
+
     void initialSetup(int temp_pane_x, int temp_pane_y, int temp_pane_W, int temp_pane_H) {
       CB_pane_x= temp_pane_x;
       CB_pane_y= temp_pane_y;
@@ -279,7 +313,7 @@ class Pane_Statusbar {
   void linear_gauge(int x_loc, int y_loc, String state, float value, float value_max, float value_min, float value_red, String Units, String Label) {
 
     int w = 10;
-    int h = 65;
+    int h = 52;
     float h_red = map(value_max-value_red, value_min, value_max, 0, h);
     float y_value = map(value_max-value, value_min, value_max, 0, h);
 
@@ -303,8 +337,8 @@ class Pane_Statusbar {
     //Units text
     textSize(12);
     textAlign(CENTER, CENTER);
-    text(Units, x_loc, y_loc+h-25);
-    text(Label, x_loc, y_loc - 45);
+    text(Units, x_loc, y_loc+ h - 20);
+    text(Label, x_loc, y_loc - 40);
 
     //return Stroke Weight back to black and 1
     stroke(0);
@@ -324,16 +358,16 @@ class Pane_Statusbar {
       strokeWeight(0);
       if (value == "Good") {
         fill(0, 255, 0);
-        ellipse(x_loc, y_loc, D-1, D-1);}
-       else if (value == "Caution") {
+        ellipse(x_loc, y_loc, D-1, D-1);
+      } else if (value == "Caution") {
         fill(255, 255, 0);
-        ellipse(x_loc, y_loc, D-1, D-1);}
-       else {
+        ellipse(x_loc, y_loc, D-1, D-1);
+      } else {
         fill(255, 0, 0);
-        ellipse(x_loc, y_loc, D-1, D-1);} 
-
+        ellipse(x_loc, y_loc, D-1, D-1);
+      }
     }
-    
+
     //Units text
     fill(textColor);
     textSize(12);
@@ -344,5 +378,4 @@ class Pane_Statusbar {
     stroke(0);
     strokeWeight(1);
   }//end dot gauge
-
 }//end class

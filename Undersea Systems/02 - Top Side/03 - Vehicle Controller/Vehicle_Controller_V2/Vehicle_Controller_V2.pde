@@ -41,7 +41,7 @@ Pane_Waypoint Pane_Waypoint1 = new Pane_Waypoint();
 void setup() {
   //Setup Canvas
   size(displayWidth, displayHeight);
-  println(displayWidth+":"+displayHeight);
+  //println(displayWidth+":"+displayHeight);
   surface.setResizable(true);
   background(0);
   smooth();
