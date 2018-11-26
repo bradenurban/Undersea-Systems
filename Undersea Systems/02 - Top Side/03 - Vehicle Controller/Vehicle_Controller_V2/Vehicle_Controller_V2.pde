@@ -59,6 +59,8 @@ void setup() {
   Status.set("HeadingMode","MANUAL");
   Status.set("FC_Usage_CPU","0");
 
+  MQTT = new StringDict();
+  MQTT.set("USS/SS/#","Initial");
 
   //Setup Panse
   Pane_Console1.initialSetup((GUI_Size[0]-Pane_Console_Size[0]), 
@@ -85,7 +87,7 @@ void setup() {
 
   //MQTT
   VC_Client = new MQTTClient(this);
-  VC_Client.connect("mqtt://192.168.1.82:1883", "VC");
+  VC_Client.connect("mqtt://192.168.1.74:1883", "VC");
   VC_Client.subscribe("USS/SS/#");
   VC_Client.publish("USS/TS/VC", "Started");
   
@@ -104,7 +106,6 @@ void draw() {
   Status = Pane_View1.update(Status);
   Status = Pane_Waypoint1.update(Status);
   
-  println(MQTT);
 }
 
 
