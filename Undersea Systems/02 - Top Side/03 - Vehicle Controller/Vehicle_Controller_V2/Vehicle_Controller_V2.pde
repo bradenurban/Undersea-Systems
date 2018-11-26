@@ -9,6 +9,7 @@ int[] Pane_Console_Size = {Pane_View_Size[0], (GUI_Size[1]-Pane_View_Size[1])/2 
 int temp;
 
 StringDict Status;
+StringDict MQTT;
 
 //contributed Libraries
 
@@ -84,7 +85,7 @@ void setup() {
 
   //MQTT
   VC_Client = new MQTTClient(this);
-  VC_Client.connect("mqtt://192.168.0.10:1883", "VC");
+  VC_Client.connect("mqtt://192.168.1.82:1883", "VC");
   VC_Client.subscribe("USS/SS/#");
   VC_Client.publish("USS/TS/VC", "Started");
   
@@ -102,17 +103,20 @@ void draw() {
   Status = Pane_Statusbar1.update(Status);
   Status = Pane_View1.update(Status);
   Status = Pane_Waypoint1.update(Status);
+  
+  println(MQTT);
 }
 
 
 void messageReceived(String topic, byte[] payload) {
   println("Message: " + topic + " - " + new String(payload));
   String message = new String(payload);
+  MQTT = addMessage(topic,message,MQTT);
   if (topic.equals("USS/SS/FwdCam/Health")){
     Status = parseFC_Health(message,Status);
-  }
+  }//end if
 
-}
+}//end messageReceived
 
 
 void log_folderSelected(File selection) {
@@ -157,7 +161,10 @@ StringDict parseFC_Health(String message, StringDict Status){
 }//end parse function
 
 
-
+StringDict addMessage(String topic, String message, StringDict MQTT){
+  MQTT.set(topic,message);
+  return MQTT;
+}//end add message
 
 
 

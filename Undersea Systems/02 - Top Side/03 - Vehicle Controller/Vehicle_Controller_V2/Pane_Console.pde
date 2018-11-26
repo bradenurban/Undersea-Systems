@@ -40,6 +40,7 @@ class Pane_Console {
     VC_Console1.initialSetup(zero_x, zero_y, pane_W/4, pane_H);
     MQTT_Pub1.initialSetup(zero_x+pane_W/4, zero_y, pane_W/4, pane_H);
     MQTT_Sub1.initialSetup(zero_x+2*pane_W/4, zero_y, pane_W/4, pane_H);
+    
   } // end initialUpdate
 
 
@@ -345,7 +346,7 @@ class Pane_Console {
         
     }//end initial setup
 
-    StringDict update(StringDict Status) {
+    StringDict update(StringDict MQTT) {
       fill(0);
       rect(MS_zero_x, MS_zero_y, MS_pane_W, MS_pane_H);
 
@@ -362,7 +363,7 @@ class Pane_Console {
       text("MQTT SUBSCRIBE", MS_center_x, MS_zero_y+5);
 
 
-      return(Status);
+      return(MQTT);
     }//end update
   }//end Subscribe class
 }//end class
