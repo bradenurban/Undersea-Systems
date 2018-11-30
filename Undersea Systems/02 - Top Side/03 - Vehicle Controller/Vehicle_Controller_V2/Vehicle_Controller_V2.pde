@@ -31,7 +31,7 @@ Pane_Console Pane_Console1 = new Pane_Console();
 Pane_Mission Pane_Mission1 = new Pane_Mission();
 Pane_Statusbar Pane_Statusbar1 = new Pane_Statusbar();
 Pane_View Pane_View1 = new Pane_View();
-Pane_Waypoint Pane_Waypoint1 = new Pane_Waypoint();
+Pane_Gauges Pane_Gauges1 = new Pane_Gauges();
 
 
 void setup() {
@@ -88,7 +88,7 @@ void setup() {
     Pane_View_Size[0], 
     Pane_View_Size[1]);
 
-  Pane_Waypoint1.initialSetup(0, ((GUI_Size[1]-Pane_View_Size[1])/2), 
+  Pane_Gauges1.initialSetup(0, ((GUI_Size[1]-Pane_View_Size[1])/2), 
     Pane_Waypoint_Size[0], 
     Pane_Waypoint_Size[1]);
 
@@ -115,7 +115,7 @@ void draw() {
   Status = Pane_Mission1.update(Status);
   Status = Pane_Statusbar1.update(Status, Attitude);
   Status = Pane_View1.update(Status, Attitude);
-  Status = Pane_Waypoint1.update(Status, Attitude);
+  Status = Pane_Gauges1.update(Status, Attitude);
   
 }
 
