@@ -16,6 +16,8 @@ class Pane_Gauges {
   color textColor = #0AE300;
   Widgits Widgits_2x3 = new Widgits();
   config_2x3 config_2x3_1 = new config_2x3();
+
+
   Pane_Gauges() {
   }
 
@@ -37,7 +39,7 @@ class Pane_Gauges {
     zero_x = pane_x+1;
     end_y = temp_pane_y - 1;
     end_x = temp_pane_x - 1;
-    
+
 
     config_2x3_1.initialSetup(pane_x, pane_y+21, pane_W, pane_H-20);
 
@@ -48,6 +50,8 @@ class Pane_Gauges {
 
     //ConfigList
     String[] TopicList = {"1X1 Gauge", "1X2 Gauge", "2x2 Gauge", "1X3 Gauge", "2X3 Gauge"};
+
+
 
     //button bar
     ButtonBar b = Pane_GUI.addButtonBar("GaugeOptions")
@@ -141,8 +145,7 @@ class Pane_Gauges {
       internalGaugeConfig[5] = "null";
       internalGaugeConfig[6] = "null";
       internalGaugeConfig[7] = "null";
-    
-  }//end 2x3 initial setup
+    }//end 2x3 initial setup
 
 
     void update(StringDict Status, IntDict Attitude) {
@@ -152,8 +155,6 @@ class Pane_Gauges {
       gauge4.update(Status, Attitude);
       gauge5.update(Status, Attitude);
       gauge6.update(Status, Attitude);
-
-      println(internalGaugeConfig);
     }//end 2x3 update
 
     class gauge {
@@ -185,7 +186,7 @@ class Pane_Gauges {
         g_end_y = temp_pane_y+temp_pane_H;
         g_end_x = temp_pane_x+temp_pane_W;
         GaugeNumber = temp_GaugeNumber;
-        
+
         //setup widgits
         //Widgits_2x3.initialSetup(g_pane_x,g_pane_y,g_pane_W,g_pane_H);
 
@@ -225,13 +226,91 @@ class Pane_Gauges {
           .setSize((g_pane_W-2)/6, 20)
           .plugTo(this, "Test");
         ;
-        Pane_GUI.addButton(GaugeNumber+"Guage"+"Chart")
-          .setLabel("Chart")
+        Pane_GUI.addButton(GaugeNumber+"Guage"+"Depth")
+          .setLabel("Depth")
           .setValue(0)
           .setPosition((g_zero_x+1)+ 5*(g_pane_W-2)/6, g_end_y-20)
           .setSize((g_pane_W-2)/6, 20)
           .plugTo(this, "Test");
         ;
+
+        //lights--------------------------------------------------------------------
+        Pane_GUI.addSlider(GaugeNumber+"SliderLight1")
+          .setLabel("Light 1")
+          .setValue(0)
+          .setPosition((g_zero_x+90), g_zero_y+40)
+          .setSize(150, 20)
+          .setRange(0, 100)
+          //.setNumberOfTickMarks(10)
+          .hide()
+          .plugTo(this, "SliderLight1")
+          ;
+        Pane_GUI.addSlider(GaugeNumber+"SliderLight2")
+          .setLabel("Light 2")
+          .setValue(0)
+          .setPosition((g_zero_x+90), g_zero_y+70)
+          .setSize(150, 20)
+          .setRange(0, 100)
+          //.setNumberOfTickMarks(10)
+          .hide()
+          .plugTo(this, "SliderLight2")
+          ;
+        Pane_GUI.addSlider(GaugeNumber+"SliderLight3")
+          .setLabel("Light 1")
+          .setValue(0)
+          .setPosition((g_zero_x+90), g_zero_y+100)
+          .setSize(150, 20)
+          .setRange(0, 100)
+          //.setNumberOfTickMarks(10)
+          .hide()
+          .plugTo(this, "SliderLight3")
+          ;
+        Pane_GUI.addSlider(GaugeNumber+"SliderLight4")
+          .setLabel("Light 2")
+          .setValue(0)
+          .setPosition((g_zero_x+90), g_zero_y+130)
+          .setSize(150, 20)
+          .setRange(0, 100)
+          //.setNumberOfTickMarks(10)
+          .hide()
+          .plugTo(this, "SliderLight4")
+          ;
+        Pane_GUI.addToggle(GaugeNumber+"ToggleLight1")
+          .setValue(false)
+          .setPosition((g_zero_x+20), g_zero_y+40)
+          .setSize(50, 20)
+          //.setMode(ControlP5.SWITCH)
+          .hide()
+          .setLabelVisible(false)
+          .plugTo(this, "ToggleLight1")
+          ;
+        Pane_GUI.addToggle(GaugeNumber+"ToggleLight2")
+          .setValue(false)
+          .setPosition((g_zero_x+20), g_zero_y+70)
+          .setSize(50, 20)
+          //.setMode(ControlP5.SWITCH)
+          .hide()
+          .setLabelVisible(false)
+          .plugTo(this, "ToggleLight2")
+          ;
+        Pane_GUI.addToggle(GaugeNumber+"ToggleLight3")
+          .setValue(false)
+          .setPosition((g_zero_x+20), g_zero_y+100)
+          .setSize(50, 20)
+          //.setMode(ControlP5.SWITCH)
+          .hide()
+          .setLabelVisible(false)
+          .plugTo(this, "ToggleLight3")
+          ;
+        Pane_GUI.addToggle(GaugeNumber+"ToggleLight4")
+          .setValue(false)
+          .setPosition((g_zero_x+20), g_zero_y+130)
+          .setSize(50, 20)
+          //.setMode(ControlP5.SWITCH)
+          .hide()
+          .setLabelVisible(false)
+          .plugTo(this, "ToggleLight4")
+          ;
       }
 
       void update(StringDict Status, IntDict Attitude) {
@@ -239,65 +318,185 @@ class Pane_Gauges {
         fill(0);
         stroke(255);
         rect(g_pane_x, g_pane_y, g_pane_W, g_pane_H);
-        switch(internalGaugeConfig[int(GaugeNumber)]){
-         case "null":
-         break;
-          case "Lights":
-           Widgits_2x3.Lights(g_pane_x,g_pane_y,g_pane_W,g_pane_H-20);
+        switch(internalGaugeConfig[int(GaugeNumber)]) {
+        case "null":
+          break;
+        case "Lights":
+          Widgits_2x3.Lights(g_pane_x, g_pane_y, g_pane_W, g_pane_H-20);
           break;
         case "Compass":
-          Widgits_2x3.Lights(g_pane_x,g_pane_y,g_pane_W,g_pane_H-20);
+          Widgits_2x3.Lights(g_pane_x, g_pane_y, g_pane_W, g_pane_H-20);
           break;
         case "Thrusters":
-          Widgits_2x3.Lights(g_pane_x,g_pane_y,g_pane_W,g_pane_H-20);
+          Widgits_2x3.Lights(g_pane_x, g_pane_y, g_pane_W, g_pane_H-20);
           break;
         case "Forces":
-          Widgits_2x3.Lights(g_pane_x,g_pane_y,g_pane_W,g_pane_H-20);
+          Widgits_2x3.Lights(g_pane_x, g_pane_y, g_pane_W, g_pane_H-20);
           break;
         case "TOI":
-          Widgits_2x3.Lights(g_pane_x,g_pane_y,g_pane_W,g_pane_H-20);
+          Widgits_2x3.Lights(g_pane_x, g_pane_y, g_pane_W, g_pane_H-20);
           break;
-        case "Chart":
-          Widgits_2x3.Lights(g_pane_x,g_pane_y,g_pane_W,g_pane_H-20);
+        case "Depth":
+          Widgits_2x3.Lights(g_pane_x, g_pane_y, g_pane_W, g_pane_H-20);
           break;
-          
-          
-          
         }//end switch
-        
       }//end gauge update
 
       void Test() {
       }
+      //-----------light functions------------------------
+      void ToggleLight1(boolean theFlag) {
+        if (theFlag==true) {
+          VC_Client.publish("USS/TS/VC/LightControl/Light1", "On");
+          println("Toggle light on");
+        }//end if
+        else {
+          VC_Client.publish("USS/TS/VC/LightControl/Light1", "Off");
+          println("Toggle light off");
+        }//end else
+      }//end toggleLight1
+
+      void SliderLight1(float value) {
+        VC_Client.publish("USS/TS/VC/LightControl/Light1", str(value));
+        println("Slight Value1: "+int(value));
+      }//end slidghtLight1
+
+      void ToggleLight2(boolean theFlag) {
+        if (theFlag==true) {
+          VC_Client.publish("USS/TS/VC/LightControl/Light2", "On");
+          println("Toggle light on");
+        }//end if
+        else {
+          VC_Client.publish("USS/TS/VC/LightControl/Light2", "Off");
+          println("Toggle light off");
+        }//end else
+      }//end toggleLight1
+
+      void SliderLight2(float value) {
+        VC_Client.publish("USS/TS/VC/LightControl/Light2", str(value));
+        println("Slight Value1: "+int(value));
+      }//end slidghtLight1
+
+      void ToggleLight3(boolean theFlag) {
+        if (theFlag==true) {
+          VC_Client.publish("USS/TS/VC/LightControl/Light3", "On");
+          println("Toggle light on");
+        }//end if
+        else {
+          VC_Client.publish("USS/TS/VC/LightControl/Light3", "Off");
+          println("Toggle light off");
+        }//end else
+      }//end toggleLight1
+
+      void SliderLight3(float value) {
+        VC_Client.publish("USS/TS/VC/LightControl/Light3", str(value));
+        println("Slight Value1: "+int(value));
+      }//end slidghtLight1
+
+      void ToggleLight4(boolean theFlag) {
+        if (theFlag==true) {
+          VC_Client.publish("USS/TS/VC/LightControl/Light4", "On");
+          println("Toggle light on");
+        }//end if
+        else {
+          VC_Client.publish("USS/TS/VC/LightControl/Light4", "Off");
+          println("Toggle light off");
+        }//end else
+      }//end toggleLight1
+
+      void SliderLight4(float value) {
+        VC_Client.publish("USS/TS/VC/LightControl/Light4", str(value));
+        println("Slight Value1: "+int(value));
+      }//end slidghtLight1
+
+
+      //-----------------end light functions--------------------
+
+
       void controlEvent(ControlEvent theEvent) {
         String name = theEvent.getName();
         int index = int(str(name.charAt(0)));
         String type = name.substring(6, name.length());
-        println(type);
+
         switch(type) {
         case "Lights":
-          println(index);
           internalGaugeConfig[index]="Lights";
+          Pane_GUI.getController(index+"SliderLight1").show();
+          Pane_GUI.getController(index+"SliderLight2").show();
+          Pane_GUI.getController(index+"SliderLight3").show();
+          Pane_GUI.getController(index+"SliderLight4").show();
+
+          Pane_GUI.getController(index+"ToggleLight1").show();
+          Pane_GUI.getController(index+"ToggleLight2").show();
+          Pane_GUI.getController(index+"ToggleLight3").show();
+          Pane_GUI.getController(index+"ToggleLight4").show();
           break;
         case "Compass":
-          println(index);
           internalGaugeConfig[index]="Compass";
+          Pane_GUI.getController(index+"SliderLight1").hide();
+          Pane_GUI.getController(index+"SliderLight2").hide();
+          Pane_GUI.getController(index+"SliderLight3").hide();
+          Pane_GUI.getController(index+"SliderLight4").hide();
+
+          Pane_GUI.getController(index+"ToggleLight1").hide();
+          Pane_GUI.getController(index+"ToggleLight2").hide();
+          Pane_GUI.getController(index+"ToggleLight3").hide();
+          Pane_GUI.getController(index+"ToggleLight4").hide();
+
           break;
         case "Thrusters":
-          println(index);
           internalGaugeConfig[index]="Thrusters";
+          Pane_GUI.getController(index+"SliderLight1").hide();
+          Pane_GUI.getController(index+"SliderLight2").hide();
+          Pane_GUI.getController(index+"SliderLight3").hide();
+          Pane_GUI.getController(index+"SliderLight4").hide();
+
+          Pane_GUI.getController(index+"ToggleLight1").hide();
+          Pane_GUI.getController(index+"ToggleLight2").hide();
+          Pane_GUI.getController(index+"ToggleLight3").hide();
+          Pane_GUI.getController(index+"ToggleLight4").hide();
+
           break;
         case "Forces":
-          println(index);
           internalGaugeConfig[index]="Forces";
+          Pane_GUI.getController(index+"SliderLight1").hide();
+          Pane_GUI.getController(index+"SliderLight2").hide();
+          Pane_GUI.getController(index+"SliderLight3").hide();
+          Pane_GUI.getController(index+"SliderLight4").hide();
+
+          Pane_GUI.getController(index+"ToggleLight1").hide();
+          Pane_GUI.getController(index+"ToggleLight2").hide();
+          Pane_GUI.getController(index+"ToggleLight3").hide();
+          Pane_GUI.getController(index+"ToggleLight4").hide();
+
           break;
+       
         case "TOI":
-          println(index);
           internalGaugeConfig[index]="TOI";
+          Pane_GUI.getController(index+"SliderLight1").hide();
+          Pane_GUI.getController(index+"SliderLight2").hide();
+          Pane_GUI.getController(index+"SliderLight3").hide();
+          Pane_GUI.getController(index+"SliderLight4").hide();
+
+          Pane_GUI.getController(index+"ToggleLight1").hide();
+          Pane_GUI.getController(index+"ToggleLight2").hide();
+          Pane_GUI.getController(index+"ToggleLight3").hide();
+          Pane_GUI.getController(index+"ToggleLight4").hide();
+
           break;
+        
         case "Chart":
-          println(index);
           internalGaugeConfig[index]="Chart";
+          Pane_GUI.getController(index+"SliderLight1").hide();
+          Pane_GUI.getController(index+"SliderLight2").hide();
+          Pane_GUI.getController(index+"SliderLight3").hide();
+          Pane_GUI.getController(index+"SliderLight4").hide();
+
+          Pane_GUI.getController(index+"ToggleLight1").hide();
+          Pane_GUI.getController(index+"ToggleLight2").hide();
+          Pane_GUI.getController(index+"ToggleLight3").hide();
+          Pane_GUI.getController(index+"ToggleLight4").hide();
+
           break;
         }//end switch
       }//end gauge class

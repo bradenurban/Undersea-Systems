@@ -40,7 +40,7 @@ class Pane_View {
     rect(pane_x, pane_y, pane_W, pane_H);
 
     //widigt setup
-    Compass1.initialSetup(pane_x+pane_W - 175, center_y - 100, 150, 150);
+    //Compass1.initialSetup(pane_x+pane_W - 175, center_y - 100, 150, 150);
     ArtificalHorrizon1.initialSetup(zero_x,zero_y,pane_W,pane_H);
     
   } // end initialUpdate
@@ -81,7 +81,7 @@ class Pane_View {
     text("FPS: "+round(frameRate), pane_x+pane_W-25, pane_y+pane_H-10);
 
     Heading = int(Attitude.get("Heading"));
-    Compass1.update(Status, Heading);
+    //Compass1.update(Status, Heading);
     ArtificalHorrizon1.update(Status, Attitude);
     
     
