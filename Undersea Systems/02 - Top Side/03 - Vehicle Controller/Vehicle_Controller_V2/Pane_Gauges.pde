@@ -337,7 +337,8 @@ class Pane_Gauges {
           Widgits_2x3.Lights(g_pane_x, g_pane_y, g_pane_W, g_pane_H-20);
           break;
         case "Depth":
-          Widgits_2x3.Lights(g_pane_x, g_pane_y, g_pane_W, g_pane_H-20);
+          println("depth function");
+          Widgits_2x3.circle_gauge(g_center_x, g_center_y, "Valid", 100, 150, 0, 120, "Deg F", "CPU T");
           break;
         }//end switch
       }//end gauge update
@@ -485,8 +486,8 @@ class Pane_Gauges {
 
           break;
         
-        case "Chart":
-          internalGaugeConfig[index]="Chart";
+        case "Depth":
+          internalGaugeConfig[index]="Depth";
           Pane_GUI.getController(index+"SliderLight1").hide();
           Pane_GUI.getController(index+"SliderLight2").hide();
           Pane_GUI.getController(index+"SliderLight3").hide();

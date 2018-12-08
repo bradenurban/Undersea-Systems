@@ -116,41 +116,37 @@ class Widgits {
     stroke(0);
     strokeWeight(1);
   }//end linear guage
-  
+
   void circle_gauge(int x_loc, int y_loc, String state, float value, float value_max, float value_min, float value_red, String Units, String Label) {
 
-    int w = 10;
-    int h = 52;
-    float h_red = map(value_max-value_red, value_min, value_max, 0, h);
-    float y_value = map(value_max-value, value_min, value_max, 0, h);
+    int D = 150;
 
-    stroke(0);
-    strokeWeight(1);
-
-    fill(0, 255, 0);
-    rect(x_loc-(w/2), y_loc-(h/2), w, h);
-    fill(255, 0, 0);
-    rect(x_loc-(w/2), y_loc-(h/2), w, h_red);
-
-    if (state == "Valid") {
-      stroke(255);
-      strokeWeight(3);
-      line(x_loc-(w/2)-2, y_value+y_loc-(h/2), x_loc+(w/2)+2, y_value+y_loc-(h/2));
-    }
-
+    pushStyle();
+    pushMatrix();
+    translate(x_loc,y_loc);
+    stroke(color(#FF0000));
+    strokeWeight(5);
+    strokeCap(SQUARE);
+    noFill();
+    arc(0, 0, D, D, HALF_PI, HALF_PI+QUARTER_PI);
+    stroke(color(#00FF00));
+    noFill();
+    arc(0, 0, D, D, HALF_PI+QUARTER_PI, PI+HALF_PI);
+    
+    
+    
+    
+    
+    
+    popMatrix();
+    popStyle();
+    
     textFont(createFont("Yu Gothic UI Bold", 12));
     fill(textColor);
-
+    
+    
     //Units text
     textSize(12);
     textAlign(CENTER, CENTER);
-    text(Units, x_loc, y_loc+ h - 20);
-    text(Label, x_loc, y_loc - 40);
-
-    //return Stroke Weight back to black and 1
-    stroke(0);
-    strokeWeight(1);
   }//end linear guage
-  
-  
 }//end class
