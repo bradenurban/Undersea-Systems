@@ -50,13 +50,14 @@ while error == 0:
         print(state["mqtt"])
         #--------------------------------------
         print("Starting SerialIMU...")
+        print(config["SerialIMU_port"])
         CC_serialIMU = SubSeaUtilites.SerialIMU(logTitle,config["SerialIMU_port"],config["SerialIMU_baud"])
         CC_serialIMU.run()
         state["serialIMU"] = CC_serialIMU.state    
         print(state["serialIMU"])
-         #-----------------------
+        #-----------------------
         print("Starting health functions...")
-        CC_health = SubSeaUtilites.health(logTitle)
+        CC_health = SubSeaUtilites.Health(logTitle)
         #-----------------------
     
     elif mode == "LoadConfig" : 
@@ -97,11 +98,19 @@ while error == 0:
         state["serialIMU"] = CC_serialIMU.state    
         print(state["serialIMU"])
         #-----------------------
-        
-    
-    
+
     
     elif mode == "Heartbeat":  
+        
+           
+        #----read data-----------------
+        
+        
+        
+        
+        
+        
+        
         
         if  time.time()-prev_heartbeat >= int(config["Heartbeat_pulse"]):
         #---------------------
@@ -136,7 +145,7 @@ while error == 0:
                 health_message = health_cpuTemp + "," + health_ambTemp +","+ health_cpuUsuage + "," + health_MQTTState + "," +  health_LogState + "," + health_CamState  + "," + health_Mode  + "," + health_Leak
                 
                 #send MQTT-------------------------
-                CC_mqttc.sendMessage("USS/SS/FwdCam/Health",health_message)
+                CC_mqttc.sendMessage("USS/SS/CtrCam/Health",health_message)
                 prev_heartbeat = time.time()
                 
             

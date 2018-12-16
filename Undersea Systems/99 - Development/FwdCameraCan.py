@@ -45,7 +45,7 @@ while error == 0:
         print(state["mqtt"])
         #-----------------------
         print("Starting health functions...")
-        FC_health = SubSeaUtilites.health(logTitle)
+        FC_health = SubSeaUtilites.Health(logTitle)
         #-----------------------
     
     elif mode == "LoadConfig" : 
@@ -102,6 +102,7 @@ while error == 0:
     
     
     elif mode == "Heartbeat":  
+        
         
         if  time.time()-prev_heartbeat >= int(config["Heartbeat_pulse"]):
         #---------------------

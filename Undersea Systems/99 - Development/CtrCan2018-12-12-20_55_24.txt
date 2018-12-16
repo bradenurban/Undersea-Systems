@@ -1,3 +1,0 @@
-20:55:24.557730;Log;Started
-20:55:24.557730;MQTT;State;Starting...
-20:55:24.573351;MQTT;State;Started

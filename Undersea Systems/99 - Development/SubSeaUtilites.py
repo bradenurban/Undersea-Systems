@@ -71,12 +71,12 @@ class SSCamera:
         except:
             self.ss_Log.record(self.logTitle,"Camera","State","Error, failed to start")
 
-class health:
+class Health:
     def __init__(self, logTitle):
         self.ss_Log = SSLog()
         self.logTitle = logTitle
         
-    def cputTemp(self):   
+    def cpuTemp(self):   
         res = os.popen('vcgencmd measure_temp').readline()
         CPU_temp = res.replace("temp=","").replace("'C\n","")
         self.ss_Log.record(self.logTitle,"Heartbeat","Health",CPU_temp)
@@ -190,7 +190,7 @@ class SerialIMU:
     def run(self,):
         self.ss_Log.record(self.logTitle, "Serial","State","Starting at "+self.port+" at baud: "+self.baud)
         try:
-            self.SP = serial.Serial(self.port,self.baud,timeout=0)
+            self.SP = serial.Serial(self.port,self.baud)
             #Start thread
             thread = threading.Thread(target=self.readData, args=(self.SP,))
             thread.start()
