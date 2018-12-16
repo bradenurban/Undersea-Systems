@@ -1,0 +1,21 @@
+#General Setup
+CanName=CtrCan
+#---------------------------------
+#Log
+LogTitel=CtrCanLog
+#---------------------------------
+#Functions
+FunctionsList=MQTT, SerialIMU, Heartbeat
+#---------------------------------
+#MQTT
+MQTT_IP=192.168.1.82
+MQTT_Port=1883
+MQTT_ControllerPath1="USS/TS/#"
+MQTT_ControllerPath2="USS/SS/#"
+#---------------------------------
+#SerialIMU
+SerialIMU_baud=9600
+SerialIMU_port="/dev/ttyACM0"
+#---------------------------------
+#Heartbeat
+Heartbeat_pulse=3

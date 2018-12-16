@@ -3,7 +3,7 @@ import SubSeaUtilites
 import time
 import os
 dirname = os.path.dirname(__file__)
-configFilename = os.path.join(dirname,"Config.txt")
+configFilename = os.path.join(dirname,"CC_Config.txt")
 #Declare Variables
 
 newMode = "hello"
@@ -14,7 +14,12 @@ state = {"config":  "NotLoaded",
          "log":     "NotStarted",
          "Cam":     "NotStarted"}
 
-
+attitude = {"pitch":    0,
+            "roll":     0,
+            "heading":  0,
+            "surge":    0,
+            "heave":    0,
+            "sway":     0}
 
 error = 0
 
@@ -33,19 +38,25 @@ while error == 0:
         print("Config Loaded")
         #--------------------------------------
         print("Starting Log...")
-        FC_log = SubSeaUtilites.SSLog()
-        logTitle = FC_log.creatLog(config["CanName"])
-        state["log"] = FC_log.State
+        CC_log = SubSeaUtilites.SSLog()
+        logTitle = CC_log.creatLog(config["CanName"])
+        state["log"] = CC_log.State
         print("Log Started")
         #--------------------------------------
         print("Starting MQTT...")
-        FC_mqttc = SubSeaUtilites.SSMQTTClass(logTitle,config["MQTT_IP"],config["CanName"])
-        FC_mqttc.run()
-        state["mqtt"] = FC_mqttc.state     
+        CC_mqttc = SubSeaUtilites.SSMQTTClass(logTitle,config["MQTT_IP"],config["CanName"])
+        CC_mqttc.run()
+        state["mqtt"] = CC_mqttc.state     
         print(state["mqtt"])
-        #-----------------------
+        #--------------------------------------
+        print("Starting SerialIMU...")
+        CC_serialIMU = SubSeaUtilites.SerialIMU(logTitle,config["SerialIMU_port"],config["SerialIMU_baud"])
+        CC_serialIMU.run()
+        state["serialIMU"] = CC_serialIMU.state    
+        print(state["serialIMU"])
+         #-----------------------
         print("Starting health functions...")
-        FC_health = SubSeaUtilites.health(logTitle)
+        CC_health = SubSeaUtilites.health(logTitle)
         #-----------------------
     
     elif mode == "LoadConfig" : 
@@ -60,9 +71,9 @@ while error == 0:
 
         #--------------------------------------
         print("Starting Log...")
-        FC_log = SubSeaUtilites.SSLog()
-        logTitle = FC_log.creatLog("TestLog")
-        state["log"] = FC_log.State
+        CC_log = SubSeaUtilites.SSLog()
+        logTitle = CC_log.creatLog("TestLog")
+        state["log"] = CC_log.State
         print("Log Started")
         #--------------------------------------
         
@@ -70,33 +81,22 @@ while error == 0:
         
         #-----------------------------
         print("Starting MQTT...")
-        FC_mqttc = SubSeaUtilites.SSMQTTClass(logTitle,config["MQTT_IP"],config["CanName"])
-        FC_mqttc.run()
-        state["mqtt"] = FC_mqttc.state    
+        CC_mqttc = SubSeaUtilites.SSMQTTClass(logTitle,config["MQTT_IP"],config["CanName"])
+        CC_mqttc.run()
+        state["mqtt"] = CC_mqttc.state    
         print(state["mqtt"])
         #-----------------------
 
         
-    elif mode == "CamStart": #Start the Camera Service
+    elif mode == "StartSerialIMU":
         
+        #-----------------------------
+        print("Starting SerialIMU...")
+        CC_serialIMU = SubSeaUtilites.SerialIMU(logTitle,config["SerialIMU_port"],config["SerialIMU_baud"])
+        CC_serialIMU.run()
+        state["serialIMU"] = CC_serialIMU.state    
+        print(state["serialIMU"])
         #-----------------------
-        print("Starting Camera")
-        FC_camera = SubSeaUtilites.SSCamera(logTitle)
-        FC_camera.camStart(config["Camera_W"], config["Camera_H"], config["Camera_FrameRate"], config["Camera_Port"], config["Camera_Rotation"])
-        print("Camera Started")
-        #-----------------------
-        
-
-    elif mode == "CamEnd":
-        
-        #-----------------------
-        print("Ending Camera")
-        FC_camera.camEnd()
-        print("Camera Ended")
-        #-----------------------
-        
-    elif mode == "StartSerial":
-        pass
         
     
     
@@ -108,14 +108,14 @@ while error == 0:
             if state["mqtt"]!="NotStarted":
                 print("Heatrbeat - MQTT")
                 #find cpu temp-------------------------
-                #health_cpuTemp = FC_health.cpuTemp()
+                #health_cpuTemp = CC_health.cpuTemp()
                 health_cpuTemp = "65"
                 
                 #find ambient temp-------------------------
                 health_ambTemp = "27"
                 
                 #find cpu usage-------------------------
-                health_cpuUsuage = str(FC_health.cpuPercent())
+                health_cpuUsuage = str(CC_health.cpuPercent())
                 
                 #Find MQTT STate-------------------------
                 health_MQTTState = state["mqtt"]
@@ -136,13 +136,13 @@ while error == 0:
                 health_message = health_cpuTemp + "," + health_ambTemp +","+ health_cpuUsuage + "," + health_MQTTState + "," +  health_LogState + "," + health_CamState  + "," + health_Mode  + "," + health_Leak
                 
                 #send MQTT-------------------------
-                FC_mqttc.sendMessage("USS/SS/FwdCam/Health",health_message)
+                CC_mqttc.sendMessage("USS/SS/FwdCam/Health",health_message)
                 prev_heartbeat = time.time()
                 
             
             else: 
                 print("Pulse")
-                FC_log.record(logTitle, "Heartbeat", "Heartbeat", "Pulse")
+                CC_log.record(logTitle, "Heartbeat", "Heartbeat", "Pulse")
    
         
         #print(prev_heartbeat)
@@ -164,9 +164,9 @@ while error == 0:
         
     
     try:   
-        if  FC_mqttc.newModeFlag == 1:
-            mode =  FC_mqttc.newMode
-            FC_mqttc.newModeFlag = 0
+        if  CC_mqttc.newModeFlag == 1:
+            mode =  CC_mqttc.newMode
+            CC_mqttc.newModeFlag = 0
     except:
         pass   
     #-----------------------------------

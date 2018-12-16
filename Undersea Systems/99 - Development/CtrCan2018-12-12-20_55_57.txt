@@ -1,0 +1,10 @@
+20:55:57.903254;Log;Started
+20:55:57.903254;MQTT;State;Starting...
+20:55:57.982832;MQTT;State;Started
+20:55:57.998461;Serial;State;Starting at "/dev/ttyACM0" at baud: 9600
+20:55:58.003468;Serial;State;Error, failed to start
+20:55:58.003468;MQTT;Send;USS/SS/FwdCam/Health;65,27,25.0,Started,Started,NotStarted,Heartbeat,no
+20:56:01.009036;MQTT;Send;USS/SS/FwdCam/Health;65,27,28.7,Started,Started,NotStarted,Heartbeat,no
+20:56:04.011507;MQTT;Send;USS/SS/FwdCam/Health;65,27,27.2,Started,Started,NotStarted,Heartbeat,no
+20:56:07.015968;MQTT;Send;USS/SS/FwdCam/Health;65,27,26.2,Started,Started,NotStarted,Heartbeat,no
+20:56:10.027982;MQTT;Send;USS/SS/FwdCam/Health;65,27,27.4,Started,Started,NotStarted,Heartbeat,no

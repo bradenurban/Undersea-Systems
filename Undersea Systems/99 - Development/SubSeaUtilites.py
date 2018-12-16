@@ -9,6 +9,8 @@ import time
 import datetime
 import os
 import psutil
+import serial
+import threading
 
 
 def test():
@@ -33,7 +35,6 @@ def loadConfig(temp_filepath):
         
     print(parameters)  
     return parameters
-
 
 class SSCamera:  
     def __init__(self, logTitle):
@@ -176,11 +177,63 @@ class SSMQTTClass:
             self.state="NotStarted"
             self.ss_Log.record(self.logTitle, "MQTT","State","Error, failed to start")
             print("MQTT Failed")
-        
 
     
+class SerialIMU:
+    def __init__(self, logTitle,port,baud):
+        self.ss_Log = SSLog()
+        self.logTitle = logTitle
+        self.state = "Not Started"
+        self.port = port
+        self.baud = baud
+        
+    def run(self,):
+        self.ss_Log.record(self.logTitle, "Serial","State","Starting at "+self.port+" at baud: "+self.baud)
+        try:
+            self.SP = serial.Serial(self.port,self.baud,timeout=0)
+            #Start thread
+            thread = threading.Thread(target=self.readData, args=(self.SP,))
+            thread.start()
+            #Log entry
+            self.ss_Log.record(self.logTitle, "Serial","State","Started")
+            self.state = "Started"
+            #print to consolue
+            print("Serial Started")
+            
+        except:
+            self.state="Not Started"
+            self.ss_Log.record(self.logTitle, "Serial","State","Error, failed to start")
+            print("Serial Failed")
     
     
+    def parseData(self, data):
+        print(data)
+        
+        #--------Parse data here-----------
+        StateIMU = "Parsed data"
+        #--------Parse data here-----------
+       
+        #--------Parse data here-----------
+        attitude = "vehicle attitude"
+        #--------Parse data here-----------
+       
+        #--------Parse data here-----------
+        parsedData = "combined state and attitude"
+        #--------Parse data here-----------
+       
+        print(StateIMU + " : " + attitude)
+        return(parsedData)
+
+    
+    def readData(self,ser):
+        while True:
+            
+            data = ser.readline().decode()
+            parsedData = self.parseData(data)
+            
+            print(parsedData)
+            return(parsedData)
+                      
     
     
     

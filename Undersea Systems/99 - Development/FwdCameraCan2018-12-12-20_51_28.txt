@@ -1,0 +1,7 @@
+20:51:28.009779;Log;Started
+20:51:28.009779;MQTT;State;Starting...
+20:51:28.025404;MQTT;State;Started
+20:51:28.025404;MQTT;Send;USS/SS/FwdCam/Health;65,27,25.0,Started,Started,NotStarted,Heartbeat,no
+20:51:31.025999;MQTT;Send;USS/SS/FwdCam/Health;65,27,30.0,Started,Started,NotStarted,Heartbeat,no
+20:51:34.030606;MQTT;Send;USS/SS/FwdCam/Health;65,27,30.4,Started,Started,NotStarted,Heartbeat,no
+20:51:37.038879;MQTT;Send;USS/SS/FwdCam/Health;65,27,27.1,Started,Started,NotStarted,Heartbeat,no
