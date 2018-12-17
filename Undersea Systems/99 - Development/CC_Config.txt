@@ -19,3 +19,4 @@ SerialIMU_port="/dev/ttyACM0"
 #---------------------------------
 #Heartbeat
 Heartbeat_pulse=3
+Heartbeat_IMU=0.1

@@ -19,7 +19,10 @@ attitude = {"pitch":    0,
             "heading":  0,
             "surge":    0,
             "heave":    0,
-            "sway":     0}
+            "sway":     0,
+            "sysCal":   0,
+            "aclCal":   0,
+            "gyrCal":   0,}
 
 error = 0
 
@@ -102,15 +105,6 @@ while error == 0:
     
     elif mode == "Heartbeat":  
         
-           
-        #----read data-----------------
-        
-        
-        
-        
-        
-        
-        
         
         if  time.time()-prev_heartbeat >= int(config["Heartbeat_pulse"]):
         #---------------------
@@ -166,7 +160,12 @@ while error == 0:
         mode = "CreateLog" 
 
     elif state["mqtt"] == "NotStarted":
+        time.sleep(2)
         mode = "StartMQTT"
+    
+    elif state["serial"] == "Started":
+        attitude = CC_serialIMU.readIMU(attitude)
+        print(attitude)
     
     elif mode != "Heartbeat":
         mode = "Heartbeat" 
