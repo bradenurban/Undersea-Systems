@@ -32,8 +32,7 @@ def loadConfig(temp_filepath):
 
     except:
         print("Failed to load Config")
-        
-    print(parameters)  
+         
     return parameters
 
 class SSCamera:  

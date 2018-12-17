@@ -165,6 +165,9 @@ while error == 0:
     
     elif state["serial"] == "Started":
         attitude = CC_serialIMU.readIMU(attitude)
+        
+        
+           
         print(attitude)
     
     elif mode != "Heartbeat":
