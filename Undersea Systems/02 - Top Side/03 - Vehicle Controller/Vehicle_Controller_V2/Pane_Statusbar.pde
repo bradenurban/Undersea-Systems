@@ -21,8 +21,10 @@ class Pane_Statusbar {
   BatteryCan BatCan = new BatteryCan();
   Widgits StatusBar_Widgits = new Widgits();
   Accordion FC_accordion;
+  Accordion CT_accordion;
 
-  Pane_Statusbar() {}
+  Pane_Statusbar() {
+  }
 
   void initialSetup(int temp_pane_x, int temp_pane_y, int temp_pane_W, int temp_pane_H) {
     pane_x= temp_pane_x;
@@ -44,9 +46,9 @@ class Pane_Statusbar {
 
   StringDict update(StringDict Status, IntDict Attitude) {
     Status = FwdCamera.update(Status);
-             CtrlCan.update();  
-              BatCan.update();
-              
+    Status = CtrlCan.update(Status);  
+    BatCan.update();
+
     return Status;
   }//end string dist
 
@@ -82,7 +84,7 @@ class Pane_Statusbar {
 
       Pane_GUI.addButton("Power")
         .setValue(0)
-        .setPosition(10,10)
+        .setPosition(10, 10)
         .setSize(50, 20)
         .moveTo(FC_ControlGroup)
         .plugTo( this, "CameraPower")
@@ -96,7 +98,7 @@ class Pane_Statusbar {
         .moveTo(FC_ControlGroup)
         .plugTo( this, "CameraConnection")
         .updateSize();
-        
+
       Pane_GUI.addButton("Disconnect")
         .setValue(0)
         .setPosition(70, 50)
@@ -107,15 +109,14 @@ class Pane_Statusbar {
 
 
       FC_accordion = Pane_GUI.addAccordion("acc")
-                 .setPosition(CC_zero_x+1,CC_end_y-10)
-                 .setWidth(CC_pane_W-2)
-                 .addItem(FC_ControlGroup)
-                 //.addItem(g2)
-                 //.addItem(g3)
-                 ;
-     FC_accordion.close(0,1,2);
-     FC_accordion.setCollapseMode(Accordion.MULTI);
-     
+        .setPosition(CC_zero_x+1, CC_end_y-10)
+        .setWidth(CC_pane_W-2)
+        .addItem(FC_ControlGroup)
+        //.addItem(g2)
+        //.addItem(g3)
+        ;
+      FC_accordion.close(0, 1, 2);
+      FC_accordion.setCollapseMode(Accordion.MULTI);
     } 
 
     StringDict update(StringDict Status) {
@@ -215,13 +216,58 @@ class Pane_Statusbar {
       CT_zero_x = CT_pane_x;
       CT_end_y = temp_pane_y;
       CT_end_x = temp_pane_x;
-    } // end initialUpdate
 
 
-    void update() {
+      Group CT_ControlGroup = Pane_GUI.addGroup("CT_Controller")
+        .setBackgroundColor(color(0, 64))
+        .setBackgroundHeight(150);
+
+      Pane_GUI.addButton("CT_Power")
+        .setValue(0)
+        .setPosition(10, 10)
+        .setSize(50, 20)
+        .moveTo(CT_ControlGroup)
+        .plugTo( this, "CameraPower")
+        .updateSize();
+
+      Pane_GUI.addButton("CT_Connect")
+        .setValue(0)
+        .setPosition(10, 50)
+        .setSize(50, 20)
+        .moveTo(CT_ControlGroup)
+        .plugTo( this, "CameraConnection")
+        .updateSize();
+
+      Pane_GUI.addButton("CT_Disconnect")
+        .setValue(0)
+        .setPosition(70, 50)
+        .setSize(50, 20)
+        .moveTo(CT_ControlGroup)
+        .plugTo( this, "CameraExit")
+        .updateSize();  
+
+
+      CT_accordion = Pane_GUI.addAccordion("CT_acc")
+        .setPosition(CT_zero_x+1, CT_end_y-10)
+        .setWidth(CT_pane_W-2)
+        .addItem(CT_ControlGroup)
+        //.addItem(g2)
+        //.addItem(g3)
+        ;
+      CT_accordion.close(0, 1, 2);
+      CT_accordion.setCollapseMode(Accordion.MULTI);
+    } 
+
+    StringDict update(StringDict Status) {
       fill(0);
       stroke(0);
-      rect(CT_zero_x, CT_zero_y, CT_pane_W, CT_pane_H);
+      rect(CT_zero_x, CT_zero_y+20, CT_pane_W, CT_pane_H-20);
+
+      pushStyle();
+      noFill();
+      stroke(0);
+      rect(CT_zero_x, CT_zero_y+20, CT_pane_W, CT_pane_H-20);
+      popStyle();
 
       fill(accent);
       rect(CT_zero_x, CT_zero_y, CT_pane_W, 20);
@@ -230,7 +276,42 @@ class Pane_Statusbar {
       textFont(createFont("Yu Gothic UI Bold", 12));
       textSize(18);
       textAlign(CENTER, CENTER);
-      text("CONTROL CAN", CT_center_x, CT_zero_y+6);
+      text("FORWARD CAMERA CAN", CT_center_x, CT_zero_y+6);
+
+      //Temperature Gauges
+      StatusBar_Widgits.linear_gauge(CT_zero_x+250, CT_zero_y+70, "Valid", 100, 150, 0, 120, "Deg F", "CPU T");
+      StatusBar_Widgits.linear_gauge(CT_zero_x+210, CT_zero_y+70, "Invalid", 80, 150, 0, 120, "Deg F", "Amb T");
+      StatusBar_Widgits.linear_gauge(CT_zero_x+170, CT_zero_y+70, "Valid", int(Status.get("FC_Usage_CPU")), 100, 0, 80, "%", "CPU %");
+      StatusBar_Widgits.dot_gauge(CT_zero_x+290, CT_center_y-10, "Valid", "Good", "Leak");
+      StatusBar_Widgits.dot_gauge(CT_zero_x+290, CT_center_y+37, "Valid", "Caution", "Comm's");
+
+      pushStyle();
+      rectMode(CORNER);
+      stroke(#00FF00);
+      textFont(createFont("Yu Gothic UI Bold", 12));
+      textSize(12);
+      textAlign(CORNER, CENTER);
+      fill(#00FF00);
+      noFill();
+
+      text("MQTT STATE:", CT_zero_x+1, CT_zero_y+27);
+      text(""+Status.get("CT_State_MQTT"), CT_zero_x+83, CT_zero_y+27);
+      rect(CT_zero_x+80, CT_zero_y+23, 65, 15);
+
+      text("LOG STATE:", CT_zero_x+1, CT_zero_y+45);
+      text(""+Status.get("CT_State_LOG"), CT_zero_x+83, CT_zero_y+45);
+      rect(CT_zero_x+80, CT_zero_y+41, 65, 15);
+
+      text("CAMERA:", CT_zero_x+1, CT_zero_y+63);
+      text(""+Status.get("CT_State_CAMERA"), CT_zero_x+83, CT_zero_y+63);
+      rect(CT_zero_x+80, CT_zero_y+59, 65, 15);
+
+      text("MODE: ", CT_zero_x+1, CT_zero_y+81);
+      text(""+Status.get("CT_Mode"), CT_zero_x+83, CT_zero_y+81);
+      rect(CT_zero_x+80, CT_zero_y+77, 65, 15);
+
+      popStyle();
+      return Status;
     }
   }
 
@@ -281,9 +362,4 @@ class Pane_Statusbar {
       text("BATTERY CAN", CB_center_x, CB_zero_y+6);
     }
   }
-
-
- 
-
-
 }//end class

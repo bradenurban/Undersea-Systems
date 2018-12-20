@@ -12,7 +12,7 @@ mode = "StartUp"
 state = {"config":  "NotLoaded",
          "mqtt":    "NotStarted",
          "log":     "NotStarted",
-         "Cam":     "NotStarted"}
+         "serial":  "NotStarted"}
 
 attitude = {"pitch":    0,
             "roll":     0,
@@ -126,8 +126,8 @@ while error == 0:
                 #Find Log State--------------------------
                 health_LogState = state["log"]
                 
-                #Find Camera State--------------------------
-                health_CamState = state["Cam"]
+                #Find serial State--------------------------
+                health_CamState = state["serial"]
                 
                 #Find Mode---------------------------------
                 health_Mode = mode

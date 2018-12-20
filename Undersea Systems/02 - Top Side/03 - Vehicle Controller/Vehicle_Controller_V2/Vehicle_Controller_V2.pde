@@ -94,7 +94,7 @@ void setup() {
 
   //MQTT parameters
   VC_Client = new MQTTClient(this);
-  VC_Client.connect("mqtt://192.168.1.82:1883", "VC");
+  VC_Client.connect("mqtt://192.168.1.74:1883", "VC");
   VC_Client.subscribe("USS/SS/#");
   VC_Client.publish("USS/TS/VC", "Started");
   

@@ -16,6 +16,7 @@ class Pane_Gauges {
   color textColor = #0AE300;
   Widgits Widgits_2x3 = new Widgits();
   config_2x3 config_2x3_1 = new config_2x3();
+  Accordion Gauge_accordion;
 
 
   Pane_Gauges() {
@@ -49,7 +50,7 @@ class Pane_Gauges {
     rect(pane_x, pane_y, pane_W, pane_H);
 
     //ConfigList
-    String[] TopicList = {"1X1 Gauge", "1X2 Gauge", "2x2 Gauge", "1X3 Gauge", "2X3 Gauge"};
+    String[] TopicList = {"1X1 Gauge", "2X3 Gauge"};
 
 
 
@@ -188,51 +189,70 @@ class Pane_Gauges {
         GaugeNumber = temp_GaugeNumber;
 
         //setup widgits
-        //Widgits_2x3.initialSetup(g_pane_x,g_pane_y,g_pane_W,g_pane_H);
+      Group Gauge_ControlGroup = Pane_GUI.addGroup("Gauge"+GaugeNumber)
+        .setBackgroundColor(color(50, 64))
+        .setBackgroundHeight(150);
 
+
+      Gauge_accordion = Pane_GUI.addAccordion("accordion"+GaugeNumber)
+                 .setPosition(g_zero_x+1,g_zero_y+1)
+                 .setWidth(g_pane_W-2)
+                 .addItem(Gauge_ControlGroup)
+                 ;
+                 
+     Gauge_accordion.close(0,1,2);
+     Gauge_accordion.setCollapseMode(Accordion.MULTI);
         //button bar
         Pane_GUI.addButton(GaugeNumber+"Guage"+"Lights")
           .setLabel("Lights")
           .setValue(0)
-          .setPosition((g_zero_x+1)+ 0*(g_pane_W-2)/6, g_end_y-20)
+          .setPosition(1+(0*(g_pane_W-2)/6),5)
           .setSize((g_pane_W-2)/6, 20)
+          .moveTo(Gauge_ControlGroup)
           .plugTo(this, "Test");
         ;
         Pane_GUI.addButton(GaugeNumber+"Guage"+"Compass")
           .setLabel("Compass")
           .setValue(0)
-          .setPosition((g_zero_x+1)+ 1*(g_pane_W-2)/6, g_end_y-20)
+          .setPosition(1+(1*(g_pane_W-2)/6),5)
           .setSize((g_pane_W-2)/6, 20)
+          .moveTo(Gauge_ControlGroup)
           .plugTo(this, "Test");
         ;
-        Pane_GUI.addButton(GaugeNumber+"Guage"+"Thruster")
+        Pane_GUI.addButton(GaugeNumber+"Guage"+"Thrusters")
           .setLabel("Thrusters")
           .setValue(0)
-          .setPosition((g_zero_x+1)+ 2*(g_pane_W-2)/6, g_end_y-20)
+          .setPosition(1+(2*(g_pane_W-2)/6),5)
           .setSize((g_pane_W-2)/6, 20)
+          .moveTo(Gauge_ControlGroup)
           .plugTo(this, "Test");
         ;
-        Pane_GUI.addButton(GaugeNumber+"Guage"+"Force")
+        Pane_GUI.addButton(GaugeNumber+"Guage"+"Forces")
           .setLabel("Forces")
           .setValue(0)
-          .setPosition((g_zero_x+1)+ 3*(g_pane_W-2)/6, g_end_y-20)
+          .setPosition(1+(3*(g_pane_W-2)/6),5)
           .setSize((g_pane_W-2)/6, 20)
+          .moveTo(Gauge_ControlGroup)
           .plugTo(this, "Test");
         ;
         Pane_GUI.addButton(GaugeNumber+"Guage"+"TOI")
           .setLabel("TOI")
           .setValue(0)
-          .setPosition((g_zero_x+1)+ 4*(g_pane_W-2)/6, g_end_y-20)
+          .setPosition(1+(4*(g_pane_W-2)/6),5)
           .setSize((g_pane_W-2)/6, 20)
+          .moveTo(Gauge_ControlGroup)
           .plugTo(this, "Test");
         ;
         Pane_GUI.addButton(GaugeNumber+"Guage"+"Depth")
           .setLabel("Depth")
           .setValue(0)
-          .setPosition((g_zero_x+1)+ 5*(g_pane_W-2)/6, g_end_y-20)
+          .setPosition(1+(5*(g_pane_W-2)/6),5)
           .setSize((g_pane_W-2)/6, 20)
+          .moveTo(Gauge_ControlGroup)
           .plugTo(this, "Test");
         ;
+
+
 
         //lights--------------------------------------------------------------------
         Pane_GUI.addSlider(GaugeNumber+"SliderLight1")
@@ -337,7 +357,6 @@ class Pane_Gauges {
           Widgits_2x3.Lights(g_pane_x, g_pane_y, g_pane_W, g_pane_H-20);
           break;
         case "Depth":
-          println("depth function");
           Widgits_2x3.circle_gauge(g_center_x, g_center_y, "Valid", 100, 150, 0, 120, "Deg F", "CPU T");
           break;
         }//end switch
