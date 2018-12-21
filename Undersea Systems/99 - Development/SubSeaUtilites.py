@@ -10,7 +10,6 @@ import datetime
 import os
 import psutil
 import serial
-import threading
 
 
 def test():
@@ -179,37 +178,14 @@ class SSMQTTClass:
 
     
 class SerialIMU:
-    def __init__(self, logTitle,port,baud):
+    def __init__(self, logTitle):
         self.ss_Log = SSLog()
         self.logTitle = logTitle
-        self.state = "Not Started"
-        self.port = port
-        self.baud = baud
-        
-    def run(self,):
-        self.ss_Log.record(self.logTitle, "Serial","State","Starting at "+self.port+" at baud: "+self.baud)
-        try:
-            self.SP = serial.Serial(self.port,self.baud)
-            #Log entry
-            self.ss_Log.record(self.logTitle, "Serial","State","Started")
-            self.state = "Started"
-            #print to consolue
-            print("Serial Started")
-            
-        except:
-            self.state="Not Started"
-            self.ss_Log.record(self.logTitle, "Serial","State","Error, failed to start")
-            print("Serial Failed")
     
-    
-    def readData(self,ser,attitude):
+    def parseData(self,data,attitude):
         while True:
-            
-            data = ser.readline().decode()
             self.ss_Log.record(self.logTitle, "IMU","Reading",data)
-        
             parsedData = data.split(",")
-            
             attitude["heading"] = parsedData[0]
             attitude["pitch"] = parsedData[1]
             attitude["roll"] = parsedData[2]
@@ -219,13 +195,9 @@ class SerialIMU:
             attitude["sysCal"] = parsedData[6]
             attitude["aclCal"] = parsedData[7]
             attitude["gyrCal"] = parsedData[8]
-            
             return(attitude)
-    
-    def readIMU(self, attitude):
-            thread = threading.Thread(target=self.readData, args=(self.SP,attitude,))
-            thread.start()
-            return(attitude)
+  
+
     
     
     

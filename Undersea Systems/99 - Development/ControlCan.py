@@ -2,11 +2,12 @@
 import SubSeaUtilites
 import time
 import os
+import serial
+
 dirname = os.path.dirname(__file__)
 configFilename = os.path.join(dirname,"CC_Config.txt")
 #Declare Variables
 
-newMode = "hello"
 mode = "StartUp"
 
 state = {"config":  "NotLoaded",
@@ -22,14 +23,16 @@ attitude = {"pitch":    0,
             "sway":     0,
             "sysCal":   0,
             "aclCal":   0,
-            "gyrCal":   0,}
+            "gyrCal":   0}
 
 error = 0
 
 #----------Temp Variables-------------------------------
 prev_heartbeat = 0
-#--------------------------------------------------------
 
+#---------------------
+#----main loop--------
+#---------------------
 
 while error == 0:
     #Setup and load on the config files---------------------
@@ -54,10 +57,19 @@ while error == 0:
         #--------------------------------------
         print("Starting SerialIMU...")
         print(config["SerialIMU_port"])
-        CC_serialIMU = SubSeaUtilites.SerialIMU(logTitle,config["SerialIMU_port"],config["SerialIMU_baud"])
-        CC_serialIMU.run()
-        state["serialIMU"] = CC_serialIMU.state    
-        print(state["serialIMU"])
+        CC_serialIMU = SubSeaUtilites.SerialIMU(logTitle)
+        
+        try:
+            CC_log.record(logTitle, "SerialIMU", "State", "Starting...")
+            time.sleep(0.5)
+            serialIMU = serial.Serial(config["SerialIMU_port"],config["SerialIMU_baud"])
+            CC_log.record(logTitle, "SerialIMU", "State", "Started")
+            state["serial"] = "started"
+            print("Serial Started")
+        except:
+            CC_log.record(logTitle, "SerialIMU", "State", "Serial Failed")
+            
+        print(state["serial"])
         #-----------------------
         print("Starting health functions...")
         CC_health = SubSeaUtilites.Health(logTitle)
@@ -96,16 +108,22 @@ while error == 0:
         
         #-----------------------------
         print("Starting SerialIMU...")
-        CC_serialIMU = SubSeaUtilites.SerialIMU(logTitle,config["SerialIMU_port"],config["SerialIMU_baud"])
-        CC_serialIMU.run()
-        state["serialIMU"] = CC_serialIMU.state    
+        print(config["SerialIMU_port"])
+        
+        try:
+            CC_log.record(logTitle, "SerialIMU", "State", "Starting...")
+            time.sleep(0.5)
+            serialIMU = serial.Serial(config["SerialIMU_port"],config["SerialIMU_baud"])
+            CC_log.record(logTitle, "SerialIMU", "State", "Started")
+            state["serial"] = "Started"
+            print("Serial Started")
+        except:
+            CC_log.record(logTitle, "SerialIMU", "State", "Serial Failed")
+            
         print(state["serialIMU"])
         #-----------------------
-
     
     elif mode == "Heartbeat":  
-        
-        
         if  time.time()-prev_heartbeat >= int(config["Heartbeat_pulse"]):
         #---------------------
             if state["mqtt"]!="NotStarted":
@@ -142,12 +160,10 @@ while error == 0:
                 CC_mqttc.sendMessage("USS/SS/CtrCam/Health",health_message)
                 prev_heartbeat = time.time()
                 
-            
             else: 
                 print("Pulse")
                 CC_log.record(logTitle, "Heartbeat", "Heartbeat", "Pulse")
-   
-        
+
         #print(prev_heartbeat)
     #Mode Changes----------------------------
     
@@ -160,20 +176,18 @@ while error == 0:
         mode = "CreateLog" 
 
     elif state["mqtt"] == "NotStarted":
-        time.sleep(2)
+        time.sleep(1)
         mode = "StartMQTT"
     
+    #read and update serial data
     elif state["serial"] == "Started":
-        attitude = CC_serialIMU.readIMU(attitude)
-        
-        
-           
+        while serialIMU.in_waiting:
+            attitude = CC_serialIMU(serialIMU.readline(),attitude)
         print(attitude)
     
     elif mode != "Heartbeat":
         mode = "Heartbeat" 
         
-    
     try:   
         if  CC_mqttc.newModeFlag == 1:
             mode =  CC_mqttc.newMode
