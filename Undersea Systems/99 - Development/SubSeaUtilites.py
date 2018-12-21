@@ -183,7 +183,6 @@ class SerialIMU:
         self.ss_Log.record(self.logTitle, "IMU","Reading",data)
         parsedData = data.split(",")
         attitude["heading"] = parsedData[0]
-        print("Heading: " + attitude["heading"])
         attitude["pitch"] = parsedData[1]
         attitude["roll"] = parsedData[2]
         attitude["heave"] = parsedData[3]

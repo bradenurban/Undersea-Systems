@@ -69,7 +69,7 @@ class Pane_Gauges {
   } // end initialUpdate
 
 
-  StringDict update(StringDict Status, IntDict Attitude) {
+  StringDict update(StringDict Status, FloatDict Attitude) {
     fill(0);
     rect(pane_x, pane_y, pane_W, pane_H);
     //println(GuageConfig);
@@ -149,7 +149,7 @@ class Pane_Gauges {
     }//end 2x3 initial setup
 
 
-    void update(StringDict Status, IntDict Attitude) {
+    void update(StringDict Status, FloatDict Attitude) {
       gauge1.update(Status, Attitude);
       gauge2.update(Status, Attitude);
       gauge3.update(Status, Attitude);
@@ -333,7 +333,7 @@ class Pane_Gauges {
           ;
       }
 
-      void update(StringDict Status, IntDict Attitude) {
+      void update(StringDict Status, FloatDict Attitude) {
 
         fill(0);
         stroke(255);

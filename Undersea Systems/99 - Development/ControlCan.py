@@ -128,8 +128,8 @@ while error == 0:
             if state["mqtt"]!="NotStarted":
                 print("Heatrbeat - MQTT")
                 #find cpu temp-------------------------
-                #health_cpuTemp = CC_health.cpuTemp()
-                health_cpuTemp = "65"
+                health_cpuTemp = CC_health.cpuTemp()
+                #health_cpuTemp = "65"
                 
                 #find ambient temp-------------------------
                 health_ambTemp = "27"
@@ -156,7 +156,7 @@ while error == 0:
                 health_message = health_cpuTemp + "," + health_ambTemp +","+ health_cpuUsuage + "," + health_MQTTState + "," +  health_LogState + "," + health_CamState  + "," + health_Mode  + "," + health_Leak
                 
                 #send MQTT-------------------------
-                CC_mqttc.sendMessage("USS/SS/CtrCam/Health",health_message)
+                CC_mqttc.sendMessage("USS/SS/CtrCan/Health",health_message)
                 prev_heartbeat = time.time()
                 
             else: 
@@ -196,6 +196,8 @@ while error == 0:
         while serialIMU.in_waiting > 30:
             temp_data = str(serialIMU.readline()).replace("b'","").replace("\\r\\n", "").replace("'","")
             attitude = CC_serialIMU.parseData(temp_data,attitude)
+            CC_mqttc.sendMessage("USS/SS/CtrCan/IMU",temp_data)
+
     except:
         print("Serial Error")
         time.sleep(3)

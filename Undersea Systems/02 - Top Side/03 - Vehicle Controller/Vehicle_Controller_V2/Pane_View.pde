@@ -47,7 +47,7 @@ class Pane_View {
 
 
   //----------
-  StringDict update(StringDict Status, IntDict Attitude) {  
+  StringDict update(StringDict Status, FloatDict Attitude) {  
 
     strokeWeight(1);
     rectMode(CORNER); 
@@ -342,7 +342,7 @@ class Pane_View {
       AH_theta = 0;
     }// end initial setup
 
-    void update(StringDict Status, IntDict Attitude) {
+    void update(StringDict Status, FloatDict Attitude) {
       noFill();
       stroke(graphicColor,75);
       strokeWeight(1);

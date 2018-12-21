@@ -44,7 +44,7 @@ class Pane_Console {
   } // end initialUpdate
 
 
-  StringDict update(StringDict Status, StringDict MQTT, IntDict Attitude) {
+  StringDict update(StringDict Status, StringDict MQTT, FloatDict Attitude) {
     Status = VC_Console1.update(Status);
     Status = MQTT_Pub1.update(Status);
              MQTT_Sub1.update(Status, MQTT);

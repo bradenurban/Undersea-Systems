@@ -10,7 +10,7 @@ int temp;
 
 StringDict Status;
 StringDict MQTT;
-IntDict Attitude;
+FloatDict Attitude;
 
 //contributed Libraries
 import controlP5.*;//GUI classes
@@ -27,11 +27,11 @@ import static javax.swing.JOptionPane.*;//For popup windows
 // https://docs.oracle.com/javase/tutorial/uiswing/components/dialog.html
 
 //declare custom classes
-Pane_Console Pane_Console1 = new Pane_Console();
-Pane_Mission Pane_Mission1 = new Pane_Mission();
+Pane_Console Pane_Console1 =     new Pane_Console();
+Pane_Mission Pane_Mission1 =     new Pane_Mission();
 Pane_Statusbar Pane_Statusbar1 = new Pane_Statusbar();
-Pane_View Pane_View1 = new Pane_View();
-Pane_Gauges Pane_Gauges1 = new Pane_Gauges();
+Pane_View Pane_View1 =           new Pane_View();
+Pane_Gauges Pane_Gauges1 =       new Pane_Gauges();
 
 
 void setup() {
@@ -52,22 +52,24 @@ void setup() {
   Status.set("TargetHeading","150");  
   Status.set("HeadingMode","MANUAL");
   Status.set("FC_Usage_CPU","0");
+  Status.set("CC_Usage_CPU","0");
 
   //initial population of MQTT string dictionary
   MQTT = new StringDict();
   MQTT.set("USS/SS/#","Initial");
 
   //initial population of MQTT string dictionary
-  Attitude = new IntDict();
+  Attitude = new FloatDict();
   Attitude.set("Heading",10);
   Attitude.set("Pitch",3);
   Attitude.set("Roll",5);
   Attitude.set("Heave",0);
   Attitude.set("Sway",0);
   Attitude.set("Surge",0);
-  Attitude.set("Depth",10);
-  
-
+  Attitude.set("SysCal",0);
+  Attitude.set("AclCal",0);
+  Attitude.set("GyrCal",0);
+  Attitude.set("Depth",10); 
 
   //Setup Panes
   Pane_Console1.initialSetup((GUI_Size[0]-Pane_Console_Size[0]), 
@@ -102,13 +104,11 @@ void setup() {
   fwdCam = new IPCapture(this, "http://169.254.51.218:9090/stream/video.mjpeg", "", "");
 }
 
+//----------------------------------------------------------------------------------
+//Main Draw-------------------------------------------------------------------------
+//----------------------------------------------------------------------------------
+
 void draw() {
-  
-  //temp sims for development--------------------------
-  temp = CompassSim(int(Attitude.get("Heading")));
-  
-  //string dictionaries for all classes--------------------------
-  Attitude.set("Heading",temp);
   
   //update panes--------------------------
   Status = Pane_Console1.update(Status, MQTT, Attitude);
@@ -119,17 +119,26 @@ void draw() {
   
 }
 
-
-//begin functions---------------------------------------------------------------
+//----------------------------------------------------------------------------------
+//begin functions-------------------------------------------------------------------
+//----------------------------------------------------------------------------------
 
 void messageReceived(String topic, byte[] payload) {
-  println("Message: " + topic + " - " + new String(payload));
   String message = new String(payload);
   MQTT = addMessage(topic,message,MQTT);
   if (topic.equals("USS/SS/FwdCam/Health")){
     Status = parseFC_Health(message,Status);
+    println("Message: " + topic + " - " + new String(payload));
   }//end if
-
+  if (topic.equals("USS/SS/CtrCan/Health")){
+    Status = parseCC_Health(message,Status);
+    println("Message: " + topic + " - " + new String(payload));
+  }//end if
+    if (topic.equals("USS/SS/CtrCan/IMU")){
+    Attitude = parseIMU(message,Attitude);
+  }//end if
+  
+  
 }//end messageReceived
 
 
@@ -171,9 +180,36 @@ StringDict parseFC_Health(String message, StringDict Status){
    Status.set("FC_Mode",temp[6]);
    Status.set("FC_Leak",temp[7]);
   return Status;
-  
 }//end parse function
 
+//Parse Health messages to Status dictionary
+StringDict parseCC_Health(String message, StringDict Status){
+  String[] temp = split(message,',');
+   Status.set("CC_Temp_CPU",temp[0]);
+   Status.set("CC_Temp_Amb",temp[1]);
+   Status.set("CC_Usage_CPU",temp[2]);
+   Status.set("CC_State_MQTT",temp[3]);
+   Status.set("CC_State_LOG",temp[4]);
+   Status.set("CC_State_SERIAL",temp[5]);
+   Status.set("CC_Mode",temp[6]);
+   Status.set("CC_Leak",temp[7]);
+  return Status;
+}//end parse function
+
+//Parse Health messages to Status dictionary
+FloatDict parseIMU(String message, FloatDict Attitude){
+  String[] temp = split(message,',');
+   Attitude.set("Heading",float(temp[0]));
+   Attitude.set("Pitch",float(temp[1]));
+   Attitude.set("Roll",float(temp[2]));
+   Attitude.set("Heave",float(temp[3]));
+   Attitude.set("Surge",float(temp[4]));
+   Attitude.set("Sway",float(temp[5]));
+   Attitude.set("SysCal",float(temp[6]));
+   Attitude.set("AclCal",float(temp[7]));
+   Attitude.set("GyrCal",float(temp[8]));
+  return Attitude;
+}//end parse function
 
 StringDict addMessage(String topic, String message, StringDict MQTT){
   MQTT.set(topic,message);

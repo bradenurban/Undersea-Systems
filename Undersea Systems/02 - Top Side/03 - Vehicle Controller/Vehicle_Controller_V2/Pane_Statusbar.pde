@@ -17,9 +17,11 @@ class Pane_Statusbar {
   color button_text = #E5E5E5;
 
   CameraCan FwdCamera = new CameraCan();
-  ControlCan CtrlCan = new ControlCan();
+  ControlCan CtrCan = new ControlCan();
   BatteryCan BatCan = new BatteryCan();
+  
   Widgits StatusBar_Widgits = new Widgits();
+  
   Accordion FC_accordion;
   Accordion CT_accordion;
 
@@ -40,13 +42,13 @@ class Pane_Statusbar {
 
     //Camera Can Setup
     FwdCamera.initialSetup(zero_x, zero_y, pane_W/4, pane_H);
-    CtrlCan.initialSetup(zero_x+pane_W/4, zero_y, pane_W/2, pane_H);
+    CtrCan.initialSetup(zero_x+pane_W/4, zero_y, pane_W/2, pane_H);
     BatCan.initialSetup(zero_x+pane_W/4+pane_W/2, zero_y, pane_W/4, pane_H);
   } // end initialUpdate
 
-  StringDict update(StringDict Status, IntDict Attitude) {
+  StringDict update(StringDict Status, FloatDict Attitude) {
     Status = FwdCamera.update(Status);
-    Status = CtrlCan.update(Status);  
+    Status = CtrCan.update(Status, Attitude);  
     BatCan.update();
 
     return Status;
@@ -191,6 +193,9 @@ class Pane_Statusbar {
     }//end cameraConnection
   }
 
+//----------------------------------------------------------------------------------
+//Control Can-----------------------------------------------------------------------
+//----------------------------------------------------------------------------------
   class ControlCan {
     int CT_pane_x;
     int CT_pane_y;
@@ -202,9 +207,12 @@ class Pane_Statusbar {
     int CT_zero_x;
     int CT_end_y;
     int CT_end_x;  
-
+    
+    int[] imuStatus;
+    
     ControlCan() {
     }
+    
     void initialSetup(int temp_pane_x, int temp_pane_y, int temp_pane_W, int temp_pane_H) {
       CT_pane_x= temp_pane_x;
       CT_pane_y= temp_pane_y;
@@ -251,14 +259,13 @@ class Pane_Statusbar {
         .setPosition(CT_zero_x+1, CT_end_y-10)
         .setWidth(CT_pane_W-2)
         .addItem(CT_ControlGroup)
-        //.addItem(g2)
-        //.addItem(g3)
+
         ;
       CT_accordion.close(0, 1, 2);
       CT_accordion.setCollapseMode(Accordion.MULTI);
     } 
 
-    StringDict update(StringDict Status) {
+    StringDict update(StringDict Status, FloatDict Attitude) {
       fill(0);
       stroke(0);
       rect(CT_zero_x, CT_zero_y+20, CT_pane_W, CT_pane_H-20);
@@ -276,14 +283,21 @@ class Pane_Statusbar {
       textFont(createFont("Yu Gothic UI Bold", 12));
       textSize(18);
       textAlign(CENTER, CENTER);
-      text("FORWARD CAMERA CAN", CT_center_x, CT_zero_y+6);
+      text("CONTROL CAMERA CAN", CT_center_x, CT_zero_y+6);
 
       //Temperature Gauges
       StatusBar_Widgits.linear_gauge(CT_zero_x+250, CT_zero_y+70, "Valid", 100, 150, 0, 120, "Deg F", "CPU T");
       StatusBar_Widgits.linear_gauge(CT_zero_x+210, CT_zero_y+70, "Invalid", 80, 150, 0, 120, "Deg F", "Amb T");
-      StatusBar_Widgits.linear_gauge(CT_zero_x+170, CT_zero_y+70, "Valid", int(Status.get("FC_Usage_CPU")), 100, 0, 80, "%", "CPU %");
+      StatusBar_Widgits.linear_gauge(CT_zero_x+170, CT_zero_y+70, "Valid", int(Status.get("CC_Usage_CPU")), 100, 0, 80, "%", "CPU %");
+      
       StatusBar_Widgits.dot_gauge(CT_zero_x+290, CT_center_y-10, "Valid", "Good", "Leak");
       StatusBar_Widgits.dot_gauge(CT_zero_x+290, CT_center_y+37, "Valid", "Caution", "Comm's");
+      
+      //for
+      
+      StatusBar_Widgits.dot_gauge(CT_zero_x+330, CT_center_y-10, "Valid", "Good", "SysCal");
+      StatusBar_Widgits.dot_gauge(CT_zero_x+330, CT_center_y+37, "Valid", "Caution", "AclCal");
+      StatusBar_Widgits.dot_gauge(CT_zero_x+410, CT_center_y-10, "Valid", "Good", "GyrCal");
 
       pushStyle();
       rectMode(CORNER);
@@ -295,19 +309,19 @@ class Pane_Statusbar {
       noFill();
 
       text("MQTT STATE:", CT_zero_x+1, CT_zero_y+27);
-      text(""+Status.get("CT_State_MQTT"), CT_zero_x+83, CT_zero_y+27);
+      text(""+Status.get("CC_State_MQTT"), CT_zero_x+83, CT_zero_y+27);
       rect(CT_zero_x+80, CT_zero_y+23, 65, 15);
 
       text("LOG STATE:", CT_zero_x+1, CT_zero_y+45);
-      text(""+Status.get("CT_State_LOG"), CT_zero_x+83, CT_zero_y+45);
+      text(""+Status.get("CC_State_LOG"), CT_zero_x+83, CT_zero_y+45);
       rect(CT_zero_x+80, CT_zero_y+41, 65, 15);
 
-      text("CAMERA:", CT_zero_x+1, CT_zero_y+63);
-      text(""+Status.get("CT_State_CAMERA"), CT_zero_x+83, CT_zero_y+63);
+      text("SERIAL:", CT_zero_x+1, CT_zero_y+63);
+      text(""+Status.get("CC_State_SERIAL"), CT_zero_x+83, CT_zero_y+63);
       rect(CT_zero_x+80, CT_zero_y+59, 65, 15);
 
       text("MODE: ", CT_zero_x+1, CT_zero_y+81);
-      text(""+Status.get("CT_Mode"), CT_zero_x+83, CT_zero_y+81);
+      text(""+Status.get("CC_Mode"), CT_zero_x+83, CT_zero_y+81);
       rect(CT_zero_x+80, CT_zero_y+77, 65, 15);
 
       popStyle();
@@ -315,6 +329,7 @@ class Pane_Statusbar {
     }
   }
 
+//--------------------------------------------------------------------------------
 
   class BatteryCan {
     int CB_pane_x;
