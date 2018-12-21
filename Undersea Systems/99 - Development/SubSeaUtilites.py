@@ -11,12 +11,9 @@ import os
 import psutil
 import serial
 
-
 def test():
     print("helloworld")    
-       
-
-        
+      
 def loadConfig(temp_filepath):
     parameters = {}
     try:
@@ -183,19 +180,19 @@ class SerialIMU:
         self.logTitle = logTitle
     
     def parseData(self,data,attitude):
-        while True:
-            self.ss_Log.record(self.logTitle, "IMU","Reading",data)
-            parsedData = data.split(",")
-            attitude["heading"] = parsedData[0]
-            attitude["pitch"] = parsedData[1]
-            attitude["roll"] = parsedData[2]
-            attitude["heave"] = parsedData[3]
-            attitude["surge"] = parsedData[4]
-            attitude["sway"] = parsedData[5]
-            attitude["sysCal"] = parsedData[6]
-            attitude["aclCal"] = parsedData[7]
-            attitude["gyrCal"] = parsedData[8]
-            return(attitude)
+        self.ss_Log.record(self.logTitle, "IMU","Reading",data)
+        parsedData = data.split(",")
+        attitude["heading"] = parsedData[0]
+        print("Heading: " + attitude["heading"])
+        attitude["pitch"] = parsedData[1]
+        attitude["roll"] = parsedData[2]
+        attitude["heave"] = parsedData[3]
+        attitude["surge"] = parsedData[4]
+        attitude["sway"] = parsedData[5]
+        attitude["sysCal"] = parsedData[6]
+        attitude["aclCal"] = parsedData[7]
+        attitude["gyrCal"] = parsedData[8]
+        return(attitude)
   
 
     
