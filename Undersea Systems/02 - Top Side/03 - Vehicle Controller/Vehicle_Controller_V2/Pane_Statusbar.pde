@@ -146,8 +146,7 @@ class Pane_Statusbar {
       StatusBar_Widgits.linear_gauge(CC_zero_x+210, CC_zero_y+70, "Invalid", 80, 150, 0, 120, "Deg F", "Amb T");
       StatusBar_Widgits.linear_gauge(CC_zero_x+170, CC_zero_y+70, "Valid", int(Status.get("FC_Usage_CPU")), 100, 0, 80, "%", "CPU %");
       StatusBar_Widgits.dot_gauge(CC_zero_x+290, CC_center_y-10, "Valid", "Good", "Leak");
-      StatusBar_Widgits.dot_gauge(CC_zero_x+290, CC_center_y+37, "Valid", "Caution", "Comm's");
-
+      
       pushStyle();
       rectMode(CORNER);
       stroke(#00FF00);
@@ -291,13 +290,9 @@ class Pane_Statusbar {
       StatusBar_Widgits.linear_gauge(CT_zero_x+170, CT_zero_y+70, "Valid", int(Status.get("CC_Usage_CPU")), 100, 0, 80, "%", "CPU %");
       
       StatusBar_Widgits.dot_gauge(CT_zero_x+290, CT_center_y-10, "Valid", "Good", "Leak");
-      StatusBar_Widgits.dot_gauge(CT_zero_x+290, CT_center_y+37, "Valid", "Caution", "Comm's");
-      
-      //for
-      
       StatusBar_Widgits.dot_gauge(CT_zero_x+330, CT_center_y-10, "Valid", "Good", "SysCal");
-      StatusBar_Widgits.dot_gauge(CT_zero_x+330, CT_center_y+37, "Valid", "Caution", "AclCal");
-      StatusBar_Widgits.dot_gauge(CT_zero_x+410, CT_center_y-10, "Valid", "Good", "GyrCal");
+      StatusBar_Widgits.dot_gauge(CT_zero_x+290, CT_center_y+37, "Valid", "Caution", "AclCal");
+      StatusBar_Widgits.dot_gauge(CT_zero_x+330, CT_center_y+37, "Valid", "Good", "GyrCal");
 
       pushStyle();
       rectMode(CORNER);

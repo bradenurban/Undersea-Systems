@@ -189,24 +189,24 @@ class Pane_Gauges {
         GaugeNumber = temp_GaugeNumber;
 
         //setup widgits
-      Group Gauge_ControlGroup = Pane_GUI.addGroup("Gauge"+GaugeNumber)
-        .setBackgroundColor(color(50, 64))
-        .setBackgroundHeight(150);
+        Group Gauge_ControlGroup = Pane_GUI.addGroup("Gauge"+GaugeNumber)
+          .setBackgroundColor(color(50, 64))
+          .setBackgroundHeight(150);
 
 
-      Gauge_accordion = Pane_GUI.addAccordion("accordion"+GaugeNumber)
-                 .setPosition(g_zero_x+1,g_zero_y+1)
-                 .setWidth(g_pane_W-2)
-                 .addItem(Gauge_ControlGroup)
-                 ;
-                 
-     Gauge_accordion.close(0,1,2);
-     Gauge_accordion.setCollapseMode(Accordion.MULTI);
+        Gauge_accordion = Pane_GUI.addAccordion("accordion"+GaugeNumber)
+          .setPosition(g_zero_x+1, g_end_y-20)
+          .setWidth(g_pane_W-2)
+          .addItem(Gauge_ControlGroup)
+          ;
+
+        Gauge_accordion.close(0, 1, 2);
+        Gauge_accordion.setCollapseMode(Accordion.MULTI);
         //button bar
         Pane_GUI.addButton(GaugeNumber+"Guage"+"Lights")
           .setLabel("Lights")
           .setValue(0)
-          .setPosition(1+(0*(g_pane_W-2)/6),5)
+          .setPosition(1+(0*(g_pane_W-2)/6), 5)
           .setSize((g_pane_W-2)/6, 20)
           .moveTo(Gauge_ControlGroup)
           .plugTo(this, "Test");
@@ -214,7 +214,7 @@ class Pane_Gauges {
         Pane_GUI.addButton(GaugeNumber+"Guage"+"Compass")
           .setLabel("Compass")
           .setValue(0)
-          .setPosition(1+(1*(g_pane_W-2)/6),5)
+          .setPosition(1+(1*(g_pane_W-2)/6), 5)
           .setSize((g_pane_W-2)/6, 20)
           .moveTo(Gauge_ControlGroup)
           .plugTo(this, "Test");
@@ -222,7 +222,7 @@ class Pane_Gauges {
         Pane_GUI.addButton(GaugeNumber+"Guage"+"Thrusters")
           .setLabel("Thrusters")
           .setValue(0)
-          .setPosition(1+(2*(g_pane_W-2)/6),5)
+          .setPosition(1+(2*(g_pane_W-2)/6), 5)
           .setSize((g_pane_W-2)/6, 20)
           .moveTo(Gauge_ControlGroup)
           .plugTo(this, "Test");
@@ -230,7 +230,7 @@ class Pane_Gauges {
         Pane_GUI.addButton(GaugeNumber+"Guage"+"Forces")
           .setLabel("Forces")
           .setValue(0)
-          .setPosition(1+(3*(g_pane_W-2)/6),5)
+          .setPosition(1+(3*(g_pane_W-2)/6), 5)
           .setSize((g_pane_W-2)/6, 20)
           .moveTo(Gauge_ControlGroup)
           .plugTo(this, "Test");
@@ -238,7 +238,7 @@ class Pane_Gauges {
         Pane_GUI.addButton(GaugeNumber+"Guage"+"TOI")
           .setLabel("TOI")
           .setValue(0)
-          .setPosition(1+(4*(g_pane_W-2)/6),5)
+          .setPosition(1+(4*(g_pane_W-2)/6), 5)
           .setSize((g_pane_W-2)/6, 20)
           .moveTo(Gauge_ControlGroup)
           .plugTo(this, "Test");
@@ -246,12 +246,11 @@ class Pane_Gauges {
         Pane_GUI.addButton(GaugeNumber+"Guage"+"Depth")
           .setLabel("Depth")
           .setValue(0)
-          .setPosition(1+(5*(g_pane_W-2)/6),5)
+          .setPosition(1+(5*(g_pane_W-2)/6), 5)
           .setSize((g_pane_W-2)/6, 20)
           .moveTo(Gauge_ControlGroup)
           .plugTo(this, "Test");
         ;
-
 
 
         //lights--------------------------------------------------------------------
@@ -331,12 +330,15 @@ class Pane_Gauges {
           .setLabelVisible(false)
           .plugTo(this, "ToggleLight4")
           ;
+           
+          
+       
       }
 
       void update(StringDict Status, FloatDict Attitude) {
 
         fill(0);
-        stroke(255);
+        stroke(0);
         rect(g_pane_x, g_pane_y, g_pane_W, g_pane_H);
         switch(internalGaugeConfig[int(GaugeNumber)]) {
         case "null":
@@ -345,7 +347,7 @@ class Pane_Gauges {
           Widgits_2x3.Lights(g_pane_x, g_pane_y, g_pane_W, g_pane_H-20);
           break;
         case "Compass":
-          Widgits_2x3.Lights(g_pane_x, g_pane_y, g_pane_W, g_pane_H-20);
+          Widgits_2x3.Compass(g_center_x, g_center_y, 225, 45,15,Status, Attitude);
           break;
         case "Thrusters":
           Widgits_2x3.Lights(g_pane_x, g_pane_y, g_pane_W, g_pane_H-20);
@@ -490,7 +492,7 @@ class Pane_Gauges {
           Pane_GUI.getController(index+"ToggleLight4").hide();
 
           break;
-       
+
         case "TOI":
           internalGaugeConfig[index]="TOI";
           Pane_GUI.getController(index+"SliderLight1").hide();
@@ -504,7 +506,7 @@ class Pane_Gauges {
           Pane_GUI.getController(index+"ToggleLight4").hide();
 
           break;
-        
+
         case "Depth":
           internalGaugeConfig[index]="Depth";
           Pane_GUI.getController(index+"SliderLight1").hide();

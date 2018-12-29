@@ -53,6 +53,7 @@ void setup() {
   Status.set("HeadingMode","MANUAL");
   Status.set("FC_Usage_CPU","0");
   Status.set("CC_Usage_CPU","0");
+  Status.set("VO_Heading","265");
 
   //initial population of MQTT string dictionary
   MQTT = new StringDict();
@@ -60,7 +61,7 @@ void setup() {
 
   //initial population of MQTT string dictionary
   Attitude = new FloatDict();
-  Attitude.set("Heading",10);
+  Attitude.set("Heading",270);
   Attitude.set("Pitch",3);
   Attitude.set("Roll",5);
   Attitude.set("Heave",0);
@@ -96,7 +97,7 @@ void setup() {
 
   //MQTT parameters
   VC_Client = new MQTTClient(this);
-  VC_Client.connect("mqtt://192.168.1.74:1883", "VC");
+  VC_Client.connect("mqtt://192.168.1.82:1883", "VC");
   VC_Client.subscribe("USS/SS/#");
   VC_Client.publish("USS/TS/VC", "Started");
   
