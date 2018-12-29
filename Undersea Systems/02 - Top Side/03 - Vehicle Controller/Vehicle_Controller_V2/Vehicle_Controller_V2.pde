@@ -49,11 +49,20 @@ void setup() {
   Status.set("FwdCamState","Off");
   Status.set("FwdCam_Health_TempCPU", "67");
   Status.set("Target","TEST1");
-  Status.set("TargetHeading","150");  
+  Status.set("TargetHeading","12");  
   Status.set("HeadingMode","MANUAL");
   Status.set("FC_Usage_CPU","0");
   Status.set("CC_Usage_CPU","0");
   Status.set("VO_Heading","265");
+  Status.set("FC_State_MQTT","Null");
+  Status.set("FC_State_LOG","Null");
+  Status.set("FC_State_CAMERA","Null");
+  Status.set("FC_Mode","Null");
+  Status.set("CC_State_MQTT","Null");
+  Status.set("CC_State_LOG","Null");
+  Status.set("CC_State_SERIAL","Null");
+  Status.set("CC_Mode","Null");
+  Status.set("CC_Temp_CPU","0");
 
   //initial population of MQTT string dictionary
   MQTT = new StringDict();
@@ -97,7 +106,7 @@ void setup() {
 
   //MQTT parameters
   VC_Client = new MQTTClient(this);
-  VC_Client.connect("mqtt://192.168.1.82:1883", "VC");
+  VC_Client.connect("mqtt://192.168.1.74:1883", "VC");
   VC_Client.subscribe("USS/SS/#");
   VC_Client.publish("USS/TS/VC", "Started");
   

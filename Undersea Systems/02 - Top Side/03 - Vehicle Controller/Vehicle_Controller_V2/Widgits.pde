@@ -325,7 +325,7 @@ class Widgits {
     fill(#00FF00);
     text("HEADING:", x_loc-140, y_loc+90);
     textSize(20);
-    text(str(Attitude.get("Heading")), x_loc-140, y_loc+110);
+    text(str(round(Attitude.get("Heading"))), x_loc-140, y_loc+110);
 
     textSize(12);
     textAlign(RIGHT, CENTER);

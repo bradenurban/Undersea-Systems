@@ -19,9 +19,9 @@ class Pane_Statusbar {
   CameraCan FwdCamera = new CameraCan();
   ControlCan CtrCan = new ControlCan();
   BatteryCan BatCan = new BatteryCan();
-  
+
   Widgits StatusBar_Widgits = new Widgits();
-  
+
   Accordion FC_accordion;
   Accordion CT_accordion;
 
@@ -146,30 +146,66 @@ class Pane_Statusbar {
       StatusBar_Widgits.linear_gauge(CC_zero_x+210, CC_zero_y+70, "Invalid", 80, 150, 0, 120, "Deg F", "Amb T");
       StatusBar_Widgits.linear_gauge(CC_zero_x+170, CC_zero_y+70, "Valid", int(Status.get("FC_Usage_CPU")), 100, 0, 80, "%", "CPU %");
       StatusBar_Widgits.dot_gauge(CC_zero_x+290, CC_center_y-10, "Valid", "Good", "Leak");
-      
+
       pushStyle();
       rectMode(CORNER);
       stroke(#00FF00);
       textFont(createFont("Yu Gothic UI Bold", 12));
       textSize(12);
       textAlign(CORNER, CENTER);
-      fill(#00FF00);
-      noFill();
+
+
+      if (Status.get("FC_State_MQTT").equals("Started")== true) {
+        fill(#00FF00);
+        stroke(#00FF00);
+      } else if (Status.get("FC_State_MQTT").equals("Null")== true) {
+        fill(255, 255, 0);
+        stroke(255, 255, 0);
+      } else {
+        fill(255, 0, 0);
+        stroke(255, 0, 0);
+      }
 
       text("MQTT STATE:", CC_zero_x+1, CC_zero_y+27);
       text(""+Status.get("FC_State_MQTT"), CC_zero_x+83, CC_zero_y+27);
+      noFill();
       rect(CC_zero_x+80, CC_zero_y+23, 65, 15);
+
+      if (Status.get("FC_State_LOG").equals("Started")== true) {
+        fill(#00FF00);
+        stroke(#00FF00);
+      } else if (Status.get("FC_State_LOG").equals("Null")== true) {
+        fill(255, 255, 0);
+        stroke(255, 255, 0);
+      } else {
+        fill(255, 0, 0);
+        stroke(255, 0, 0);
+      }
 
       text("LOG STATE:", CC_zero_x+1, CC_zero_y+45);
       text(""+Status.get("FC_State_LOG"), CC_zero_x+83, CC_zero_y+45);
+      noFill();
       rect(CC_zero_x+80, CC_zero_y+41, 65, 15);
+
+      if (Status.get("FC_State_CAMERA").equals("Started")== true) {
+        fill(#00FF00);
+        stroke(#00FF00);
+      } else if (Status.get("FC_State_CAMERA").equals("Null")== true) {
+        fill(255, 255, 0);
+        stroke(255, 255, 0);
+      } else {
+        fill(255, 0, 0);
+        stroke(255, 0, 0);
+      }
 
       text("CAMERA:", CC_zero_x+1, CC_zero_y+63);
       text(""+Status.get("FC_State_CAMERA"), CC_zero_x+83, CC_zero_y+63);
+      noFill();
       rect(CC_zero_x+80, CC_zero_y+59, 65, 15);
 
       text("MODE: ", CC_zero_x+1, CC_zero_y+81);
       text(""+Status.get("FC_Mode"), CC_zero_x+83, CC_zero_y+81);
+      noFill();
       rect(CC_zero_x+80, CC_zero_y+77, 65, 15);
 
       popStyle();
@@ -192,9 +228,9 @@ class Pane_Statusbar {
     }//end cameraConnection
   }
 
-//----------------------------------------------------------------------------------
-//Control Can-----------------------------------------------------------------------
-//----------------------------------------------------------------------------------
+  //----------------------------------------------------------------------------------
+  //Control Can-----------------------------------------------------------------------
+  //----------------------------------------------------------------------------------
   class ControlCan {
     int CT_pane_x;
     int CT_pane_y;
@@ -206,12 +242,14 @@ class Pane_Statusbar {
     int CT_zero_x;
     int CT_end_y;
     int CT_end_x;  
-    
-    int[] imuStatus;
-    
+
+    String sysCal;
+    String aclCal;
+    String gyrCal;
+
     ControlCan() {
     }
-    
+
     void initialSetup(int temp_pane_x, int temp_pane_y, int temp_pane_W, int temp_pane_H) {
       CT_pane_x= temp_pane_x;
       CT_pane_y= temp_pane_y;
@@ -223,7 +261,9 @@ class Pane_Statusbar {
       CT_zero_x = CT_pane_x;
       CT_end_y = temp_pane_y;
       CT_end_x = temp_pane_x;
-
+      sysCal = "Bad";
+      aclCal = "Bad";
+      gyrCal = "Bad";
 
       Group CT_ControlGroup = Pane_GUI.addGroup("CT_Controller")
         .setBackgroundColor(color(0, 64))
@@ -285,14 +325,38 @@ class Pane_Statusbar {
       text("CONTROL CAMERA CAN", CT_center_x, CT_zero_y+6);
 
       //Temperature Gauges
-      StatusBar_Widgits.linear_gauge(CT_zero_x+250, CT_zero_y+70, "Valid", 100, 150, 0, 120, "Deg F", "CPU T");
+      StatusBar_Widgits.linear_gauge(CT_zero_x+250, CT_zero_y+70, "Valid", int(Status.get("CC_Temp_CPU")), 150, 0, 120, "Deg F", "CPU T");
       StatusBar_Widgits.linear_gauge(CT_zero_x+210, CT_zero_y+70, "Invalid", 80, 150, 0, 120, "Deg F", "Amb T");
       StatusBar_Widgits.linear_gauge(CT_zero_x+170, CT_zero_y+70, "Valid", int(Status.get("CC_Usage_CPU")), 100, 0, 80, "%", "CPU %");
-      
+
+      if (Attitude.get("SysCal")==3) {
+        sysCal = "Good";
+      } else if (Attitude.get("SysCal")==2) {
+        sysCal = "Caution";
+      } else {
+        sysCal = "Bad";
+      }
+
+      if (Attitude.get("AclCal")==3) {
+        aclCal = "Good";
+      } else if (Attitude.get("AclCal")==2) {
+        aclCal = "Caution";
+      } else {
+        aclCal = "Bad";
+      }
+
+      if (Attitude.get("GyrCal")==3) {
+        gyrCal = "Good";
+      } else if (Attitude.get("GyrCal")==2) {
+        gyrCal = "Caution";
+      } else {
+        gyrCal = "Bad";
+      }
+
       StatusBar_Widgits.dot_gauge(CT_zero_x+290, CT_center_y-10, "Valid", "Good", "Leak");
-      StatusBar_Widgits.dot_gauge(CT_zero_x+330, CT_center_y-10, "Valid", "Good", "SysCal");
-      StatusBar_Widgits.dot_gauge(CT_zero_x+290, CT_center_y+37, "Valid", "Caution", "AclCal");
-      StatusBar_Widgits.dot_gauge(CT_zero_x+330, CT_center_y+37, "Valid", "Good", "GyrCal");
+      StatusBar_Widgits.dot_gauge(CT_zero_x+330, CT_center_y-10, "Valid", sysCal, "SysCal");
+      StatusBar_Widgits.dot_gauge(CT_zero_x+290, CT_center_y+37, "Valid", aclCal, "AclCal");
+      StatusBar_Widgits.dot_gauge(CT_zero_x+330, CT_center_y+37, "Valid", gyrCal, "GyrCal");
 
       pushStyle();
       rectMode(CORNER);
@@ -300,23 +364,58 @@ class Pane_Statusbar {
       textFont(createFont("Yu Gothic UI Bold", 12));
       textSize(12);
       textAlign(CORNER, CENTER);
-      fill(#00FF00);
-      noFill();
+
+      if (Status.get("CC_State_MQTT").equals("Started")== true) {
+        fill(#00FF00);
+        stroke(#00FF00);
+      } else if (Status.get("CC_State_MQTT").equals("Null")== true) {
+        fill(255, 255, 0);
+        stroke(255, 255, 0);
+      } else {
+        fill(255, 0, 0);
+        stroke(255, 0, 0);
+      }
 
       text("MQTT STATE:", CT_zero_x+1, CT_zero_y+27);
       text(""+Status.get("CC_State_MQTT"), CT_zero_x+83, CT_zero_y+27);
+      noFill();
       rect(CT_zero_x+80, CT_zero_y+23, 65, 15);
+
+      if (Status.get("CC_State_LOG").equals("Started")== true) {
+        fill(#00FF00);
+        stroke(#00FF00);
+      } else if (Status.get("CC_State_LOG").equals("Null")== true) {
+        fill(255, 255, 0);
+        stroke(255, 255, 0);
+      } else {
+        fill(255, 0, 0);
+        stroke(255, 0, 0);
+      }
 
       text("LOG STATE:", CT_zero_x+1, CT_zero_y+45);
       text(""+Status.get("CC_State_LOG"), CT_zero_x+83, CT_zero_y+45);
+      noFill();
       rect(CT_zero_x+80, CT_zero_y+41, 65, 15);
+
+      if (Status.get("CC_State_SERIAL").equals("Started")== true) {
+        fill(#00FF00);
+        stroke(#00FF00);
+      } else if (Status.get("CC_State_SERIAL").equals("Null")== true) {
+        fill(255, 255, 0);
+        stroke(255, 255, 0);
+      } else {
+        fill(255, 0, 0);
+        stroke(255, 0, 0);
+      }
 
       text("SERIAL:", CT_zero_x+1, CT_zero_y+63);
       text(""+Status.get("CC_State_SERIAL"), CT_zero_x+83, CT_zero_y+63);
+      noFill();
       rect(CT_zero_x+80, CT_zero_y+59, 65, 15);
 
       text("MODE: ", CT_zero_x+1, CT_zero_y+81);
       text(""+Status.get("CC_Mode"), CT_zero_x+83, CT_zero_y+81);
+      noFill();
       rect(CT_zero_x+80, CT_zero_y+77, 65, 15);
 
       popStyle();
@@ -324,7 +423,7 @@ class Pane_Statusbar {
     }
   }
 
-//--------------------------------------------------------------------------------
+  //--------------------------------------------------------------------------------
 
   class BatteryCan {
     int CB_pane_x;
