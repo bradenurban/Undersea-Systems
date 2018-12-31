@@ -151,6 +151,53 @@ class Widgits {
   }//end linear guage
 
 
+  void ForceGauge(int x_loc, int y_loc, StringDict Status, FloatDict Attitude) {
+    int diam = 150;
+    
+    // ship
+    pushMatrix();
+    pushStyle();
+    translate(x_loc-50, y_loc);
+
+    fill(25);
+    stroke(100);
+    ellipse(0,0,diam,diam);
+    
+    rect(81,-75,15,150);
+    rect(-75,-96,150,15);
+    
+    fill(0);
+    stroke(#00FF00);
+    strokeWeight(1);
+
+    beginShape();
+    vertex(0, 0-(35));
+    vertex(0-15, 0-(10));
+    vertex(0-15, 0+(35));
+    vertex(0+15, 0+(35));
+    vertex(0+15, 0-(10));
+    vertex(0, 0-(35));
+    endShape(CLOSE);
+
+    stroke(100);
+    
+    noFill();
+    ellipse(0,0,15,15);
+    ellipse(0,0,30,30);
+    ellipse(0,0,60,60);
+    ellipse(0,0,90,90);
+    ellipse(0,0,120,120);
+    
+    
+    
+    popStyle();
+    popMatrix();
+    
+    
+  }//end Force Gauge
+
+
+
   void Compass(int x_loc, int y_loc, int Diam, int Majorspacing, int Minorspacing, StringDict Status, FloatDict Attitude) {
 
     fill(25);
@@ -159,7 +206,13 @@ class Widgits {
     ellipseMode(CENTER);
     ellipse(x_loc, y_loc, Diam, Diam);
 
-    int inner_MajorTick = (Diam - 15)/2;
+    fill(0);
+    stroke(100);
+    ellipse(x_loc, y_loc, Diam-120, Diam-120);
+
+    stroke(#00FF00);
+
+    int inner_MajorTick = (Diam - 20)/2;
     int outer_MajorTIck = (Diam)/2;
 
     int inner_MinorTick = (Diam - 10)/2;
@@ -260,16 +313,16 @@ class Widgits {
     strokeWeight(1);
 
     beginShape();
-    vertex(0, 0-(45));
+    vertex(0, 0-(52));
     vertex(0-20, 0-(20));
     vertex(0-20, 0+(45));
     vertex(0+20, 0+(45));
     vertex(0+20, 0-(20));
-    vertex(0, 0-(45));
+    vertex(0, 0-(52));
     endShape(CLOSE);
 
     stroke(#00FF00);
-    line(0, 0-(45), 0, 0-Diam/2);
+    line(0, 0-(52), 0, 0-Diam/2);
 
     popStyle();
     popMatrix();
@@ -325,6 +378,8 @@ class Widgits {
     fill(#00FF00);
     text("HEADING:", x_loc-140, y_loc+90);
     textSize(20);
+    noFill();
+    rect(x_loc-140, y_loc+100, 60, 25);
     text(str(round(Attitude.get("Heading"))), x_loc-140, y_loc+110);
 
     textSize(12);
@@ -332,6 +387,9 @@ class Widgits {
     fill(#F58700);
     text("TARGET:", x_loc+140, y_loc+90);
     textSize(20);
+    noFill();
+    stroke(#F58700);
+    rect(x_loc+80, y_loc+100, 60, 25);
     text(Status.get("TargetHeading"), x_loc+140, y_loc+110);
 
     textSize(12);
@@ -353,6 +411,11 @@ class Widgits {
     strokeWeight(1);
     rectMode(CORNER);
 
+    noFill();
+    stroke(100);
+    rect(-73, -142, 145, 19);
+
+    fill(255);
     line(0, -125, 0, -140);
 
     headingDiff = int(Status.get("TargetHeading"))-int(Attitude.get("Heading"));
@@ -411,13 +474,13 @@ class Widgits {
     if (headingDiff < -15) {
       rect(-65, -140, -5, 15);
     }
-    
+
     if (headingDiff > 20) {
-      triangle(75,-140, 75, -125, 85,-132);
+      triangle(75, -140, 75, -125, 85, -132);
     }
 
     if (headingDiff < -20) {
-      triangle(-75,-140, -75, -125, -85,-132);
+      triangle(-75, -140, -75, -125, -85, -132);
     }
 
     popStyle();

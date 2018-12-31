@@ -195,7 +195,7 @@ class Pane_Gauges {
 
 
         Gauge_accordion = Pane_GUI.addAccordion("accordion"+GaugeNumber)
-          .setPosition(g_zero_x+1, g_end_y-20)
+          .setPosition(g_zero_x+1, g_zero_y+1)
           .setWidth(g_pane_W-2)
           .addItem(Gauge_ControlGroup)
           ;
@@ -347,13 +347,13 @@ class Pane_Gauges {
           Widgits_2x3.Lights(g_pane_x, g_pane_y, g_pane_W, g_pane_H-20);
           break;
         case "Compass":
-          Widgits_2x3.Compass(g_center_x, g_center_y, 225, 45,15,Status, Attitude);
+          Widgits_2x3.Compass(g_center_x, g_center_y+20, 225, 45,5,Status, Attitude);
           break;
         case "Thrusters":
           Widgits_2x3.Lights(g_pane_x, g_pane_y, g_pane_W, g_pane_H-20);
           break;
         case "Forces":
-          Widgits_2x3.Lights(g_pane_x, g_pane_y, g_pane_W, g_pane_H-20);
+          Widgits_2x3.ForceGauge(g_center_x, g_center_y+20, Status,  Attitude);
           break;
         case "TOI":
           Widgits_2x3.Lights(g_pane_x, g_pane_y, g_pane_W, g_pane_H-20);
