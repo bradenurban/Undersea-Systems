@@ -15,15 +15,18 @@ state = {"config":  "NotLoaded",
          "log":     "NotStarted",
          "serial":  "NotStarted"}
 
-attitude = {"pitch":    0,
-            "roll":     0,
-            "heading":  0,
-            "surge":    0,
-            "heave":    0,
-            "sway":     0,
-            "sysCal":   0,
-            "aclCal":   0,
-            "gyrCal":   0}
+attitude = {"pitch":    	0,
+            "roll":     	0,
+            "heading":  	0,
+            "surge":    	0,
+            "heave":    	0,
+            "sway":     	0,
+            "pitchRate":    	0,
+            "rollRate":    	0,
+            "yawRate":     	0,
+            "sysCal":   	0,
+            "aclCal":   	0,
+            "gyrCal":   	0}
 
 error = 0
 

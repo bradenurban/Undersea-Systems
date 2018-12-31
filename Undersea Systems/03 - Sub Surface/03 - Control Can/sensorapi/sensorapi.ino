@@ -158,7 +158,7 @@ void setup(void)
 void loop(void)
 {
   imu::Vector<3> acl = bno.getVector(Adafruit_BNO055::VECTOR_ACCELEROMETER );
-  
+  imu::Vector<3> gyr = bno.getVector(Adafruit_BNO055::VECTOR_GYROSCOPE );
   /* Get a new sensor event */
   sensors_event_t event;
   bno.getEvent(&event);
@@ -175,6 +175,12 @@ void loop(void)
   Serial.print(acl.y(),4);
   Serial.print(", ");
   Serial.print(acl.z(),4);
+  Serial.print(", ");
+  Serial.print(gyr.x(),4);
+  Serial.print(", ");
+  Serial.print(gyr.y(),4);
+  Serial.print(", ");
+  Serial.print(gyr.z(),4);
 
   /* Optional: Display calibration status */
   displayCalStatus();

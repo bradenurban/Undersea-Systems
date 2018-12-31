@@ -188,9 +188,12 @@ class SerialIMU:
         attitude["heave"] = parsedData[3]
         attitude["surge"] = parsedData[4]
         attitude["sway"] = parsedData[5]
-        attitude["sysCal"] = parsedData[6]
-        attitude["aclCal"] = parsedData[7]
-        attitude["gyrCal"] = parsedData[8]
+        attitude["pitchRate"] = parsedData[6]
+        attitude["rollRate"] = parsedData[7]
+        attitude["yawRate"] = parsedData[8]
+        attitude["sysCal"] = parsedData[9]
+        attitude["aclCal"] = parsedData[10]
+        attitude["gyrCal"] = parsedData[11]
         return(attitude)
   
 

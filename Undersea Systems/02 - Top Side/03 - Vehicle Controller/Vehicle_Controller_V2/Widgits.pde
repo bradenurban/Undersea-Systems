@@ -135,9 +135,6 @@ class Widgits {
 
 
 
-
-
-
     popMatrix();
     popStyle();
 
@@ -153,19 +150,37 @@ class Widgits {
 
   void ForceGauge(int x_loc, int y_loc, StringDict Status, FloatDict Attitude) {
     int diam = 150;
-    
-    // ship
+    int radius = diam/2;
+
+    //max acceleration is 2g (19.62 m/s)
+    float x_acc = Attitude.get("Surge");
+    float y_acc = Attitude.get("Sway");
+    float z_acc = Attitude.get("Heave");
+
+    //max rotation rate is 125deg/s (2.18 rad/s)
+    float p_acc = Attitude.get("pitchRate");
+    float r_acc = Attitude.get("rollRate");
+    float yw_acc = Attitude.get("yawRate");
+
+    int m_x_acc = int(0.5*radius*(x_acc/9.81));
+    int m_y_acc = int(0.5*radius*(y_acc/9.81));
+    int m_z_acc = int(0.5*radius*(z_acc/9.81));
+    int m_p_acc = int(0.5*radius*(p_acc/125));
+    int m_r_acc = int(0.5*radius*(r_acc/125));
+    int m_yw_acc = int(0.5*radius*(yw_acc/125));
+
+    // ship, down view
     pushMatrix();
     pushStyle();
     translate(x_loc-50, y_loc);
 
     fill(25);
     stroke(100);
-    ellipse(0,0,diam,diam);
-    
-    rect(81,-75,15,150);
-    rect(-75,-96,150,15);
-    
+    ellipse(0, 0, diam, diam);
+
+    rect(81, -75, 10, 150);
+    rect(-75, -91, 150, 10);
+
     fill(0);
     stroke(#00FF00);
     strokeWeight(1);
@@ -180,20 +195,60 @@ class Widgits {
     endShape(CLOSE);
 
     stroke(100);
-    
+
     noFill();
-    ellipse(0,0,15,15);
-    ellipse(0,0,30,30);
-    ellipse(0,0,60,60);
-    ellipse(0,0,90,90);
-    ellipse(0,0,120,120);
-    
-    
-    
+    ellipse(0, 0, 15, 15);
+    ellipse(0, 0, 30, 30);
+    ellipse(0, 0, 60, 60);
+    ellipse(0, 0, 90, 90);
+    ellipse(0, 0, 120, 120);
+
+    fill(0, 255, 0);
+    stroke(0, 255, 0);
+    line(0, 0, m_x_acc, m_y_acc);
+
+    stroke(0);
+    ellipse(m_x_acc, m_y_acc, 10, 10);
+
+    strokeWeight(10);
+    strokeCap(SQUARE);
+    stroke(0, 255, 0);
+
+    line(86, 0, 86, m_p_acc);
+    line(0, -86, m_y_acc, -86);
+
     popStyle();
     popMatrix();
-    
-    
+
+    // ship
+    //pushMatrix();
+    //pushStyle();
+    //translate(x_loc-50, y_loc);
+
+    //fill(25);
+    //stroke(100);
+    //ellipse(0,0,diam,diam);
+
+    //rect(81,-75,10,150);
+    //rect(-75,-91,150,10);
+
+    //fill(0);
+    //stroke(#00FF00);
+    //strokeWeight(1);
+
+    //beginShape();
+    //vertex(0, 0-(35));
+    //vertex(0-15, 0-(10));
+    //vertex(0-15, 0+(35));
+    //vertex(0+15, 0+(35));
+    //vertex(0+15, 0-(10));
+    //vertex(0, 0-(35));
+    //endShape(CLOSE);
+
+    //stroke(100);
+
+    // popStyle();
+    //popMatrix();
   }//end Force Gauge
 
 
