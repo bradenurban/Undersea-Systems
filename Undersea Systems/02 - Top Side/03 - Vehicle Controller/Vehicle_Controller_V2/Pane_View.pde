@@ -129,7 +129,7 @@ class Pane_View {
 
     void update(StringDict Status, FloatDict Attitude) {
       noFill();
-      stroke(graphicColor,75);
+      stroke(color(100),75);
       strokeWeight(1);
       ellipseMode(CENTER);
       ellipse(AH_center_x,AH_center_y,10,10);

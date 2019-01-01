@@ -96,25 +96,23 @@ class Widgits {
     rect(x_loc-(w/2), y_loc-(h/2), w, h);
     fill(255, 0, 0);
     rect(x_loc-(w/2), y_loc-(h/2), w, h_red);
+    textFont(createFont("Yu Gothic UI Bold", 12));
+    textSize(12);
+    textAlign(CENTER, CENTER);
 
     if (state == "Valid") {
       stroke(255);
       strokeWeight(3);
       line(x_loc-(w/2)-2, y_value+y_loc-(h/2), x_loc+(w/2)+2, y_value+y_loc-(h/2));
+      //Units text
+      fill(textColor);
+      text(Units, x_loc, y_loc+ h - 20);
+      text(Label, x_loc, y_loc - 40);
+    } else {
+      fill(255, 255, 0);
+      text(Units, x_loc, y_loc+ h - 20);
+      text(Label, x_loc, y_loc - 40);
     }
-
-    textFont(createFont("Yu Gothic UI Bold", 12));
-    fill(textColor);
-
-    //Units text
-    textSize(12);
-    textAlign(CENTER, CENTER);
-    text(Units, x_loc, y_loc+ h - 20);
-    text(Label, x_loc, y_loc - 40);
-
-    //return Stroke Weight back to black and 1
-    stroke(0);
-    strokeWeight(1);
   }//end linear guage
 
   void circle_gauge(int x_loc, int y_loc, String state, float value, float value_max, float value_min, float value_red, String Units, String Label) {
@@ -251,7 +249,23 @@ class Widgits {
     //popMatrix();
   }//end Force Gauge
 
+  void ArtificalHorrizion(int x_loc, int y_loc, StringDict Status, FloatDict Attitude) {
+    pushMatrix();
+    pushStyle();
+    translate(x_loc, y_loc);
 
+    fill(#02F1F7);//blue
+    rectMode(CENTER);
+    rect(0,0,225,225);
+    
+    fill(#F7A602);//orange
+    
+    
+
+
+    popStyle();
+    popMatrix();
+  }//end artificial horrizion
 
   void Compass(int x_loc, int y_loc, int Diam, int Majorspacing, int Minorspacing, StringDict Status, FloatDict Attitude) {
 

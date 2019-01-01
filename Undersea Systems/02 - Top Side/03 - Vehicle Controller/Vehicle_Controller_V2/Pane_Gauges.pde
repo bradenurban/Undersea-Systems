@@ -219,8 +219,8 @@ class Pane_Gauges {
           .moveTo(Gauge_ControlGroup)
           .plugTo(this, "Test");
         ;
-        Pane_GUI.addButton(GaugeNumber+"Guage"+"Thrusters")
-          .setLabel("Thrusters")
+        Pane_GUI.addButton(GaugeNumber+"Guage"+"ArtHrz")
+          .setLabel("ArtHrz")
           .setValue(0)
           .setPosition(1+(2*(g_pane_W-2)/6), 5)
           .setSize((g_pane_W-2)/6, 20)
@@ -349,8 +349,8 @@ class Pane_Gauges {
         case "Compass":
           Widgits_2x3.Compass(g_center_x, g_center_y+20, 225, 45,5,Status, Attitude);
           break;
-        case "Thrusters":
-          Widgits_2x3.Lights(g_pane_x, g_pane_y, g_pane_W, g_pane_H-20);
+        case "ArtHrz":
+          Widgits_2x3.ArtificalHorrizion(g_center_x, g_center_y+20, Status, Attitude);
           break;
         case "Forces":
           Widgits_2x3.ForceGauge(g_center_x, g_center_y+20, Status,  Attitude);
@@ -466,8 +466,8 @@ class Pane_Gauges {
           Pane_GUI.getController(index+"ToggleLight4").hide();
 
           break;
-        case "Thrusters":
-          internalGaugeConfig[index]="Thrusters";
+        case "ArtHrz":
+          internalGaugeConfig[index]="ArtHrz";
           Pane_GUI.getController(index+"SliderLight1").hide();
           Pane_GUI.getController(index+"SliderLight2").hide();
           Pane_GUI.getController(index+"SliderLight3").hide();
