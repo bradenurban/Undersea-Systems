@@ -42,11 +42,11 @@ class View_Update {
 
     //test cases for layout
     //noFill();
-    fill(100);
+    fill(0);
     stroke(255);
     rect(0,0,(0.75)*pane_W,(0.5)*pane_H);
     
-    fill(255);
+    fill(0);
     rect(0,(0.5)*pane_H,(0.5)*pane_H,(0.5)*pane_H);
     
     fill(100);

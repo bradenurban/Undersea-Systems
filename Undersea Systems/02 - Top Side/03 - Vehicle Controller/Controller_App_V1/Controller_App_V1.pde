@@ -13,9 +13,6 @@ StringDict Settings;
 import controlP5.*;//GUI classes
 ControlP5 Pane_GUI;
 
-import ipcapture.*;//Fwd Camera
-IPCapture fwdCam;
-
 import mqtt.*;//MQTT
 MQTTClient VC_Client;
 
@@ -92,13 +89,12 @@ void setup() {
 
   //MQTT parameters----------------------------
   VC_Client = new MQTTClient(this);
-  VC_Client.connect("mqtt://192.168.1.82:1883", "VC");
-  //VC_Client.connect("mqtt://192.168.1.74:1883", "VC");
+  //VC_Client.connect("mqtt://192.168.1.82:1883", "VC");
+  VC_Client.connect("mqtt://192.168.1.74:1883", "VC");
   VC_Client.subscribe("USS/SS/#");
   VC_Client.publish("USS/TS/Viewer", "Started");
 
-  //Camera parameters, Forward Camera----------
-  fwdCam = new IPCapture(this, "http://169.254.51.218:9090/stream/video.mjpeg", "", "");
+ 
 }
 
 
