@@ -26,6 +26,7 @@ import static javax.swing.JOptionPane.*;//For popup windows
 
 //Custom Class----------------------------------------------------------------------------------
 View_Update View_Update1 = new View_Update();
+Compass Compass1 = new Compass();
 
 //Settings--------------------------------------------------------------------------------------
 void settings() {
@@ -86,6 +87,8 @@ void setup() {
   
   //Initial Setups----------------------------
   View_Update1.initialSetup(0,0,GUI_Size[0], GUI_Size[1]);
+  Compass1.initialSetup(0,int((0.5)*GUI_Size[1]),int((0.5)*GUI_Size[1]), int((0.5)*GUI_Size[1]));
+  
 
   //MQTT parameters----------------------------
   VC_Client = new MQTTClient(this);
@@ -107,6 +110,7 @@ void setup() {
 void draw() {
 
   Status = View_Update1.update(Status, Attitude);
+  Status = Compass1.update(Status, Attitude);
   
   
   

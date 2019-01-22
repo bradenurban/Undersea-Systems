@@ -37,21 +37,21 @@ class View_Update {
     Pane_GUI.addButton("Start")
       .setValue(0)
       .setPosition(5, 5)
-      .setSize(60, 30)
+      .setSize(60, 20)
       //.moveTo(FC_ControlGroup)
       .plugTo( this, "CameraConnection")
       ;
     Pane_GUI.addButton("Stop")
       .setValue(0)
       .setPosition(70, 5)
-      .setSize(60, 30)
+      .setSize(60, 20)
       //.moveTo(FC_ControlGroup)
       .plugTo( this, "CameraExit")
       ;
     Pane_GUI.addButton("Widigit")
       .setValue(0)
       .setPosition(135, 5)
-      .setSize(60, 30)
+      .setSize(60, 20)
       //.moveTo(FC_ControlGroup)
       .plugTo( this, "Widigit")
       ;
@@ -104,15 +104,15 @@ class View_Update {
     strokeWeight(1);
     beginShape();
     vertex(0, 0);
-    vertex(0, 40);
-    vertex(205, 40);
+    vertex(0, 30);
+    vertex(205, 30);
     vertex(250, 0);
     endShape(CLOSE);
 
     beginShape();
     vertex(end_x, end_y);
-    vertex(end_x, end_y-40);
-    vertex(end_x-205, end_y-40);
+    vertex(end_x, end_y-30);
+    vertex(end_x-205, end_y-30);
     vertex(end_x-250, end_y);
     endShape(CLOSE);
     popStyle();
@@ -121,10 +121,11 @@ class View_Update {
     //Display framerate
     pushStyle();
     fill(255); 
-    text("FPS: "+round(frameRate), end_x-35, end_y-12);
-    text("Cam: "+Status.get("FwdCamState"), end_x-35, end_y-27);
-    textSize(20);
-    text("Fwd Camera", end_x-135, end_y-22);
+    textSize(10);
+    text("FPS: "+round(frameRate), end_x-35, end_y-7);
+    text("Cam: "+Status.get("FwdCamState"), end_x-35, end_y-22);
+    textSize(16);
+    text("Fwd Camera", end_x-135, end_y-17);
     popStyle();
 
 
@@ -147,8 +148,8 @@ class View_Update {
         k = i/4;
         for (float j=0; j<5; j=j+1) {
           l = j/4;
-          line(pane_W*(k)-10, pane_H*(l), pane_W*(k)+10, pane_H*(l));
-          line(pane_W*(k), pane_H*(l)-10, pane_W*(k), pane_H*(l)+10);
+          line(pane_W*(k)-8, pane_H*(l), pane_W*(k)+8, pane_H*(l));
+          line(pane_W*(k), pane_H*(l)-8, pane_W*(k), pane_H*(l)+8);
         }
       }
       for (float i=0; i<4; i=i+1) {
@@ -174,9 +175,9 @@ class View_Update {
       textSize(18);
       noFill();
 
-      ellipse(center_x, center_y, 50, 50);
-      line(center_x+65, center_y, center_x+300, center_y);
-      line(center_x-65, center_y, center_x-300, center_y);
+      ellipse(center_x, center_y, 25, 25);
+      line(center_x+50, center_y, center_x+200, center_y);
+      line(center_x-50, center_y, center_x-200, center_y);
       popStyle();
       break;
     }//end switch case
