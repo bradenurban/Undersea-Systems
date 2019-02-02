@@ -49,12 +49,11 @@ class View_Update {
     fill(0);
     rect(0,(0.5)*pane_H,(0.5)*pane_H,(0.5)*pane_H);
     
-    fill(100);
-    rect((0.5)*pane_H,(0.5)*pane_H,(0.5)*pane_H,(0.5)*pane_H);
+    //fill(0);
+    //rect((0.5)*pane_H,(0.5)*pane_H,(0.5)*pane_H,(0.5)*pane_H);
 
     fill(255);
     rect(pane_H,(0.5)*pane_H,(0.5)*pane_H,(0.5)*pane_H);
-
 
 
 

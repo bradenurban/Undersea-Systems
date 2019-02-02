@@ -24,6 +24,9 @@ import static javax.swing.JOptionPane.*;//For popup windows
 //Custom Class----------------------------------------------------------------------------------
 View_Update View_Update1 = new View_Update();
 Compass Compass1 = new Compass();
+ArtificalHorrizon ArtificalHorrizon1 = new ArtificalHorrizon();
+StatusBar StatusBar1 = new StatusBar();
+ControlPanel ControlPanel1 = new ControlPanel();
 
 //Settings--------------------------------------------------------------------------------------
 void settings() {
@@ -60,6 +63,7 @@ void setup() {
   Status.set("CC_State_SERIAL", "Null");
   Status.set("CC_Mode", "Null");
   Status.set("CC_Temp_CPU", "0");
+  Status.set("CC_ThrusterArm","SAFE");
 
   //initial population of MQTT string dictionary
   MQTT = new StringDict();
@@ -68,7 +72,7 @@ void setup() {
   //initial population of MQTT string dictionary
   Attitude = new FloatDict();
   Attitude.set("Heading", 8);
-  Attitude.set("Pitch", 3);
+  Attitude.set("Pitch", 8);
   Attitude.set("Roll", 5);
   Attitude.set("Heave", 0);
   Attitude.set("Sway", 0);
@@ -85,13 +89,19 @@ void setup() {
   //Initial Setups----------------------------
   View_Update1.initialSetup(0,0,GUI_Size[0], GUI_Size[1]);
   Compass1.initialSetup(0,int((0.5)*GUI_Size[1]),int((0.5)*GUI_Size[1]), int((0.5)*GUI_Size[1]));
-  
+  ArtificalHorrizon1.initialSetup(int((0.5)*GUI_Size[1]),int((0.5)*GUI_Size[1]),int((0.5)*GUI_Size[1]), int((0.5)*GUI_Size[1]));
+  StatusBar1.initialSetup(0,0,int((0.75)*GUI_Size[0]),20);
+  ControlPanel1.initialSetup(int((0.75)*GUI_Size[0]),0,int((0.25)*GUI_Size[0]),GUI_Size[1]);
+
+
 
   //MQTT parameters----------------------------
   VC_Client = new MQTTClient(this);
   //VC_Client.connect("mqtt://192.168.1.82:1883", "VC");
-  VC_Client.connect("mqtt://192.168.1.74:1883", "VC");
+  //VC_Client.connect("mqtt://192.168.1.74:1883", "VC");
+  VC_Client.connect("mqtt://192.168.1.18:1883", "VC");
   VC_Client.subscribe("USS/SS/#");
+  delay(100);
   VC_Client.publish("USS/TS/Viewer", "Started");
 
  
@@ -107,7 +117,9 @@ void draw() {
 
   Status = View_Update1.update(Status, Attitude);
   Status = Compass1.update(Status, Attitude);
-  
+  Status = ArtificalHorrizon1.update(Status, Attitude);
+  Status = StatusBar1.update(Status, Attitude);
+  Status = ControlPanel1.update(Status, Attitude);
   
   
 }

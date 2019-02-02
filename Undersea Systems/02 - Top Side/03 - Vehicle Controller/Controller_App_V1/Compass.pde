@@ -42,7 +42,7 @@ class Compass {
 
 
   StringDict update(StringDict Status, FloatDict Attitude) {  
-
+    pushStyle();
     fill(25);
     stroke(#00FF00);
     strokeWeight(1);
@@ -202,7 +202,7 @@ class Compass {
     text("HEADING:", center_x-95, center_y+75);
     textSize(18);
     noFill();
-    rect(center_x-95, center_y+100, 60, 25);
+    //rect(center_x-95, center_y+100, 60, 25);
     text(str(round(Attitude.get("Heading"))), center_x-95, center_y+86);
 
     textSize(10);
@@ -212,7 +212,7 @@ class Compass {
     textSize(18);
     noFill();
     stroke(#F58700);
-    rect(center_x+95, center_y+100, 60, 25);
+    //rect(center_x+95, center_y+100, 60, 25);
     text(Status.get("TargetHeading"), center_x+95, center_y+86);
 
     popStyle();
@@ -302,6 +302,7 @@ class Compass {
     popStyle();
     popMatrix();
     
+    popStyle();
     return Status;
   }// end compass
 
