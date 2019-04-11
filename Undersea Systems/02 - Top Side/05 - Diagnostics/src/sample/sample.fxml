@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import org.controlsfx.glyphfont.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import org.controlsfx.control.*?>
+<?import org.controlsfx.control.textfield.*?>
+<?import javafx.scene.chart.*?>
+<?import com.jfoenix.controls.*?>
+<?import impl.org.controlsfx.skin.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" style="-fx-background-color: #4f4f4f;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+   <children>
+      <VBox maxWidth="250.0" minWidth="250.0" prefHeight="800.0" prefWidth="250.0" style="-fx-background-color: #000360;" HBox.hgrow="NEVER">
+         <children>
+            <Label contentDisplay="CENTER" maxHeight="50.0" maxWidth="250.0" minHeight="50.0" minWidth="250.0" prefHeight="50.0" prefWidth="250.0" style="-fx-alignment: CENTER;" text="MQTT Topics" textAlignment="CENTER" textFill="WHITE">
+               <font>
+                  <Font name="Calibri" size="24.0" />
+               </font>
+               <opaqueInsets>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </opaqueInsets>
+            </Label>
+            <TreeTableView prefHeight="946.0" prefWidth="150.0">
+               <columns>
+                  <TreeTableColumn minWidth="75.0" prefWidth="172.0" text="Topic" />
+                  <TreeTableColumn editable="false" prefWidth="70.0" text="Value" />
+               </columns>
+            </TreeTableView>
+         </children>
+      </VBox>
+      <FlowPane fx:id="mqttTopicTree" prefHeight="200.0" prefWidth="200.0" stylesheets="@../Style.css" HBox.hgrow="ALWAYS">
+         <children>
+            <VBox maxHeight="247.0" minHeight="230.0" prefHeight="247.0" prefWidth="260.0">
+               <children>
+                  <Label id="sectionLabel" alignment="CENTER" contentDisplay="CENTER" maxWidth="250.0" minWidth="250.0" prefHeight="10.0" prefWidth="250.0" stylesheets="@../Style.css" text="MQTT Connections" VBox.vgrow="ALWAYS">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <JFXButton id="simpleButton" fx:id="mqttBroker" maxWidth="250.0" minWidth="250.0" onAction="#launchBroker" prefHeight="25.0" prefWidth="250.0" stylesheets="@../Style.css" text="Launch Broker" VBox.vgrow="ALWAYS">
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </VBox.margin></JFXButton>
+                  <GridPane VBox.vgrow="ALWAYS">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="171.0" minWidth="10.0" prefWidth="86.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="281.0" minWidth="10.0" prefWidth="166.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <Label id="itemLabel" alignment="CENTER" stylesheets="@../Style.css" text="Broker IP:" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <JFXTextField id="textInput" fx:id="mqttIP" focusColor="#97a7ff" promptText="Borker IP Address" stylesheets="@../Style.css" text="192.168.1.82" unFocusColor="WHITE" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Label id="itemLabel" stylesheets="@../Style.css" text="Broker Port:" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <JFXTextField id="textInput" fx:id="mqttPort" focusColor="#97a7ff" promptText="Broker Port" stylesheets="@../Style.css" text="1883" unFocusColor="WHITE" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Label id="itemLabel" stylesheets="@../Style.css" text="Client ID:" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <JFXTextField id="textInput" fx:id="mqttID" focusColor="#97a7ff" promptText="Client ID:" stylesheets="@../Style.css" text="Diagnostics" unFocusColor="WHITE" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Label id="itemLabel" stylesheets="@../Style.css" text="Broker Status:" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Label id="itemLabel" fx:id="brokerStatus" stylesheets="@../Style.css" text="Disconnected" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                     </children>
+                  </GridPane>
+                  <HBox prefHeight="35.0" prefWidth="252.0">
+                     <children>
+                        <JFXButton id="simpleButton" fx:id="mqttConnect" minWidth="120.0" onAction="#mqttConnectBroker" prefHeight="25.0" prefWidth="185.0" stylesheets="@../Style.css" text="Connect" HBox.hgrow="ALWAYS">
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </HBox.margin></JFXButton>
+                        <JFXButton id="simpleButton" fx:id="mqttDisconnect" minWidth="120.0" onAction="#mqttDisconnectBroker" prefHeight="25.0" prefWidth="131.0" stylesheets="@../Style.css" text="Disconnect">
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </HBox.margin></JFXButton>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+            <VBox prefHeight="247.0" prefWidth="233.0">
+               <children>
+                  <Label id="sectionLabel" alignment="CENTER" contentDisplay="CENTER" maxWidth="250.0" minWidth="250.0" prefHeight="10.0" prefWidth="250.0" stylesheets="@../Style.css" text="MQTT Topics">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+               </children>
+            </VBox>
+         </children>
+         <HBox.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </HBox.margin>
+      </FlowPane>
+   </children>
+</HBox>
