@@ -28,10 +28,9 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </opaqueInsets>
             </Label>
-            <TreeTableView prefHeight="946.0" prefWidth="150.0">
+            <TreeTableView fx:id="mqttTableView" prefHeight="946.0" prefWidth="150.0">
                <columns>
-                  <TreeTableColumn minWidth="75.0" prefWidth="172.0" text="Topic" />
-                  <TreeTableColumn editable="false" prefWidth="70.0" text="Value" />
+                  <TreeTableColumn fx:id="Topic" minWidth="75.0" prefWidth="120.0" text="Topic" />
                </columns>
             </TreeTableView>
          </children>
@@ -46,9 +45,7 @@
                      </font>
                   </Label>
                   <JFXButton id="simpleButton" fx:id="mqttBroker" maxWidth="250.0" minWidth="250.0" onAction="#launchBroker" prefHeight="25.0" prefWidth="250.0" stylesheets="@../Style.css" text="Launch Broker" VBox.vgrow="ALWAYS">
-                     <VBox.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </VBox.margin></JFXButton>
+                     </JFXButton>
                   <GridPane VBox.vgrow="ALWAYS">
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="171.0" minWidth="10.0" prefWidth="86.0" />

@@ -1,13 +1,18 @@
 package sample;
 
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXRadioButton;
 import com.jfoenix.controls.JFXTextField;
+import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeTableColumn;
+import javafx.scene.control.TreeTableView;
+import javafx.util.Callback;
 import org.eclipse.paho.client.mqttv3.*;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
-import org.eclipse.paho.client.mqttv3.IMqttClient;
 
 import java.io.IOException;
 import java.net.URL;
@@ -24,15 +29,36 @@ public class Controller implements Initializable {
     public Label brokerStatus;
     public JFXButton mqttConnectButton;
     public JFXButton mqttDisconnectButton;
-    public boolean brokerStatusFlag = false;
+
     MqttClient client = null;
+
+    public TreeTableView<String> mqttTableView;
+    public TreeTableColumn<String,String> mqttTopicCol ;
+    public TreeTableColumn<String,String> mattValueCol ;
+
+    TreeItem<String> parent1 = new TreeItem<>("Parent2");
+    TreeItem<String> root = new TreeItem<>("Undersea Systems");
+
 
     //things to do on load start
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-    }
+        root.getChildren().setAll(parent1);
 
+
+        mqttTopicCol.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<String, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<String, String> param) {
+                return new SimpleStringProperty(param.getValue().getValue());
+            }
+        });
+
+        mqttTableView.setRoot(root);
+
+
+
+    }
 
     public void mqttConnectBroker() {
 
@@ -55,7 +81,6 @@ public class Controller implements Initializable {
              //connect to the broker
              System.out.println("Connecting to broker: " + broker);
              client.connect(connOpts);
-             brokerStatusFlag = true;
              System.out.println("Connected");
          }
          catch (MqttException me) {
@@ -71,8 +96,6 @@ public class Controller implements Initializable {
         updateMqttStatus();
 
      }
-
-
 
     //disconnect from the broker
     public void mqttDisconnectBroker(){
@@ -99,7 +122,6 @@ public class Controller implements Initializable {
         }
     }
 
-
     public void updateMqttStatus(){
         //set the text stat
         boolean clientStatus = client.isConnected();
@@ -111,5 +133,9 @@ public class Controller implements Initializable {
 
 
     }
+
+
+
+
 
 }

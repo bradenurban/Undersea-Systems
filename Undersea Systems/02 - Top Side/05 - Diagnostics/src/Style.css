@@ -17,16 +17,12 @@
 
 #simpleButton{
     -fx-background-color: #dddddd;
-
-
-
 }
 
 
 #menuButton:hover{
     -fx-border-color: white;
     -fx-border-width: 0 0 3 0;
-
 }
 
 #sectionLabel{
@@ -45,6 +41,4 @@
     -fx-text-fill: white;
     -fx-font-size: 12;
     -fx-padding: 5;
-
-
 }
