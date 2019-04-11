@@ -30,7 +30,8 @@
             </Label>
             <TreeTableView fx:id="mqttTableView" prefHeight="946.0" prefWidth="150.0">
                <columns>
-                  <TreeTableColumn fx:id="Topic" minWidth="75.0" prefWidth="120.0" text="Topic" />
+                  <TreeTableColumn fx:id="mqttTopicCol" minWidth="75.0" prefWidth="174.0" text="Topic" />
+                  <TreeTableColumn fx:id="mattValueCol" prefWidth="75.0" text="Value" />
                </columns>
             </TreeTableView>
          </children>
@@ -84,7 +85,7 @@
             </VBox>
             <VBox prefHeight="247.0" prefWidth="233.0">
                <children>
-                  <Label id="sectionLabel" alignment="CENTER" contentDisplay="CENTER" maxWidth="250.0" minWidth="250.0" prefHeight="10.0" prefWidth="250.0" stylesheets="@../Style.css" text="MQTT Topics">
+                  <Label id="sectionLabel" alignment="CENTER" contentDisplay="CENTER" maxWidth="250.0" minWidth="250.0" prefHeight="10.0" prefWidth="250.0" stylesheets="@../Style.css" text="MQTT Publisher">
                      <font>
                         <Font size="18.0" />
                      </font>
