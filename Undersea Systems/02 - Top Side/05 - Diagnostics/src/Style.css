@@ -9,16 +9,20 @@
     -fx-min-width: 140.0;
     -fx-perf-width: 140;
     -fx-perf-height: 40;
-    -fx-padding: 5;
     -fx-text-fill: white;
     -fx-font-size: 18;
-    -fx-margin: 5;
+
     }
 
 #simpleButton{
     -fx-background-color: #dddddd;
+    -fx-padding: 5 5 5 5;
+    -fx-margin: 5 5 5 5;
 }
 
+.tree-table-view .tree-table-cell{
+    -fx-background-color: yellow;
+}
 
 #menuButton:hover{
     -fx-border-color: white;
@@ -28,17 +32,20 @@
 #sectionLabel{
     -fx-text-fill: white;
     -fx-font-size: 18;
-    -fx-padding: 5;
+    -fx-padding: 5 5 5 5;
+    -fx-margin: 5 5 5 5;
 }
 
 #itemLabel{
     -fx-text-fill: white;
     -fx-font-size: 12;
-    -fx-padding: 5;
+    -fx-padding: 5 5 5 5;
+    -fx-margin: 5 5 5 5;
 }
 
 #textInput{
     -fx-text-fill: white;
     -fx-font-size: 12;
-    -fx-padding: 5;
+    -fx-padding: 5 5 5 5;
+    -fx-margin: 5 5 5 5;
 }

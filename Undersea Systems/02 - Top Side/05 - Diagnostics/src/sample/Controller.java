@@ -13,6 +13,7 @@ import javafx.scene.control.TreeTableView;
 import javafx.util.Callback;
 import org.eclipse.paho.client.mqttv3.*;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
+import sun.reflect.generics.tree.Tree;
 
 import java.io.IOException;
 import java.net.URL;
@@ -20,7 +21,7 @@ import java.util.ResourceBundle;
 
 
 
-public class Controller implements Initializable {
+public class Controller<mqttValue> implements Initializable {
 
     //declare all controllers
     public JFXTextField mqttIP;
@@ -32,33 +33,51 @@ public class Controller implements Initializable {
 
     MqttClient client = null;
 
-    public TreeTableView<String> mqttTableView;
-    public TreeTableColumn<String,String> mqttTopicCol ;
-    public TreeTableColumn<String,String> mattValueCol ;
+    public TreeTableView  <mqttMessages>        mqttTableView;
+    public TreeTableColumn<mqttMessages,String> mqttTopicCol ;
+    public TreeTableColumn<mqttMessages,String> mattValueCol ;
 
-    TreeItem<String> parent1 = new TreeItem<>("Parent2");
-    TreeItem<String> root = new TreeItem<>("Undersea Systems");
+    TreeItem<mqttMessages> item1 = new TreeItem<>(new mqttMessages("Test Value","1234"));
+    TreeItem<mqttMessages> parent1 = new TreeItem<>(new mqttMessages("Diagnostics",""));
+    TreeItem<mqttMessages> root = new TreeItem<>(new mqttMessages("Undersea Systems",""));
+
+
+
 
 
     //things to do on load start
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        parent1.getChildren().setAll(item1);
         root.getChildren().setAll(parent1);
 
-
-        mqttTopicCol.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<String, String>, ObservableValue<String>>() {
-            @Override
-            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<String, String> param) {
-                return new SimpleStringProperty(param.getValue().getValue());
-            }
-        });
+        mqttTopicCol.setCellValueFactory(param -> param.getValue().getValue().getTopicProperty());
+        mattValueCol.setCellValueFactory(param -> param.getValue().getValue().getValueProperty());
 
         mqttTableView.setRoot(root);
 
 
 
     }
+
+    class mqttMessages{
+        SimpleStringProperty topicProperty;
+        SimpleStringProperty valueProperty;
+
+        public mqttMessages(String mqttTopic,String mqttValue){
+            this.topicProperty = new SimpleStringProperty(mqttTopic);
+            this.valueProperty = new SimpleStringProperty(mqttValue);
+        }
+
+        public SimpleStringProperty getTopicProperty(){
+            return topicProperty;
+        }
+        public SimpleStringProperty getValueProperty(){
+            return valueProperty;
+        }
+
+    }
+
 
     public void mqttConnectBroker() {
 

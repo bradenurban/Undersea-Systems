@@ -28,9 +28,9 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </opaqueInsets>
             </Label>
-            <TreeTableView fx:id="mqttTableView" prefHeight="946.0" prefWidth="150.0">
+            <TreeTableView fx:id="mqttTableView" maxWidth="249.0" minWidth="249.0" prefHeight="950.0" prefWidth="249.0" style="-fx-background-color: #000360;" VBox.vgrow="ALWAYS">
                <columns>
-                  <TreeTableColumn fx:id="mqttTopicCol" minWidth="75.0" prefWidth="174.0" text="Topic" />
+                  <TreeTableColumn fx:id="mqttTopicCol" editable="false" minWidth="75.0" prefWidth="174.0" text="Topic" />
                   <TreeTableColumn fx:id="mattValueCol" prefWidth="75.0" text="Value" />
                </columns>
             </TreeTableView>
@@ -38,14 +38,14 @@
       </VBox>
       <FlowPane fx:id="mqttTopicTree" prefHeight="200.0" prefWidth="200.0" stylesheets="@../Style.css" HBox.hgrow="ALWAYS">
          <children>
-            <VBox maxHeight="247.0" minHeight="230.0" prefHeight="247.0" prefWidth="260.0">
+            <VBox maxHeight="230.0" maxWidth="260.0" minHeight="230.0" minWidth="260.0" prefHeight="230.0" prefWidth="260.0">
                <children>
-                  <Label id="sectionLabel" alignment="CENTER" contentDisplay="CENTER" maxWidth="250.0" minWidth="250.0" prefHeight="10.0" prefWidth="250.0" stylesheets="@../Style.css" text="MQTT Connections" VBox.vgrow="ALWAYS">
+                  <Label id="sectionLabel" alignment="CENTER" contentDisplay="CENTER" maxWidth="260.0" minWidth="260.0" prefHeight="37.0" prefWidth="260.0" stylesheets="@../Style.css" text="MQTT Connections" VBox.vgrow="ALWAYS">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <JFXButton id="simpleButton" fx:id="mqttBroker" maxWidth="250.0" minWidth="250.0" onAction="#launchBroker" prefHeight="25.0" prefWidth="250.0" stylesheets="@../Style.css" text="Launch Broker" VBox.vgrow="ALWAYS">
+                  <JFXButton id="simpleButton" fx:id="mqttBroker" maxWidth="260.0" minWidth="260.0" onAction="#launchBroker" prefHeight="25.0" prefWidth="260.0" stylesheets="@../Style.css" text="Launch Broker" VBox.vgrow="ALWAYS">
                      </JFXButton>
                   <GridPane VBox.vgrow="ALWAYS">
                     <columnConstraints>
@@ -71,14 +71,13 @@
                   </GridPane>
                   <HBox prefHeight="35.0" prefWidth="252.0">
                      <children>
-                        <JFXButton id="simpleButton" fx:id="mqttConnect" minWidth="120.0" onAction="#mqttConnectBroker" prefHeight="25.0" prefWidth="185.0" stylesheets="@../Style.css" text="Connect" HBox.hgrow="ALWAYS">
-                           <HBox.margin>
+                        <JFXButton id="simpleButton" fx:id="mqttConnect" minWidth="130.0" onAction="#mqttConnectBroker" prefHeight="27.0" prefWidth="130.0" stylesheets="@../Style.css" text="Connect" HBox.hgrow="ALWAYS">
+                           <padding>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                           </HBox.margin></JFXButton>
-                        <JFXButton id="simpleButton" fx:id="mqttDisconnect" minWidth="120.0" onAction="#mqttDisconnectBroker" prefHeight="25.0" prefWidth="131.0" stylesheets="@../Style.css" text="Disconnect">
-                           <HBox.margin>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                           </HBox.margin></JFXButton>
+                           </padding>
+                           </JFXButton>
+                        <JFXButton id="simpleButton" fx:id="mqttDisconnect" maxWidth="130.0" minWidth="130.0" onAction="#mqttDisconnectBroker" prefHeight="25.0" prefWidth="130.0" stylesheets="@../Style.css" text="Disconnect">
+                           </JFXButton>
                      </children>
                   </HBox>
                </children>
@@ -93,9 +92,7 @@
                </children>
             </VBox>
          </children>
-         <HBox.margin>
-            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-         </HBox.margin>
+
       </FlowPane>
    </children>
 </HBox>
