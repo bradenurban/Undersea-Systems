@@ -9,10 +9,9 @@
     -fx-min-width: 140.0;
     -fx-perf-width: 140;
     -fx-perf-height: 40;
-    -fx-padding: 5;
     -fx-text-fill: white;
     -fx-font-size: 18;
-    -fx-margin: 5;
+
     }
 
 #simpleButton{
